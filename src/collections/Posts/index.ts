@@ -1,5 +1,4 @@
-import type { CollectionConfig } from 'payload'
-
+import type { CollectionConfig, FieldHook } from 'payload'
 import {
   BlocksFeature,
   FixedToolbarFeature,
@@ -17,7 +16,6 @@ import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { populateAuthors } from './hooks/populateAuthors'
 import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
-
 import {
   MetaDescriptionField,
   MetaImageField,
@@ -25,7 +23,18 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
-import { slugField } from 'payload'
+
+// 👇 наш хук для форматирования slug
+const formatSlug: FieldHook = ({ value, data }) => {
+  const source = (data?.title ?? value) as string | undefined
+  if (!source) return value
+
+  return source
+    .trim()
+    .toLowerCase()
+    .replace(/[\s\W-]+/g, '-') // всё, что не буква/цифра, превращаем в дефис
+    .replace(/^-+|-+$/g, '') // обрезаем дефисы по краям
+}
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
@@ -70,6 +79,19 @@ export const Posts: CollectionConfig<'posts'> = {
       name: 'title',
       type: 'text',
       required: true,
+    },
+    {
+      name: 'slug',
+      type: 'text',
+      index: true,
+      required: true,
+      admin: {
+        position: 'sidebar', // как в WordPress — слаг в сайдбаре
+      },
+      hooks: {
+        // автоматически генерируем slug из title, если его не заполнили вручную
+        beforeValidate: [formatSlug],
+      },
     },
     {
       type: 'tabs',
@@ -214,9 +236,20 @@ export const Posts: CollectionConfig<'posts'> = {
         },
       ],
     },
-    slugField(),
   ],
   hooks: {
+    beforeValidate: [
+      ({ data }) => {
+        // если есть обычный заголовок, а meta.title ещё не задан — подставляем
+        if (data?.title) {
+          data.meta ??= {}
+          if (!data.meta.title) {
+            data.meta.title = data.title
+          }
+        }
+        return data
+      },
+    ],
     afterChange: [revalidatePost],
     afterRead: [populateAuthors],
     afterDelete: [revalidateDelete],
