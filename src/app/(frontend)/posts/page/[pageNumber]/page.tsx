@@ -6,6 +6,7 @@ import { Pagination } from '@/components/Pagination'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React from 'react'
+import { getSiteName } from '@/utilities/getSiteName'
 import PageClient from './page.client'
 import { notFound } from 'next/navigation'
 
@@ -64,8 +65,9 @@ export default async function Page({ params: paramsPromise }: Args) {
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { pageNumber } = await paramsPromise
+  const siteName = await getSiteName()
   return {
-    title: `Payload Website Template Posts Page ${pageNumber || ''}`,
+    title: `${siteName} Posts Page ${pageNumber || ''}`,
   }
 }
 

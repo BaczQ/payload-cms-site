@@ -1,19 +1,24 @@
 import type { Metadata } from 'next'
 import { getServerSideURL } from './getURL'
+import { getSiteName } from './getSiteName'
 
-const defaultOpenGraph: Metadata['openGraph'] = {
-  type: 'website',
-  description: 'An open-source website built with Payload and Next.js.',
-  images: [
-    {
-      url: `${getServerSideURL()}/website-template-OG.webp`,
-    },
-  ],
-  siteName: 'Payload Website Template',
-  title: 'Payload Website Template',
-}
+export const mergeOpenGraph = async (
+  og?: Metadata['openGraph'],
+): Promise<Metadata['openGraph']> => {
+  const siteName = await getSiteName()
 
-export const mergeOpenGraph = (og?: Metadata['openGraph']): Metadata['openGraph'] => {
+  const defaultOpenGraph: Metadata['openGraph'] = {
+    type: 'website',
+    description: 'An open-source website built with Payload and Next.js.',
+    images: [
+      {
+        url: `${getServerSideURL()}/website-template-OG.webp`,
+      },
+    ],
+    siteName,
+    title: siteName,
+  }
+
   return {
     ...defaultOpenGraph,
     ...og,

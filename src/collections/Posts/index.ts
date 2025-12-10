@@ -29,6 +29,10 @@ import { slugField } from 'payload'
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
+  labels: {
+    singular: 'Статья',
+    plural: 'Статьи',
+  },
   access: {
     create: authenticated,
     delete: authenticated,
@@ -70,6 +74,7 @@ export const Posts: CollectionConfig<'posts'> = {
       name: 'title',
       type: 'text',
       required: true,
+      label: 'Заголовок',
     },
     {
       type: 'tabs',
@@ -80,6 +85,7 @@ export const Posts: CollectionConfig<'posts'> = {
               name: 'heroImage',
               type: 'upload',
               relationTo: 'media',
+              label: 'Главное изображение',
             },
             {
               name: 'content',
@@ -96,17 +102,18 @@ export const Posts: CollectionConfig<'posts'> = {
                   ]
                 },
               }),
-              label: false,
+              label: 'Содержание',
               required: true,
             },
           ],
-          label: 'Content',
+          label: 'Контент',
         },
         {
           fields: [
             {
               name: 'relatedPosts',
               type: 'relationship',
+              label: 'Похожие статьи',
               admin: {
                 position: 'sidebar',
               },
@@ -123,6 +130,7 @@ export const Posts: CollectionConfig<'posts'> = {
             {
               name: 'categories',
               type: 'relationship',
+              label: 'Категории',
               admin: {
                 position: 'sidebar',
               },
@@ -130,7 +138,7 @@ export const Posts: CollectionConfig<'posts'> = {
               relationTo: 'categories',
             },
           ],
-          label: 'Meta',
+          label: 'Метаданные',
         },
         {
           name: 'meta',
@@ -164,6 +172,7 @@ export const Posts: CollectionConfig<'posts'> = {
     {
       name: 'publishedAt',
       type: 'date',
+      label: 'Дата публикации',
       admin: {
         date: {
           pickerAppearance: 'dayAndTime',
@@ -184,6 +193,7 @@ export const Posts: CollectionConfig<'posts'> = {
     {
       name: 'authors',
       type: 'relationship',
+      label: 'Авторы',
       admin: {
         position: 'sidebar',
       },

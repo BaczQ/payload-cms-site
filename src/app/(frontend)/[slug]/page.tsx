@@ -10,6 +10,7 @@ import { homeStatic } from '@/endpoints/seed/home-static'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
+import { getSiteSettings } from '@/utilities/getSiteSettings'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 
@@ -87,6 +88,28 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   const page = await queryPageBySlug({
     slug: decodedSlug,
   })
+
+  // Для главной страницы используем SEO настройки из SiteSettings
+  if (decodedSlug === 'home') {
+    const siteSettings = await getSiteSettings()
+
+    // Если есть кастомные SEO настройки для главной, используем их
+    if (siteSettings.seoTitle || siteSettings.seoDescription) {
+      const siteName = siteSettings.siteName
+      const title = siteSettings.seoTitle || siteName
+      const description = siteSettings.seoDescription || undefined
+
+      return {
+        title,
+        description,
+        openGraph: {
+          title,
+          description,
+          siteName,
+        },
+      }
+    }
+  }
 
   return generateMeta({ doc: page })
 }

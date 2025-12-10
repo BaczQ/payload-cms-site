@@ -12,9 +12,11 @@ import { beforeSyncWithSearch } from '@/search/beforeSync'
 
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
+import { getSiteName } from '@/utilities/getSiteName'
 
-const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
-  return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
+const generateTitle: GenerateTitle<Post | Page> = async ({ doc }) => {
+  const siteName = await getSiteName()
+  return doc?.title ? `${doc.title} | ${siteName}` : siteName
 }
 
 const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
@@ -27,15 +29,26 @@ export const plugins: Plugin[] = [
   redirectsPlugin({
     collections: ['pages', 'posts'],
     overrides: {
+      labels: {
+        singular: 'Перенаправление',
+        plural: 'Перенаправления',
+      },
       // @ts-expect-error - This is a valid override, mapped fields don't resolve to the same type
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {
           if ('name' in field && field.name === 'from') {
             return {
               ...field,
+              label: 'Откуда',
               admin: {
-                description: 'You will need to rebuild the website when changing this field.',
+                description: 'Вам нужно будет пересобрать сайт при изменении этого поля.',
               },
+            }
+          }
+          if ('name' in field && field.name === 'to') {
+            return {
+              ...field,
+              label: 'Куда',
             }
           }
           return field
@@ -59,11 +72,16 @@ export const plugins: Plugin[] = [
       payment: false,
     },
     formOverrides: {
+      labels: {
+        singular: 'Форма',
+        plural: 'Формы',
+      },
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {
           if ('name' in field && field.name === 'confirmationMessage') {
             return {
               ...field,
+              label: 'Сообщение подтверждения',
               editor: lexicalEditor({
                 features: ({ rootFeatures }) => {
                   return [
@@ -75,8 +93,20 @@ export const plugins: Plugin[] = [
               }),
             }
           }
+          if ('name' in field && field.name === 'title') {
+            return {
+              ...field,
+              label: 'Название',
+            }
+          }
           return field
         })
+      },
+    },
+    formSubmissionOverrides: {
+      labels: {
+        singular: 'Отправка формы',
+        plural: 'Отправки форм',
       },
     },
   }),
@@ -84,6 +114,10 @@ export const plugins: Plugin[] = [
     collections: ['posts'],
     beforeSync: beforeSyncWithSearch,
     searchOverrides: {
+      labels: {
+        singular: 'Результат поиска',
+        plural: 'Результаты поиска',
+      },
       fields: ({ defaultFields }) => {
         return [...defaultFields, ...searchFields]
       },

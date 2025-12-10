@@ -10,6 +10,7 @@ import { Posts } from './collections/Posts'
 import { Users } from './collections/Users'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
+import { SiteSettings } from './SiteSettings/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
@@ -21,6 +22,9 @@ export default buildConfig({
   admin: {
     components: {
       beforeLogin: ['@/components/BeforeLogin'],
+      Header: {
+        Before: '@/components/AdminHeader',
+      },
     },
     importMap: {
       baseDir: path.resolve(dirname),
@@ -29,24 +33,28 @@ export default buildConfig({
     livePreview: {
       breakpoints: [
         {
-          label: 'Mobile',
+          label: 'Мобильный',
           name: 'mobile',
           width: 375,
           height: 667,
         },
         {
-          label: 'Tablet',
+          label: 'Планшет',
           name: 'tablet',
           width: 768,
           height: 1024,
         },
         {
-          label: 'Desktop',
+          label: 'Десктоп',
           name: 'desktop',
           width: 1440,
           height: 900,
         },
       ],
+    },
+    meta: {
+      titleSuffix: ' - BF News',
+      ogImage: '/logo.png',
     },
   },
 
@@ -58,7 +66,7 @@ export default buildConfig({
   }),
   collections: [Pages, Posts, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer],
+  globals: [Header, Footer, SiteSettings],
   plugins,
   secret: process.env.PAYLOAD_SECRET,
   sharp,

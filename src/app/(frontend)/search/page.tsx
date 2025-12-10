@@ -5,6 +5,7 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React from 'react'
 import { Search } from '@/search/Component'
+import { getSiteName } from '@/utilities/getSiteName'
 import PageClient from './page.client'
 import { CardPostData } from '@/components/Card'
 
@@ -81,8 +82,9 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
   )
 }
 
-export function generateMetadata(): Metadata {
+export async function generateMetadata(): Promise<Metadata> {
+  const siteName = await getSiteName()
   return {
-    title: `Payload Website Template Search`,
+    title: `${siteName} Search`,
   }
 }

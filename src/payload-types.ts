@@ -112,10 +112,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    'site-settings': SiteSetting;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
   };
   locale: null;
   user: User & {
@@ -191,7 +193,7 @@ export interface Page {
             url?: string | null;
             label: string;
             /**
-             * Choose how the link should be rendered.
+             * Выберите, как должна отображаться ссылка.
              */
             appearance?: ('default' | 'outline') | null;
           };
@@ -474,7 +476,7 @@ export interface CallToActionBlock {
           url?: string | null;
           label: string;
           /**
-           * Choose how the link should be rendered.
+           * Выберите, как должна отображаться ссылка.
            */
           appearance?: ('default' | 'outline') | null;
         };
@@ -524,7 +526,7 @@ export interface ContentBlock {
           url?: string | null;
           label: string;
           /**
-           * Choose how the link should be rendered.
+           * Выберите, как должна отображаться ссылка.
            */
           appearance?: ('default' | 'outline') | null;
         };
@@ -786,7 +788,7 @@ export interface Form {
 export interface Redirect {
   id: number;
   /**
-   * You will need to rebuild the website when changing this field.
+   * Вам нужно будет пересобрать сайт при изменении этого поля.
    */
   from: string;
   to?: {
@@ -1689,6 +1691,31 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: number;
+  /**
+   * Название сайта, используется в мета-тегах, заголовках страниц и Open Graph
+   */
+  siteName: string;
+  /**
+   * Число элементов меню (состоящее из рубрик сайта), которое отображаются в меню, а остальные отображаются в выпадающем списке More
+   */
+  menuItemsCount: number;
+  /**
+   * SEO заголовок для главной страницы (отображается в браузере и поисковых системах)
+   */
+  seoTitle?: string | null;
+  /**
+   * SEO описание для главной страницы (используется в мета-теге description)
+   */
+  seoDescription?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -1729,6 +1756,19 @@ export interface FooterSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  siteName?: T;
+  menuItemsCount?: T;
+  seoTitle?: T;
+  seoDescription?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
