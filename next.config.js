@@ -1,32 +1,31 @@
 import { withPayload } from '@payloadcms/next/withPayload'
 import redirects from './redirects.js'
 
-const NEXT_PUBLIC_SERVER_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
-  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-  : process.env.__NEXT_PRIVATE_ORIGIN || 'http://localhost:3000'
+// ===============================
+// Основной URL сервера
+// В продакшене прописывается в .env:
+// NEXT_PUBLIC_SERVER_URL=https://bfnews.ru
+// ===============================
+const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:4000'
+const serverUrl = new URL(SERVER_URL)
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
     remotePatterns: [
-      // основной origin (localhost / прод)
-      ...[NEXT_PUBLIC_SERVER_URL].map((item) => {
-        const url = new URL(item)
-
-        return {
-          protocol: url.protocol.replace(':', ''),
-          hostname: url.hostname,
-          port: url.port || undefined,
-        }
-      }),
-      // твой дев-сервер по IP
+      // Разрешаем загрузку картинок с твоего домена
       {
-        protocol: 'http',
-        hostname: '10.0.85.2',
-        port: '3000',
-        // можно без pathname, но так ещё точнее:
-        // pathname: '/api/media/**',
+        protocol: serverUrl.protocol.replace(':', ''),
+        hostname: serverUrl.hostname,
+        port: serverUrl.port || undefined,
       },
+
+      // Если хочешь разрешить загрузку с локального дев-сервера — оставь
+      // {
+      //   protocol: 'http',
+      //   hostname: '10.0.85.2',
+      //   port: '3000',
+      // },
     ],
   },
 
