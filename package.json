@@ -9,6 +9,7 @@
     "postbuild": "next-sitemap --config next-sitemap.config.cjs",
     "turbo": "next dev --turbopack",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
+    "deploy": "npm run build && PORT=4000 npm run start",
     "dev:prod": "cross-env NODE_OPTIONS=--no-deprecation rm -rf .next && pnpm build && pnpm start",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
