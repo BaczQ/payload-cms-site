@@ -2,7 +2,7 @@
 
 import clsx from 'clsx'
 import React from 'react'
-import { usePathname } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 
 import type { Header as HeaderType } from '@/payload-types'
 
@@ -13,9 +13,18 @@ type HeaderNavProps = {
   items: { label: string; href: string }[]
   variant?: 'desktop' | 'mobile'
   menuItemsCount: number
+  onLinkClick?: () => void
+  searchParams?: ReturnType<typeof useSearchParams>
 }
 
-export const HeaderNav: React.FC<HeaderNavProps> = ({ data, items, variant = 'desktop', menuItemsCount }) => {
+export const HeaderNav: React.FC<HeaderNavProps> = ({
+  data,
+  items,
+  variant = 'desktop',
+  menuItemsCount,
+  onLinkClick,
+  searchParams: searchParamsProp,
+}) => {
   const fallbackNav =
     data?.navItems?.map(({ link }) => ({
       label: link.label || '',
@@ -29,10 +38,39 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ data, items, variant = 'de
 
   const navItems = items.length > 0 ? items : fallbackNav
   const pathname = usePathname()
+  const searchParams = searchParamsProp || useSearchParams()
   const maxPrimary = menuItemsCount
 
   const primary = variant === 'desktop' ? navItems.slice(0, maxPrimary) : navItems
   const secondary = variant === 'desktop' ? navItems.slice(maxPrimary) : []
+
+  // Функция для проверки активности категории
+  const isCategoryActive = (href: string) => {
+    if (!href) return false
+
+    // Проверяем точное совпадение pathname
+    if (pathname === href) return true
+
+    // Проверяем, если это ссылка на категорию вида /posts?category=slug
+    if (href.startsWith('/posts?category=')) {
+      const categoryParam = searchParams.get('category')
+      // Парсим category из href
+      const hrefMatch = href.match(/[?&]category=([^&]+)/)
+      const hrefCategory = hrefMatch ? decodeURIComponent(hrefMatch[1]) : null
+
+      // Проверяем, что мы на странице /posts и категории совпадают
+      if (
+        pathname === '/posts' &&
+        categoryParam &&
+        hrefCategory &&
+        categoryParam === hrefCategory
+      ) {
+        return true
+      }
+    }
+
+    return false
+  }
 
   return (
     <nav
@@ -43,9 +81,9 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ data, items, variant = 'de
       )}
     >
       {primary.map(({ href, label }, i) => {
-        const isActive = href && pathname === href
+        const isActive = isCategoryActive(href || '')
 
-        return (
+        const linkContent = (
           <CMSLink
             key={i}
             appearance="inline"
@@ -57,6 +95,17 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ data, items, variant = 'de
             )}
           />
         )
+
+        // В мобильном меню оборачиваем ссылку для обработки клика
+        if (variant === 'mobile' && onLinkClick) {
+          return (
+            <div key={i} onClick={onLinkClick}>
+              {linkContent}
+            </div>
+          )
+        }
+
+        return linkContent
       })}
 
       {variant === 'desktop' && secondary.length > 0 && (
@@ -69,7 +118,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ data, items, variant = 'de
           </button>
           <div className="pointer-events-auto invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-opacity absolute left-0 top-full mt-1 min-w-[200px] rounded-md border border-gray-200 bg-white shadow-lg z-50 py-1">
             {secondary.map(({ href, label }) => {
-              const isActive = href && pathname === href
+              const isActive = isCategoryActive(href || '')
               return (
                 <CMSLink
                   key={href}

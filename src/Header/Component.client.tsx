@@ -1,13 +1,13 @@
 'use client'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import React, { useState } from 'react'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import React, { useState, useEffect } from 'react'
 
 import type { Header } from '@/payload-types'
 
 import { Logo } from '@/components/Logo/Logo'
 import { HeaderNav } from './Nav'
-import { SearchIcon } from 'lucide-react'
+import { SearchIcon, X, Menu } from 'lucide-react'
 
 interface HeaderClientProps {
   data: Header
@@ -17,8 +17,25 @@ interface HeaderClientProps {
 
 export const HeaderClient: React.FC<HeaderClientProps> = ({ data, items, menuItemsCount }) => {
   const pathname = usePathname()
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
   const isHome = pathname === '/'
+
+  const handleSearchSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && searchQuery.trim().length > 3) {
+      e.preventDefault()
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
+      setIsMenuOpen(false)
+      setSearchQuery('')
+    }
+  }
+
+  // Закрываем меню при изменении pathname или searchParams (переходе на другую страницу или категорию)
+  useEffect(() => {
+    setIsMenuOpen(false)
+  }, [pathname, searchParams.toString()])
 
   return (
     <header className="relative z-30 border-b border-gray-200 bg-white text-black">
@@ -30,9 +47,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, items, menuIte
             aria-label={isMenuOpen ? 'Закрыть меню' : 'Открыть меню'}
             onClick={() => setIsMenuOpen((prev) => !prev)}
           >
-            <span className="block w-5 border-t border-black" />
-            <span className="block w-5 border-t border-black mt-1" />
-            <span className="block w-5 border-t border-black mt-1" />
+            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
 
           {isHome ? (
@@ -50,7 +65,13 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, items, menuIte
         </div>
 
         <div className="hidden md:flex flex-1 justify-center">
-          <HeaderNav data={data} items={items} variant="desktop" menuItemsCount={menuItemsCount} />
+          <HeaderNav
+            data={data}
+            items={items}
+            variant="desktop"
+            menuItemsCount={menuItemsCount}
+            searchParams={searchParams}
+          />
         </div>
 
         <div className="hidden min-[450px]:flex items-center gap-2 text-black">
@@ -96,11 +117,21 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, items, menuIte
                   placeholder="Search BF News..."
                   aria-label="Поиск"
                   type="search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={handleSearchSubmit}
                 />
               </div>
             </div>
 
-            <HeaderNav data={data} items={items} variant="mobile" />
+            <HeaderNav
+              data={data}
+              items={items}
+              variant="mobile"
+              menuItemsCount={menuItemsCount}
+              onLinkClick={() => setIsMenuOpen(false)}
+              searchParams={searchParams}
+            />
           </div>
         </div>
       )}
