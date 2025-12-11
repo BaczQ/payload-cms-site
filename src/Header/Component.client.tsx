@@ -100,7 +100,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, items, menuIte
               </div>
             </div>
 
-            <HeaderNav data={data} items={items} variant="mobile" />
+            <HeaderNav data={data} items={items} variant="mobile" menuItemsCount={menuItemsCount} />
           </div>
         </div>
       )}
