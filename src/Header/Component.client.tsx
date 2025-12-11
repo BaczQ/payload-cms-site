@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 
 import type { Header } from '@/payload-types'
 
@@ -33,7 +33,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, items, menuIte
   }
 
   // Закрываем меню при изменении pathname или searchParams (переходе на другую страницу или категорию)
-  const searchParamsString = searchParams.toString()
+  const searchParamsString = useMemo(() => searchParams.toString(), [searchParams])
   useEffect(() => {
     setIsMenuOpen(false)
   }, [pathname, searchParamsString])

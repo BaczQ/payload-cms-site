@@ -25,6 +25,10 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
   onLinkClick,
   searchParams: searchParamsProp,
 }) => {
+  const pathname = usePathname()
+  const searchParamsFromHook = useSearchParams()
+  const searchParams = searchParamsProp || searchParamsFromHook
+
   const fallbackNav =
     data?.navItems?.map(({ link }) => ({
       label: link.label || '',
@@ -37,9 +41,6 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
     })) || []
 
   const navItems = items.length > 0 ? items : fallbackNav
-  const pathname = usePathname()
-  const searchParamsFromHook = useSearchParams()
-  const searchParams = searchParamsProp || searchParamsFromHook
   const maxPrimary = menuItemsCount
 
   const primary = variant === 'desktop' ? navItems.slice(0, maxPrimary) : navItems
