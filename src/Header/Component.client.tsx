@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
 import type { Header } from '@/payload-types'
@@ -17,8 +17,21 @@ interface HeaderClientProps {
 
 export const HeaderClient: React.FC<HeaderClientProps> = ({ data, items, menuItemsCount }) => {
   const pathname = usePathname()
+  const router = useRouter()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
   const isHome = pathname === '/'
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
+      setIsMenuOpen(false)
+    } else {
+      router.push('/search')
+      setIsMenuOpen(false)
+    }
+  }
 
   return (
     <header className="relative z-30 border-b border-gray-200 bg-white text-black">
@@ -88,7 +101,10 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, items, menuIte
       {isMenuOpen && (
         <div className="md:hidden fixed inset-x-0 top-16 bottom-0 bg-white z-20 border-t border-gray-200 overflow-y-auto">
           <div className="container py-4 flex flex-col gap-4">
-            <div className="border border-gray-300 rounded-md px-3 py-2">
+            <form
+              onSubmit={handleSearchSubmit}
+              className="border border-gray-300 rounded-md px-3 py-2"
+            >
               <div className="flex items-center gap-2">
                 <SearchIcon className="h-5 w-5 text-gray-500" />
                 <input
@@ -96,9 +112,11 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, items, menuIte
                   placeholder="Search BF News..."
                   aria-label="Поиск"
                   type="search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
-            </div>
+            </form>
 
             <HeaderNav data={data} items={items} variant="mobile" menuItemsCount={menuItemsCount} />
           </div>
