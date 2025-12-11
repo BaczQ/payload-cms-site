@@ -22,6 +22,9 @@ export default buildConfig({
   admin: {
     components: {
       beforeLogin: ['@/components/BeforeLogin'],
+      graphics: {
+        Logo: '@/components/Graphics#default',
+      },
       Header: {
         Before: '@/components/AdminHeader',
       },

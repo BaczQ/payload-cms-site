@@ -33,9 +33,10 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, items, menuIte
   }
 
   // Закрываем меню при изменении pathname или searchParams (переходе на другую страницу или категорию)
+  const searchParamsString = searchParams.toString()
   useEffect(() => {
     setIsMenuOpen(false)
-  }, [pathname, searchParams.toString()])
+  }, [pathname, searchParamsString])
 
   return (
     <header className="relative z-30 border-b border-gray-200 bg-white text-black">

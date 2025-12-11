@@ -3,7 +3,6 @@ import React from 'react'
 
 import type { Footer } from '@/payload-types'
 
-import { CMSLink } from '@/components/Link'
 import { FooterClient } from './FooterClient'
 
 export async function Footer() {
