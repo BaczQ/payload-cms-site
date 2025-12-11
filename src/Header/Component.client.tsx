@@ -7,7 +7,7 @@ import type { Header } from '@/payload-types'
 
 import { Logo } from '@/components/Logo/Logo'
 import { HeaderNav } from './Nav'
-import { SearchIcon } from 'lucide-react'
+import { SearchIcon, X } from 'lucide-react'
 
 interface HeaderClientProps {
   data: Header
@@ -43,9 +43,15 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, items, menuIte
             aria-label={isMenuOpen ? 'Закрыть меню' : 'Открыть меню'}
             onClick={() => setIsMenuOpen((prev) => !prev)}
           >
-            <span className="block w-5 border-t border-black" />
-            <span className="block w-5 border-t border-black mt-1" />
-            <span className="block w-5 border-t border-black mt-1" />
+            {isMenuOpen ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <>
+                <span className="block w-5 border-t border-black" />
+                <span className="block w-5 border-t border-black mt-1" />
+                <span className="block w-5 border-t border-black mt-1" />
+              </>
+            )}
           </button>
 
           {isHome ? (
@@ -118,7 +124,13 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, items, menuIte
               </div>
             </form>
 
-            <HeaderNav data={data} items={items} variant="mobile" menuItemsCount={menuItemsCount} />
+            <HeaderNav
+              data={data}
+              items={items}
+              variant="mobile"
+              menuItemsCount={menuItemsCount}
+              onLinkClick={() => setIsMenuOpen(false)}
+            />
           </div>
         </div>
       )}

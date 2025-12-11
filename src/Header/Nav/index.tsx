@@ -2,7 +2,7 @@
 
 import clsx from 'clsx'
 import React from 'react'
-import { usePathname } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 
 import type { Header as HeaderType } from '@/payload-types'
 
@@ -13,9 +13,16 @@ type HeaderNavProps = {
   items: { label: string; href: string }[]
   variant?: 'desktop' | 'mobile'
   menuItemsCount: number
+  onLinkClick?: () => void
 }
 
-export const HeaderNav: React.FC<HeaderNavProps> = ({ data, items, variant = 'desktop', menuItemsCount }) => {
+export const HeaderNav: React.FC<HeaderNavProps> = ({
+  data,
+  items,
+  variant = 'desktop',
+  menuItemsCount,
+  onLinkClick,
+}) => {
   const fallbackNav =
     data?.navItems?.map(({ link }) => ({
       label: link.label || '',
@@ -29,10 +36,41 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ data, items, variant = 'de
 
   const navItems = items.length > 0 ? items : fallbackNav
   const pathname = usePathname()
+  const searchParams = useSearchParams()
   const maxPrimary = menuItemsCount
 
   const primary = variant === 'desktop' ? navItems.slice(0, maxPrimary) : navItems
   const secondary = variant === 'desktop' ? navItems.slice(maxPrimary) : []
+
+  // Get current category from URL
+  const currentCategory = searchParams.get('category')
+
+  // Check if we're on a category page
+  const isCategoryPage = pathname === '/posts' && currentCategory
+
+  // Extract category slug from href
+  const getCategoryHref = (href: string) => {
+    if (!href) return null
+    // Parse relative URLs like /posts?category=slug
+    const match = href.match(/[?&]category=([^&]+)/)
+    return match ? decodeURIComponent(match[1]) : null
+  }
+
+  // Check if any item in primary matches current category
+  const activePrimaryIndex = isCategoryPage
+    ? primary.findIndex((item) => {
+        const categorySlug = getCategoryHref(item.href)
+        return categorySlug === currentCategory
+      })
+    : -1
+
+  // Check if any item in secondary matches current category
+  const hasActiveSecondary = isCategoryPage
+    ? secondary.some((item) => {
+        const categorySlug = getCategoryHref(item.href)
+        return categorySlug === currentCategory
+      })
+    : false
 
   return (
     <nav
@@ -43,11 +81,10 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ data, items, variant = 'de
       )}
     >
       {primary.map(({ href, label }, i) => {
-        const isActive = href && pathname === href
+        const isActive = href && (pathname === href || (isCategoryPage && i === activePrimaryIndex))
 
-        return (
+        const linkContent = (
           <CMSLink
-            key={i}
             appearance="inline"
             url={href}
             label={label}
@@ -57,19 +94,37 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ data, items, variant = 'de
             )}
           />
         )
+
+        // Wrap in div with onClick for mobile variant to close menu on link click
+        if (variant === 'mobile' && onLinkClick) {
+          return (
+            <div key={i} onClick={onLinkClick}>
+              {linkContent}
+            </div>
+          )
+        }
+
+        return <React.Fragment key={i}>{linkContent}</React.Fragment>
       })}
 
       {variant === 'desktop' && secondary.length > 0 && (
         <div className="relative group">
           <button
             type="button"
-            className="whitespace-nowrap rounded-full px-3 py-1 font-semibold transition-colors text-black hover:bg-gray-200 hover:text-black"
+            className={clsx(
+              'whitespace-nowrap rounded-full px-3 py-1 font-semibold transition-colors',
+              hasActiveSecondary
+                ? 'bg-gray-200 text-black'
+                : 'text-black hover:bg-gray-200 hover:text-black',
+            )}
           >
             More ▾
           </button>
           <div className="pointer-events-auto invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-opacity absolute left-0 top-full mt-1 min-w-[200px] rounded-md border border-gray-200 bg-white shadow-lg z-50 py-1">
             {secondary.map(({ href, label }) => {
-              const isActive = href && pathname === href
+              const categorySlug = getCategoryHref(href)
+              const isActive =
+                (href && pathname === href) || (isCategoryPage && categorySlug === currentCategory)
               return (
                 <CMSLink
                   key={href}
