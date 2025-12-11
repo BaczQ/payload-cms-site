@@ -20,13 +20,6 @@ export const Media: CollectionConfig = {
     singular: 'Медиа',
     plural: 'Медиа',
   },
-  folders: {
-    enabled: true,
-    labels: {
-      singular: 'Папка',
-      plural: 'Папки',
-    },
-  },
   access: {
     create: authenticated,
     delete: authenticated,
