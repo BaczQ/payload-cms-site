@@ -1,17 +1,20 @@
 'use client'
 
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import React from 'react'
+
 import { CMSLink } from '@/components/Link'
 import { Logo } from '@/components/Logo/Logo'
-import React from 'react'
-import { usePathname } from 'next/navigation'
 
 import type { Footer } from '@/payload-types'
 
 type FooterClientProps = {
-  navItems: Footer['navItems']
+  navItems?: Footer['navItems'] | null
 }
 
 export const FooterClient: React.FC<FooterClientProps> = ({ navItems }) => {
+  const navItemsList = navItems ?? []
   const social = ['Facebook', 'X', 'Instagram', 'YouTube', 'LinkedIn']
   const year = new Date().getFullYear()
   const pathname = usePathname()
@@ -26,13 +29,13 @@ export const FooterClient: React.FC<FooterClientProps> = ({ navItems }) => {
               <Logo className="h-8 w-auto" loading="lazy" priority="low" />
             </div>
           ) : (
-            <a className="flex items-center gap-2" href="/">
+            <Link className="flex items-center gap-2" href="/">
               <Logo className="h-8 w-auto" loading="lazy" priority="low" />
-            </a>
+            </Link>
           )}
 
           <div className="flex flex-wrap gap-4 text-[11px] uppercase tracking-wide">
-            {navItems.map(({ link }, i) => {
+            {navItemsList.map(({ link }, i) => {
               return (
                 <CMSLink
                   key={i}
@@ -66,4 +69,3 @@ export const FooterClient: React.FC<FooterClientProps> = ({ navItems }) => {
     </footer>
   )
 }
-
