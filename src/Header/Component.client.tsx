@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { Suspense, useState } from 'react'
 
 import type { Header } from '@/payload-types'
 
@@ -69,7 +69,14 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, items, menuIte
         </div>
 
         <div className="hidden md:flex flex-1 justify-center">
-          <HeaderNav data={data} items={items} variant="desktop" menuItemsCount={menuItemsCount} />
+          <Suspense fallback={<div className="flex items-center gap-2 text-sm" />}>
+            <HeaderNav
+              data={data}
+              items={items}
+              variant="desktop"
+              menuItemsCount={menuItemsCount}
+            />
+          </Suspense>
         </div>
 
         <div className="hidden min-[450px]:flex items-center gap-2 text-black">
@@ -124,13 +131,15 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, items, menuIte
               </div>
             </form>
 
-            <HeaderNav
-              data={data}
-              items={items}
-              variant="mobile"
-              menuItemsCount={menuItemsCount}
-              onLinkClick={() => setIsMenuOpen(false)}
-            />
+            <Suspense fallback={<div className="flex flex-col items-start gap-2" />}>
+              <HeaderNav
+                data={data}
+                items={items}
+                variant="mobile"
+                menuItemsCount={menuItemsCount}
+                onLinkClick={() => setIsMenuOpen(false)}
+              />
+            </Suspense>
           </div>
         </div>
       )}
