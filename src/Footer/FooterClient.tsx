@@ -4,6 +4,7 @@ import { CMSLink } from '@/components/Link'
 import { Logo } from '@/components/Logo/Logo'
 import React from 'react'
 import { usePathname } from 'next/navigation'
+import Link from 'next/link'
 
 import type { Footer } from '@/payload-types'
 
@@ -26,13 +27,13 @@ export const FooterClient: React.FC<FooterClientProps> = ({ navItems }) => {
               <Logo className="h-8 w-auto" loading="lazy" priority="low" />
             </div>
           ) : (
-            <a className="flex items-center gap-2" href="/">
+            <Link className="flex items-center gap-2" href="/">
               <Logo className="h-8 w-auto" loading="lazy" priority="low" />
-            </a>
+            </Link>
           )}
 
           <div className="flex flex-wrap gap-4 text-[11px] uppercase tracking-wide">
-            {navItems.map(({ link }, i) => {
+            {(navItems || []).map(({ link }, i) => {
               return (
                 <CMSLink
                   key={i}
@@ -66,4 +67,3 @@ export const FooterClient: React.FC<FooterClientProps> = ({ navItems }) => {
     </footer>
   )
 }
-
