@@ -34,6 +34,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, items, menuIte
 
   // Закрываем меню при изменении pathname или searchParams (переходе на другую страницу или категорию)
   const searchParamsString = useMemo(() => searchParams.toString(), [searchParams])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     setIsMenuOpen(false)
   }, [pathname, searchParamsString])

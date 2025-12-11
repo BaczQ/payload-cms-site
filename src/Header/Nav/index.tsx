@@ -26,8 +26,10 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
   searchParams: searchParamsProp,
 }) => {
   const pathname = usePathname()
+  // Always call hooks at the top level
   const searchParamsFromHook = useSearchParams()
-  const searchParams = searchParamsProp || searchParamsFromHook
+  // Use prop if provided, otherwise use hook result
+  const searchParams = searchParamsProp ?? searchParamsFromHook
 
   const fallbackNav =
     data?.navItems?.map(({ link }) => ({
