@@ -27,7 +27,7 @@ export const SiteSettings: GlobalConfig = {
         description:
           'Число элементов меню (состоящее из рубрик сайта), которое отображаются в меню, а остальные отображаются в выпадающем списке More',
       },
-      validate: (value) => {
+      validate: (value: number | null | undefined) => {
         if (value === undefined || value === null) {
           return 'Поле обязательно для заполнения'
         }

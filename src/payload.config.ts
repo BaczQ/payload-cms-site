@@ -22,9 +22,7 @@ export default buildConfig({
   admin: {
     components: {
       beforeLogin: ['@/components/BeforeLogin'],
-      Header: {
-        Before: '@/components/AdminHeader',
-      },
+      header: ['@/components/AdminHeader'],
     },
     importMap: {
       baseDir: path.resolve(dirname),
@@ -54,7 +52,6 @@ export default buildConfig({
     },
     meta: {
       titleSuffix: ' - BF News',
-      ogImage: '/logo.png',
     },
   },
 
