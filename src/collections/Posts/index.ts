@@ -110,35 +110,6 @@ export const Posts: CollectionConfig<'posts'> = {
           label: 'Контент',
         },
         {
-          fields: [
-            {
-              name: 'relatedPosts',
-              type: 'relationship',
-              label: 'Похожие статьи',
-              admin: {
-                position: 'sidebar',
-              },
-              filterOptions: ({ id }) => {
-                return {
-                  id: {
-                    not_in: [id],
-                  },
-                }
-              },
-              hasMany: true,
-              relationTo: 'posts',
-            },
-            {
-              name: 'categories',
-              type: 'relationship',
-              label: 'Категории',
-              admin: {
-                position: 'sidebar',
-              },
-              hasMany: true,
-              relationTo: 'categories',
-            },
-          ],
           label: 'Метаданные',
         },
         {
@@ -192,6 +163,16 @@ export const Posts: CollectionConfig<'posts'> = {
       },
     },
     {
+      name: 'categories',
+      type: 'relationship',
+      label: 'Категории',
+      admin: {
+        position: 'sidebar',
+      },
+      hasMany: true,
+      relationTo: 'categories',
+    },
+    {
       name: 'authors',
       type: 'relationship',
       label: 'Авторы',
@@ -207,6 +188,23 @@ export const Posts: CollectionConfig<'posts'> = {
         }
         return undefined
       },
+    },
+    {
+      name: 'relatedPosts',
+      type: 'relationship',
+      label: 'Похожие статьи',
+      admin: {
+        position: 'sidebar',
+      },
+      filterOptions: ({ id }) => {
+        return {
+          id: {
+            not_in: [id],
+          },
+        }
+      },
+      hasMany: true,
+      relationTo: 'posts',
     },
     // This field is only used to populate the user data via the `populateAuthors` hook
     // This is because the `user` collection has access control locked to protect user privacy
