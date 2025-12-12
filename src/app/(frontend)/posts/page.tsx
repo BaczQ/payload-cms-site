@@ -6,7 +6,7 @@ import { Pagination } from '@/components/Pagination'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React from 'react'
-import { redirect } from 'next/navigation'
+import { permanentRedirect } from 'next/navigation'
 import { getSiteName } from '@/utilities/getSiteName'
 import PageClient from './page.client'
 
@@ -24,9 +24,9 @@ export default async function Page({ searchParams }: PageProps) {
 
   const { category } = (await searchParams) || {}
 
-  // Redirect old format /posts?category=slug to new format /categories/slug (301 permanent redirect)
+  // Redirect old format /posts?category=slug to new format /categories/slug (permanent redirect)
   if (category) {
-    redirect(`/categories/${encodeURIComponent(category)}`, 301)
+    permanentRedirect(`/categories/${encodeURIComponent(category)}`)
   }
 
   let categoryFilterId: string | number | null = null

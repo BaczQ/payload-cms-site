@@ -2,7 +2,7 @@
 
 import clsx from 'clsx'
 import React from 'react'
-import { usePathname, useSearchParams } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 
 import type { Header as HeaderType } from '@/payload-types'
 
@@ -36,7 +36,6 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
 
   const navItems = items.length > 0 ? items : fallbackNav
   const pathname = usePathname()
-  const searchParams = useSearchParams()
   const maxPrimary = menuItemsCount
 
   const primary = variant === 'desktop' ? navItems.slice(0, maxPrimary) : navItems
@@ -57,15 +56,6 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
     const match = href.match(/[?&]category=([^&]+)/)
     return match ? decodeURIComponent(match[1]) : null
   }
-
-  // Check if any item in primary matches current category
-  const activePrimaryIndex =
-    isCategoryPage && currentCategorySlug
-      ? primary.findIndex((item) => {
-          const categorySlug = getCategorySlug(item.href)
-          return categorySlug === currentCategorySlug
-        })
-      : -1
 
   // Check if any item in secondary matches current category
   const hasActiveSecondary =
