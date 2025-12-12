@@ -99,7 +99,14 @@ export default async function CategoryPage({ params: paramsPromise, searchParams
         {/* List Posts Section - Second Layout (List with images on right) */}
         {listPosts.length > 0 && (
           <div className="mt-12 lg:mt-16">
-            <CategoryPostList posts={listPosts} />
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+              {/* Existing block - takes 2/3 of width on large screens */}
+              <div className="lg:col-span-2">
+                <CategoryPostList posts={listPosts} />
+              </div>
+              {/* New placeholder block - takes 1/3 of width on large screens */}
+              <div className="lg:col-span-1">{/* Placeholder - content to be added later */}</div>
+            </div>
           </div>
         )}
 
