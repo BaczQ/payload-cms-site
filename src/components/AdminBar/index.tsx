@@ -27,7 +27,16 @@ export const AdminBar: React.FC<{
 
   // Check if we're on a post page (/posts/[slug])
   const isPostPage = pathname?.startsWith('/posts/') && pathname !== '/posts'
-  const postSlug = isPostPage ? decodeURIComponent(pathname.split('/posts/')[1]) : null
+  // Extract only the first segment after /posts/ to avoid capturing nested paths
+  // Split by /posts/, take the first part, then split by / and take the first segment (the slug)
+  const postSlug = isPostPage
+    ? (() => {
+        const afterPosts = pathname.split('/posts/')[1]
+        if (!afterPosts) return null
+        const slugSegment = afterPosts.split('/')[0]
+        return slugSegment ? decodeURIComponent(slugSegment) : null
+      })()
+    : null
 
   // Fetch post ID by slug when on post page
   useEffect(() => {
@@ -79,7 +88,7 @@ export const AdminBar: React.FC<{
           }}
           cmsURL={getClientSideURL()}
           collectionSlug="posts"
-          id={postId || undefined}
+          id={postId ? String(postId) : undefined}
           collectionLabels={{
             plural: 'Posts',
             singular: 'Post',
