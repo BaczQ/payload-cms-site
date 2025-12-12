@@ -5,6 +5,7 @@ import { unstable_cache } from 'next/cache'
 type SiteSettings = {
   siteName: string
   menuItemsCount: number
+  headingFont?: string | null
   seoTitle?: string | null
   seoDescription?: string | null
 }
@@ -19,6 +20,7 @@ async function getSiteSettingsUncached(): Promise<SiteSettings> {
     return {
       siteName: (siteSettings?.siteName as string) || 'BF News',
       menuItemsCount: (siteSettings?.menuItemsCount as number) || 7,
+      headingFont: (siteSettings?.headingFont as string) || 'dm-serif-display',
       seoTitle: (siteSettings?.seoTitle as string) || null,
       seoDescription: (siteSettings?.seoDescription as string) || null,
     }
@@ -27,6 +29,7 @@ async function getSiteSettingsUncached(): Promise<SiteSettings> {
     return {
       siteName: 'BF News',
       menuItemsCount: 7,
+      headingFont: 'dm-serif-display',
       seoTitle: null,
       seoDescription: null,
     }
@@ -36,4 +39,3 @@ async function getSiteSettingsUncached(): Promise<SiteSettings> {
 export const getSiteSettings = unstable_cache(getSiteSettingsUncached, ['site-settings'], {
   tags: ['global_site-settings'],
 })
-

@@ -38,6 +38,30 @@ export const SiteSettings: GlobalConfig = {
       },
     },
     {
+      name: 'headingFont',
+      type: 'select',
+      required: true,
+      defaultValue: 'dm-serif-display',
+      label: 'Шрифт заголовков',
+      admin: {
+        description: 'Выберите шрифт для заголовков на сайте',
+      },
+      options: [
+        {
+          label: 'DM Serif Display',
+          value: 'dm-serif-display',
+        },
+        {
+          label: 'Tinos',
+          value: 'tinos',
+        },
+        {
+          label: 'Playfair Display',
+          value: 'playfair-display',
+        },
+      ],
+    },
+    {
       type: 'tabs',
       tabs: [
         {

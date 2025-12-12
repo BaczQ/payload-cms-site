@@ -1704,6 +1704,10 @@ export interface SiteSetting {
    */
   menuItemsCount: number;
   /**
+   * Выберите шрифт для заголовков на сайте
+   */
+  headingFont: 'dm-serif-display' | 'tinos' | 'playfair-display';
+  /**
    * SEO title for the homepage (displayed in browser and search engines)
    */
   seoTitle?: string | null;
@@ -1767,6 +1771,7 @@ export interface FooterSelect<T extends boolean = true> {
 export interface SiteSettingsSelect<T extends boolean = true> {
   siteName?: T;
   menuItemsCount?: T;
+  headingFont?: T;
   seoTitle?: T;
   seoDescription?: T;
   updatedAt?: T;

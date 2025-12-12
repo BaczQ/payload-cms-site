@@ -15,12 +15,31 @@ import { draftMode } from 'next/headers'
 
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
+import { headingFonts } from '@/fonts'
+import { getSiteSettings } from '@/utilities/getSiteSettings'
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
+  const siteSettings = await getSiteSettings()
+  const headingFontKey =
+    (siteSettings.headingFont as keyof typeof headingFonts) || 'dm-serif-display'
+  const selectedHeadingFont = headingFonts[headingFontKey] || headingFonts['dm-serif-display']
 
   return (
-    <html className={cn(GeistSans.variable, GeistMono.variable)} lang="en" suppressHydrationWarning>
+    <html
+      className={cn(
+        GeistSans.variable,
+        GeistMono.variable,
+        headingFonts['dm-serif-display'].font.variable,
+        headingFonts['tinos'].font.variable,
+        headingFonts['playfair-display'].font.variable,
+      )}
+      lang="en"
+      suppressHydrationWarning
+      style={
+        { '--font-heading': `var(${selectedHeadingFont.font.variable})` } as React.CSSProperties
+      }
+    >
       <head>
         <InitTheme />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
