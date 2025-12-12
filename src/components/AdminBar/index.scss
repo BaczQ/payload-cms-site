@@ -1,6 +1,14 @@
 @import '~@payloadcms/ui/scss';
 
 .admin-bar {
+  // Allow clicks to pass through empty areas
+  pointer-events: none;
+  
+  // Re-enable pointer events for interactive content
+  > * {
+    pointer-events: auto;
+  }
+  
   @include small-break {
     display: none;
   }
