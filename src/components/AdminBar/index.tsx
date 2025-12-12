@@ -3,9 +3,9 @@
 import type { PayloadAdminBarProps, PayloadMeUser } from '@payloadcms/admin-bar'
 
 import { cn } from '@/utilities/ui'
-import { useSelectedLayoutSegments } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { PayloadAdminBar } from '@payloadcms/admin-bar'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
 import './index.scss'
@@ -14,33 +14,48 @@ import { getClientSideURL } from '@/utilities/getURL'
 
 const baseClass = 'admin-bar'
 
-const collectionLabels = {
-  pages: {
-    plural: 'Pages',
-    singular: 'Page',
-  },
-  posts: {
-    plural: 'Posts',
-    singular: 'Post',
-  },
-  projects: {
-    plural: 'Projects',
-    singular: 'Project',
-  },
-}
-
 const Title: React.FC = () => <span>Admin Panel</span>
 
 export const AdminBar: React.FC<{
   adminBarProps?: PayloadAdminBarProps
 }> = (props) => {
   const { adminBarProps } = props || {}
-  const segments = useSelectedLayoutSegments()
+  const pathname = usePathname()
   const [show, setShow] = useState(false)
-  const collection = (
-    collectionLabels[segments?.[1] as keyof typeof collectionLabels] ? segments[1] : 'pages'
-  ) as keyof typeof collectionLabels
+  const [postId, setPostId] = useState<string | number | null>(null)
   const router = useRouter()
+
+  // Check if we're on a post page (/posts/[slug])
+  const isPostPage = pathname?.startsWith('/posts/') && pathname !== '/posts'
+  const postSlug = isPostPage ? decodeURIComponent(pathname.split('/posts/')[1]) : null
+
+  // Fetch post ID by slug when on post page
+  useEffect(() => {
+    if (isPostPage && postSlug) {
+      const fetchPostId = async () => {
+        try {
+          const cmsURL = getClientSideURL()
+          const response = await fetch(
+            `${cmsURL}/api/posts?where[slug][equals]=${encodeURIComponent(postSlug)}&limit=1`,
+            {
+              credentials: 'include',
+            },
+          )
+          if (response.ok) {
+            const data = await response.json()
+            if (data.docs && data.docs.length > 0) {
+              setPostId(data.docs[0].id)
+            }
+          }
+        } catch (error) {
+          console.error('Failed to fetch post ID:', error)
+        }
+      }
+      fetchPostId()
+    } else {
+      setPostId(null)
+    }
+  }, [pathname, isPostPage, postSlug])
 
   const onAuthChange = React.useCallback((user: PayloadMeUser) => {
     setShow(Boolean(user?.id))
@@ -63,10 +78,11 @@ export const AdminBar: React.FC<{
             user: 'text-white',
           }}
           cmsURL={getClientSideURL()}
-          collectionSlug={collection}
+          collectionSlug="posts"
+          id={postId || undefined}
           collectionLabels={{
-            plural: collectionLabels[collection]?.plural || 'Pages',
-            singular: collectionLabels[collection]?.singular || 'Page',
+            plural: 'Posts',
+            singular: 'Post',
           }}
           logo={<Title />}
           onAuthChange={onAuthChange}

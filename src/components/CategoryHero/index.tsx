@@ -4,7 +4,6 @@ import type { Post } from '@/payload-types'
 import { Media } from '@/components/Media'
 import { formatCategoryDate } from '@/utilities/formatCategoryDate'
 import { formatAuthors } from '@/utilities/formatAuthors'
-import { cn } from '@/utilities/ui'
 
 type Props = {
   post: Post
