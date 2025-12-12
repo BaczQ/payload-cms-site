@@ -27,24 +27,10 @@ export const CategoryPostCard: React.FC<Props> = ({ post }) => {
       : null
 
   return (
-    <article className="grid grid-cols-1 md:grid-cols-12 gap-6 py-8 border-b border-border last:border-b-0 hover:bg-muted/30 transition-colors rounded-lg px-2 -mx-2">
+    <article className="grid grid-cols-1 md:grid-cols-12 gap-6 py-6 border-b border-border last:border-b-0 hover:bg-muted/30 transition-colors">
       {/* Text Content */}
-      <div className="md:col-span-8 space-y-2">
-        <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-          {date && <span>{date}</span>}
-          {categoryTag && (
-            <>
-              {date && <span>•</span>}
-              <span className="uppercase tracking-wide">{categoryTag}</span>
-            </>
-          )}
-          {authors && (
-            <>
-              {(date || categoryTag) && <span>•</span>}
-              <span>{authors}</span>
-            </>
-          )}
-        </div>
+      <div className="md:col-span-8 space-y-3">
+        {date && <div className="text-sm text-muted-foreground font-medium">{date}</div>}
         <h3 className="text-2xl lg:text-3xl font-bold text-foreground leading-tight">
           <Link href={`/posts/${slug}`} className="hover:text-primary transition-colors">
             {title}
@@ -61,11 +47,11 @@ export const CategoryPostCard: React.FC<Props> = ({ post }) => {
       {metaImage && typeof metaImage === 'object' && (
         <div className="md:col-span-4">
           <Link href={`/posts/${slug}`} className="block group">
-            <div className="relative w-full aspect-[4/3] overflow-hidden rounded-lg bg-muted">
+            <div className="relative w-full aspect-[4/3] overflow-hidden rounded bg-muted">
               <Media
                 resource={metaImage}
-                size="33vw"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                fill
+                imgClassName="object-cover group-hover:scale-105 transition-transform duration-300"
               />
             </div>
           </Link>

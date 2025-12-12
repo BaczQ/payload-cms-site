@@ -2,7 +2,7 @@ import type { Metadata } from 'next/types'
 import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
-import { CategoryHero } from '@/components/CategoryHero'
+import { CategoryHeroGrid } from '@/components/CategoryHeroGrid'
 import { CategoryPostList } from '@/components/CategoryPostList'
 import { CategoryPagination } from '@/components/CategoryPagination'
 import { getSiteName } from '@/utilities/getSiteName'
@@ -65,32 +65,41 @@ export default async function CategoryPage({ params: paramsPromise, searchParams
 
   const posts = postsResult.docs || []
 
-  // On first page, show hero post, otherwise show all posts in list
+  // On first page, show hero grid (hero + 3-4 grid posts), otherwise show all posts in list
   const heroPost = currentPage === 1 && posts.length > 0 ? posts[0] : null
-  const morePosts = currentPage === 1 && posts.length > 1 ? posts.slice(1) : posts
+  const gridPosts = currentPage === 1 && posts.length > 1 ? posts.slice(1, 5) : [] // First 4 posts for grid (up to 4)
+  const listPosts =
+    currentPage === 1 && posts.length > 5
+      ? posts.slice(5)
+      : currentPage === 1 && posts.length > 1
+        ? posts.slice(1)
+        : posts
 
   return (
     <div className="min-h-screen bg-background">
       <PageClient />
       <div className="container mx-auto px-4 py-8 lg:py-16">
         {/* Category Header */}
-        <div className="mb-12 lg:mb-16">
-          <div className="text-sm uppercase tracking-wider text-muted-foreground mb-2">
-            Category
-          </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-foreground mb-2 leading-tight">
+        <div className="mb-12 lg:mb-16 text-center">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-2 leading-tight">
             {category.title}
           </h1>
         </div>
 
-        {/* Hero Post */}
-        {heroPost && <CategoryHero post={heroPost} />}
+        {/* Hero Grid Section - First Layout (Hero + Grid) */}
+        {heroPost && gridPosts.length > 0 && (
+          <CategoryHeroGrid heroPost={heroPost} gridPosts={gridPosts} />
+        )}
 
-        {/* More Stories Section */}
-        {morePosts.length > 0 && (
-          <div className="mt-16">
-            <h2 className="text-2xl font-bold text-foreground mb-8">More Articles</h2>
-            <CategoryPostList posts={morePosts} />
+        {/* If only hero post exists, show it in list format */}
+        {heroPost && gridPosts.length === 0 && listPosts.length === 0 && (
+          <CategoryPostList posts={[heroPost]} />
+        )}
+
+        {/* List Posts Section - Second Layout (List with images on right) */}
+        {listPosts.length > 0 && (
+          <div className="mt-12 lg:mt-16">
+            <CategoryPostList posts={listPosts} />
           </div>
         )}
 
