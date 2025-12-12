@@ -1,7 +1,7 @@
 import { DM_Serif_Display, Tinos, Playfair_Display } from 'next/font/google'
 
 export const dmSerifDisplay = DM_Serif_Display({
-  weight: ['400', '700'],
+  weight: ['400'],
   subsets: ['latin', 'latin-ext'],
   variable: '--font-dm-serif-display',
   display: 'swap',

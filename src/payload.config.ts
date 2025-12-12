@@ -14,6 +14,7 @@ import { SiteSettings } from './SiteSettings/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
+import Graphics from './components/Graphics'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -21,7 +22,9 @@ const dirname = path.dirname(filename)
 export default buildConfig({
   admin: {
     components: {
-      beforeLogin: ['@/components/BeforeLogin'],
+      graphics: {
+        Logo: Graphics,
+      },
       header: ['@/components/AdminHeader'],
     },
     importMap: {
