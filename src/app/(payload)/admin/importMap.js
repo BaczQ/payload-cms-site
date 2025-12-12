@@ -25,6 +25,7 @@ import { FolderTypeField as FolderTypeField_3817bf644402e67bfe6577f60ef982de } f
 import { RowLabel as RowLabel_ec255a65fa6fa8d1faeb09cf35284224 } from '@/Header/RowLabel'
 import { RowLabel as RowLabel_1f6ff6ff633e3695d348f4f3c58f1466 } from '@/Footer/RowLabel'
 import { default as default_90d7bd6156eb6cb948418758e1e40db4 } from '@/components/AdminHeader'
+import { default as default_5952be8e79795ebc93e0d99e1a7685c5 } from '@/components/Graphics'
 
 export const importMap = {
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
@@ -53,5 +54,6 @@ export const importMap = {
   "@payloadcms/ui#FolderTypeField": FolderTypeField_3817bf644402e67bfe6577f60ef982de,
   "@/Header/RowLabel#RowLabel": RowLabel_ec255a65fa6fa8d1faeb09cf35284224,
   "@/Footer/RowLabel#RowLabel": RowLabel_1f6ff6ff633e3695d348f4f3c58f1466,
-  "@/components/AdminHeader#default": default_90d7bd6156eb6cb948418758e1e40db4
+  "@/components/AdminHeader#default": default_90d7bd6156eb6cb948418758e1e40db4,
+  "@/components/Graphics#default": default_5952be8e79795ebc93e0d99e1a7685c5
 }
