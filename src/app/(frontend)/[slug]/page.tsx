@@ -89,11 +89,11 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
     slug: decodedSlug,
   })
 
-  // Для главной страницы используем SEO настройки из SiteSettings
+  // For homepage, use SEO settings from SiteSettings
   if (decodedSlug === 'home') {
     const siteSettings = await getSiteSettings()
 
-    // Если есть кастомные SEO настройки для главной, используем их
+    // If there are custom SEO settings for homepage, use them
     if (siteSettings.seoTitle || siteSettings.seoDescription) {
       const siteName = siteSettings.siteName
       const title = siteSettings.seoTitle || siteName

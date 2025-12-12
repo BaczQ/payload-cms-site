@@ -193,7 +193,7 @@ export interface Page {
             url?: string | null;
             label: string;
             /**
-             * Выберите, как должна отображаться ссылка.
+             * Choose how the link should be displayed.
              */
             appearance?: ('default' | 'outline') | null;
           };
@@ -244,8 +244,6 @@ export interface Post {
     };
     [k: string]: unknown;
   };
-  relatedPosts?: (number | Post)[] | null;
-  categories?: (number | Category)[] | null;
   meta?: {
     title?: string | null;
     /**
@@ -255,7 +253,9 @@ export interface Post {
     description?: string | null;
   };
   publishedAt?: string | null;
+  categories?: (number | Category)[] | null;
   authors?: (number | User)[] | null;
+  relatedPosts?: (number | Post)[] | null;
   populatedAuthors?:
     | {
         id?: string | null;
@@ -476,7 +476,7 @@ export interface CallToActionBlock {
           url?: string | null;
           label: string;
           /**
-           * Выберите, как должна отображаться ссылка.
+           * Choose how the link should be displayed.
            */
           appearance?: ('default' | 'outline') | null;
         };
@@ -526,7 +526,7 @@ export interface ContentBlock {
           url?: string | null;
           label: string;
           /**
-           * Выберите, как должна отображаться ссылка.
+           * Choose how the link should be displayed.
            */
           appearance?: ('default' | 'outline') | null;
         };
@@ -788,7 +788,7 @@ export interface Form {
 export interface Redirect {
   id: number;
   /**
-   * Вам нужно будет пересобрать сайт при изменении этого поля.
+   * You will need to rebuild the site when changing this field.
    */
   from: string;
   to?: {
@@ -1196,8 +1196,6 @@ export interface PostsSelect<T extends boolean = true> {
   title?: T;
   heroImage?: T;
   content?: T;
-  relatedPosts?: T;
-  categories?: T;
   meta?:
     | T
     | {
@@ -1206,7 +1204,9 @@ export interface PostsSelect<T extends boolean = true> {
         description?: T;
       };
   publishedAt?: T;
+  categories?: T;
   authors?: T;
+  relatedPosts?: T;
   populatedAuthors?:
     | T
     | {
@@ -1696,19 +1696,19 @@ export interface Footer {
 export interface SiteSetting {
   id: number;
   /**
-   * Название сайта, используется в мета-тегах, заголовках страниц и Open Graph
+   * Site name used in meta tags, page titles and Open Graph
    */
   siteName: string;
   /**
-   * Число элементов меню (состоящее из рубрик сайта), которое отображаются в меню, а остальные отображаются в выпадающем списке More
+   * Number of menu items (consisting of site categories) displayed in the menu, with the rest shown in the More dropdown
    */
   menuItemsCount: number;
   /**
-   * SEO заголовок для главной страницы (отображается в браузере и поисковых системах)
+   * SEO title for the homepage (displayed in browser and search engines)
    */
   seoTitle?: string | null;
   /**
-   * SEO описание для главной страницы (используется в мета-теге description)
+   * SEO description for the homepage (used in meta description tag)
    */
   seoDescription?: string | null;
   updatedAt?: string | null;

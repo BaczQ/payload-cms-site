@@ -20,10 +20,9 @@ const AdminHeader: React.FC = () => {
         fontWeight: 500,
       }}
     >
-      Перейти на сайт
+      Go to Site
     </a>
   )
 }
 
 export default AdminHeader
-

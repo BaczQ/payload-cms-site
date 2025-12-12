@@ -2,7 +2,7 @@ import type { GlobalConfig } from 'payload'
 
 export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
-  label: 'Настройки сайта',
+  label: 'Site Settings',
   access: {
     read: () => true,
   },
@@ -12,9 +12,9 @@ export const SiteSettings: GlobalConfig = {
       type: 'text',
       required: true,
       defaultValue: 'BF News',
-      label: 'Название сайта',
+      label: 'Site Name',
       admin: {
-        description: 'Название сайта, используется в мета-тегах, заголовках страниц и Open Graph',
+        description: 'Site name used in meta tags, page titles and Open Graph',
       },
     },
     {
@@ -22,17 +22,17 @@ export const SiteSettings: GlobalConfig = {
       type: 'number',
       required: true,
       defaultValue: 7,
-      label: 'Количество элементов меню',
+      label: 'Menu Items Count',
       admin: {
         description:
-          'Число элементов меню (состоящее из рубрик сайта), которое отображаются в меню, а остальные отображаются в выпадающем списке More',
+          'Number of menu items (consisting of site categories) displayed in the menu, with the rest shown in the More dropdown',
       },
       validate: (value: number | null | undefined) => {
         if (value === undefined || value === null) {
-          return 'Поле обязательно для заполнения'
+          return 'This field is required'
         }
         if (typeof value !== 'number' || value < 1 || !Number.isInteger(value)) {
-          return 'Должно быть положительным целым числом'
+          return 'Must be a positive integer'
         }
         return true
       },
@@ -41,24 +41,22 @@ export const SiteSettings: GlobalConfig = {
       type: 'tabs',
       tabs: [
         {
-          label: 'SEO для главной страницы',
+          label: 'Homepage SEO',
           fields: [
             {
               name: 'seoTitle',
               type: 'text',
-              label: 'SEO заголовок',
+              label: 'SEO Title',
               admin: {
-                description:
-                  'SEO заголовок для главной страницы (отображается в браузере и поисковых системах)',
+                description: 'SEO title for the homepage (displayed in browser and search engines)',
               },
             },
             {
               name: 'seoDescription',
               type: 'textarea',
-              label: 'SEO описание',
+              label: 'SEO Description',
               admin: {
-                description:
-                  'SEO описание для главной страницы (используется в мета-теге description)',
+                description: 'SEO description for the homepage (used in meta description tag)',
               },
             },
           ],

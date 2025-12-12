@@ -76,7 +76,7 @@ export default async function CategoryPage({ params: paramsPromise, searchParams
         {/* Category Header */}
         <div className="mb-12 lg:mb-16">
           <div className="text-sm uppercase tracking-wider text-muted-foreground mb-2">
-            Категория
+            Category
           </div>
           <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-foreground mb-2 leading-tight">
             {category.title}
@@ -89,7 +89,7 @@ export default async function CategoryPage({ params: paramsPromise, searchParams
         {/* More Stories Section */}
         {morePosts.length > 0 && (
           <div className="mt-16">
-            <h2 className="text-2xl font-bold text-foreground mb-8">Больше статей</h2>
+            <h2 className="text-2xl font-bold text-foreground mb-8">More Articles</h2>
             <CategoryPostList posts={morePosts} />
           </div>
         )}
@@ -97,7 +97,7 @@ export default async function CategoryPage({ params: paramsPromise, searchParams
         {/* Empty State */}
         {posts.length === 0 && (
           <div className="text-center py-16">
-            <p className="text-lg text-muted-foreground">В этой категории пока нет статей.</p>
+            <p className="text-lg text-muted-foreground">No articles in this category yet.</p>
           </div>
         )}
 
@@ -141,6 +141,6 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
 
   return {
     title: `${category.title} | ${siteName}`,
-    description: `Статьи в категории ${category.title}`,
+    description: `Articles in category ${category.title}`,
   }
 }

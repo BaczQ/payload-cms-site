@@ -30,8 +30,8 @@ export const plugins: Plugin[] = [
     collections: ['pages', 'posts'],
     overrides: {
       labels: {
-        singular: 'Перенаправление',
-        plural: 'Перенаправления',
+        singular: 'Redirect',
+        plural: 'Redirects',
       },
       // @ts-expect-error - This is a valid override, mapped fields don't resolve to the same type
       fields: ({ defaultFields }) => {
@@ -39,16 +39,16 @@ export const plugins: Plugin[] = [
           if ('name' in field && field.name === 'from') {
             return {
               ...field,
-              label: 'Откуда',
+              label: 'From',
               admin: {
-                description: 'Вам нужно будет пересобрать сайт при изменении этого поля.',
+                description: 'You will need to rebuild the site when changing this field.',
               },
             }
           }
           if ('name' in field && field.name === 'to') {
             return {
               ...field,
-              label: 'Куда',
+              label: 'To',
             }
           }
           return field
@@ -73,15 +73,15 @@ export const plugins: Plugin[] = [
     },
     formOverrides: {
       labels: {
-        singular: 'Форма',
-        plural: 'Формы',
+        singular: 'Form',
+        plural: 'Forms',
       },
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {
           if ('name' in field && field.name === 'confirmationMessage') {
             return {
               ...field,
-              label: 'Сообщение подтверждения',
+              label: 'Confirmation Message',
               editor: lexicalEditor({
                 features: ({ rootFeatures }) => {
                   return [
@@ -96,7 +96,7 @@ export const plugins: Plugin[] = [
           if ('name' in field && field.name === 'title') {
             return {
               ...field,
-              label: 'Название',
+              label: 'Title',
             }
           }
           return field
@@ -105,8 +105,8 @@ export const plugins: Plugin[] = [
     },
     formSubmissionOverrides: {
       labels: {
-        singular: 'Отправка формы',
-        plural: 'Отправки форм',
+        singular: 'Form Submission',
+        plural: 'Form Submissions',
       },
     },
   }),
@@ -115,8 +115,8 @@ export const plugins: Plugin[] = [
     beforeSync: beforeSyncWithSearch,
     searchOverrides: {
       labels: {
-        singular: 'Результат поиска',
-        plural: 'Результаты поиска',
+        singular: 'Search Result',
+        plural: 'Search Results',
       },
       fields: ({ defaultFields }) => {
         return [...defaultFields, ...searchFields]

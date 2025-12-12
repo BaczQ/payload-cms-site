@@ -14,22 +14,22 @@ const columnFields: Field[] = [
     name: 'size',
     type: 'select',
     defaultValue: 'oneThird',
-    label: 'Размер колонки',
+    label: 'Column Size',
     options: [
       {
-        label: 'Одна треть',
+        label: 'One Third',
         value: 'oneThird',
       },
       {
-        label: 'Половина',
+        label: 'Half',
         value: 'half',
       },
       {
-        label: 'Две трети',
+        label: 'Two Thirds',
         value: 'twoThirds',
       },
       {
-        label: 'Полная ширина',
+        label: 'Full Width',
         value: 'full',
       },
     ],
@@ -68,14 +68,14 @@ export const Content: Block = {
   slug: 'content',
   interfaceName: 'ContentBlock',
   labels: {
-    plural: 'Контент',
-    singular: 'Контент',
+    plural: 'Content',
+    singular: 'Content',
   },
   fields: [
     {
       name: 'columns',
       type: 'array',
-      label: 'Колонки',
+      label: 'Columns',
       admin: {
         initCollapsed: true,
       },

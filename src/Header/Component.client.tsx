@@ -40,7 +40,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, items, menuIte
           <button
             type="button"
             className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
-            aria-label={isMenuOpen ? 'Закрыть меню' : 'Открыть меню'}
+            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
             onClick={() => setIsMenuOpen((prev) => !prev)}
           >
             {isMenuOpen ? (
@@ -90,7 +90,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, items, menuIte
           <Link
             href="/admin"
             className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-300 hover:bg-gray-200 transition-colors"
-            aria-label="Войти"
+            aria-label="Login"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -110,7 +110,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, items, menuIte
         </div>
       </div>
 
-      {/* Мобильное полноэкранное меню */}
+      {/* Mobile fullscreen menu */}
       {isMenuOpen && (
         <div className="md:hidden fixed inset-x-0 top-16 bottom-0 bg-white z-20 border-t border-gray-200 overflow-y-auto">
           <div className="container py-4 flex flex-col gap-4">
@@ -123,7 +123,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, items, menuIte
                 <input
                   className="w-full bg-transparent outline-none text-sm"
                   placeholder="Search BF News..."
-                  aria-label="Поиск"
+                  aria-label="Search"
                   type="search"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}

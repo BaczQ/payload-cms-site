@@ -31,19 +31,19 @@ export default buildConfig({
     livePreview: {
       breakpoints: [
         {
-          label: 'Мобильный',
+          label: 'Mobile',
           name: 'mobile',
           width: 375,
           height: 667,
         },
         {
-          label: 'Планшет',
+          label: 'Tablet',
           name: 'tablet',
           width: 768,
           height: 1024,
         },
         {
-          label: 'Десктоп',
+          label: 'Desktop',
           name: 'desktop',
           width: 1440,
           height: 900,

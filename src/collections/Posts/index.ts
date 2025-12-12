@@ -31,8 +31,8 @@ import { slugField } from 'payload'
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
   labels: {
-    singular: 'Статья',
-    plural: 'Статьи',
+    singular: 'Post',
+    plural: 'Posts',
   },
   access: {
     create: authenticated,
@@ -75,7 +75,7 @@ export const Posts: CollectionConfig<'posts'> = {
       name: 'title',
       type: 'text',
       required: true,
-      label: 'Заголовок',
+      label: 'Title',
     },
     {
       type: 'tabs',
@@ -86,7 +86,7 @@ export const Posts: CollectionConfig<'posts'> = {
               name: 'heroImage',
               type: 'upload',
               relationTo: 'media',
-              label: 'Главное изображение',
+              label: 'Hero Image',
             },
             {
               name: 'content',
@@ -103,14 +103,11 @@ export const Posts: CollectionConfig<'posts'> = {
                   ]
                 },
               }),
-              label: 'Содержание',
+              label: 'Content',
               required: true,
             },
           ],
-          label: 'Контент',
-        },
-        {
-          label: 'Метаданные',
+          label: 'Content',
         },
         {
           name: 'meta',
@@ -144,7 +141,7 @@ export const Posts: CollectionConfig<'posts'> = {
     {
       name: 'publishedAt',
       type: 'date',
-      label: 'Дата публикации',
+      label: 'Published Date',
       admin: {
         date: {
           pickerAppearance: 'dayAndTime',
@@ -165,7 +162,7 @@ export const Posts: CollectionConfig<'posts'> = {
     {
       name: 'categories',
       type: 'relationship',
-      label: 'Категории',
+      label: 'Categories',
       admin: {
         position: 'sidebar',
       },
@@ -175,7 +172,7 @@ export const Posts: CollectionConfig<'posts'> = {
     {
       name: 'authors',
       type: 'relationship',
-      label: 'Авторы',
+      label: 'Authors',
       admin: {
         position: 'sidebar',
       },
@@ -192,7 +189,7 @@ export const Posts: CollectionConfig<'posts'> = {
     {
       name: 'relatedPosts',
       type: 'relationship',
-      label: 'Похожие статьи',
+      label: 'Related Posts',
       admin: {
         position: 'sidebar',
       },

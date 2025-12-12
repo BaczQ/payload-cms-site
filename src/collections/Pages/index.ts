@@ -24,8 +24,8 @@ import {
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
   labels: {
-    singular: 'Страница',
-    plural: 'Страницы',
+    singular: 'Page',
+    plural: 'Pages',
   },
   access: {
     create: authenticated,
@@ -63,14 +63,14 @@ export const Pages: CollectionConfig<'pages'> = {
       name: 'title',
       type: 'text',
       required: true,
-      label: 'Заголовок',
+      label: 'Title',
     },
     {
       type: 'tabs',
       tabs: [
         {
           fields: [hero],
-          label: 'Главный блок',
+          label: 'Hero',
         },
         {
           fields: [
@@ -79,13 +79,13 @@ export const Pages: CollectionConfig<'pages'> = {
               type: 'blocks',
               blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock],
               required: true,
-              label: 'Контент',
+              label: 'Content',
               admin: {
                 initCollapsed: true,
               },
             },
           ],
-          label: 'Контент',
+          label: 'Content',
         },
         {
           name: 'meta',
@@ -119,7 +119,7 @@ export const Pages: CollectionConfig<'pages'> = {
     {
       name: 'publishedAt',
       type: 'date',
-      label: 'Дата публикации',
+      label: 'Published Date',
       admin: {
         position: 'sidebar',
       },
