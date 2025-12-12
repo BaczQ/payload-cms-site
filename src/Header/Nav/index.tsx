@@ -42,35 +42,39 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
   const primary = variant === 'desktop' ? navItems.slice(0, maxPrimary) : navItems
   const secondary = variant === 'desktop' ? navItems.slice(maxPrimary) : []
 
-  // Get current category from URL
-  const currentCategory = searchParams.get('category')
+  // Check if we're on a category page (new format: /categories/[slug])
+  const isCategoryPage = pathname?.startsWith('/categories/')
+  const currentCategorySlug = isCategoryPage ? pathname.split('/categories/')[1] : null
 
-  // Check if we're on a category page
-  const isCategoryPage = pathname === '/posts' && currentCategory
-
-  // Extract category slug from href
-  const getCategoryHref = (href: string) => {
+  // Extract category slug from href (supports both old and new formats for backward compatibility)
+  const getCategorySlug = (href: string) => {
     if (!href) return null
-    // Parse relative URLs like /posts?category=slug
+    // New format: /categories/slug
+    if (href.startsWith('/categories/')) {
+      return decodeURIComponent(href.replace('/categories/', ''))
+    }
+    // Old format: /posts?category=slug (for backward compatibility)
     const match = href.match(/[?&]category=([^&]+)/)
     return match ? decodeURIComponent(match[1]) : null
   }
 
   // Check if any item in primary matches current category
-  const activePrimaryIndex = isCategoryPage
-    ? primary.findIndex((item) => {
-        const categorySlug = getCategoryHref(item.href)
-        return categorySlug === currentCategory
-      })
-    : -1
+  const activePrimaryIndex =
+    isCategoryPage && currentCategorySlug
+      ? primary.findIndex((item) => {
+          const categorySlug = getCategorySlug(item.href)
+          return categorySlug === currentCategorySlug
+        })
+      : -1
 
   // Check if any item in secondary matches current category
-  const hasActiveSecondary = isCategoryPage
-    ? secondary.some((item) => {
-        const categorySlug = getCategoryHref(item.href)
-        return categorySlug === currentCategory
-      })
-    : false
+  const hasActiveSecondary =
+    isCategoryPage && currentCategorySlug
+      ? secondary.some((item) => {
+          const categorySlug = getCategorySlug(item.href)
+          return categorySlug === currentCategorySlug
+        })
+      : false
 
   return (
     <nav
@@ -81,7 +85,9 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
       )}
     >
       {primary.map(({ href, label }, i) => {
-        const isActive = href && (pathname === href || (isCategoryPage && i === activePrimaryIndex))
+        const categorySlug = getCategorySlug(href)
+        const isActive =
+          href && (pathname === href || (isCategoryPage && categorySlug === currentCategorySlug))
 
         const linkContent = (
           <CMSLink
@@ -122,9 +128,10 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
           </button>
           <div className="pointer-events-auto invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-opacity absolute left-0 top-full mt-1 min-w-[200px] rounded-md border border-gray-200 bg-white shadow-lg z-50 py-1">
             {secondary.map(({ href, label }) => {
-              const categorySlug = getCategoryHref(href)
+              const categorySlug = getCategorySlug(href)
               const isActive =
-                (href && pathname === href) || (isCategoryPage && categorySlug === currentCategory)
+                (href && pathname === href) ||
+                (isCategoryPage && categorySlug === currentCategorySlug)
               return (
                 <CMSLink
                   key={href}

@@ -24,8 +24,10 @@ export async function Header() {
 
   const navItems = categories.docs.map((cat) => ({
     label: cat.title,
-    href: `/posts?category=${encodeURIComponent(cat.slug)}`,
+    href: `/categories/${encodeURIComponent(cat.slug)}`,
   }))
 
-  return <HeaderClient data={headerData} items={navItems} menuItemsCount={siteSettings.menuItemsCount} />
+  return (
+    <HeaderClient data={headerData} items={navItems} menuItemsCount={siteSettings.menuItemsCount} />
+  )
 }
