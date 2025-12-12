@@ -3,28 +3,15 @@ import Link from 'next/link'
 import type { Post } from '@/payload-types'
 import { Media } from '@/components/Media'
 import { formatCategoryDate } from '@/utilities/formatCategoryDate'
-import { formatAuthors } from '@/utilities/formatAuthors'
 
 type Props = {
   post: Post
 }
 
 export const CategoryPostCard: React.FC<Props> = ({ post }) => {
-  const { title, slug, meta, publishedAt, populatedAuthors, categories } = post
+  const { title, slug, meta, publishedAt } = post
   const { description, image: metaImage } = meta || {}
   const date = formatCategoryDate(publishedAt || null)
-  const authors =
-    populatedAuthors && populatedAuthors.length > 0
-      ? formatAuthors(populatedAuthors.filter((a): a is NonNullable<typeof a> => a !== null))
-      : null
-
-  // Get category tag if available
-  const categoryTag =
-    categories && Array.isArray(categories) && categories.length > 0
-      ? typeof categories[0] === 'object' && categories[0] !== null
-        ? categories[0].title
-        : null
-      : null
 
   return (
     <article className="grid grid-cols-1 md:grid-cols-12 gap-6 py-6 border-b border-border last:border-b-0 hover:bg-muted/30 transition-colors">
