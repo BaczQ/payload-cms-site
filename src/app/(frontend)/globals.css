@@ -104,6 +104,12 @@
   }
 }
 
+/* Remove default positioning from Next.js portal */
+nextjs-portal {
+  left: unset;
+  top: unset;
+}
+
 html {
   opacity: 0;
 }

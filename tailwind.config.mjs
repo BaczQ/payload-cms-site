@@ -116,6 +116,7 @@ const config = {
               h1: {
                 fontWeight: 'normal',
                 marginBottom: '0.25em',
+                fontFamily: 'Tinos',
               },
             },
           ],
