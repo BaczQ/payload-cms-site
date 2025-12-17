@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import React, { Suspense, useState, useEffect } from 'react'
+import React, { Suspense, useState } from 'react'
 
 import type { Header } from '@/payload-types'
 
@@ -9,61 +9,26 @@ import { Logo } from '@/components/Logo/Logo'
 import { HeaderNav } from './Nav'
 import { SearchIcon, X } from 'lucide-react'
 
-interface MenuItem {
-  label: string
-  href: string
-  children?: { label: string; href: string }[]
-}
-
 interface HeaderClientProps {
   data: Header
-  menuItems: MenuItem[]
+  items: { label: string; href: string }[]
+  menuItemsCount: number
 }
 
-export const HeaderClient: React.FC<HeaderClientProps> = ({ data, menuItems }) => {
+export const HeaderClient: React.FC<HeaderClientProps> = ({ data, items, menuItemsCount }) => {
   const pathname = usePathname()
   const router = useRouter()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const isHome = pathname === '/'
 
-  // Block body scroll when mobile menu is open
-  useEffect(() => {
-    if (isMenuOpen) {
-      // Save current scroll position
-      const scrollY = window.scrollY
-      // Block body scroll
-      document.body.style.position = 'fixed'
-      document.body.style.top = `-${scrollY}px`
-      document.body.style.width = '100%'
-      document.body.style.overflow = 'hidden'
-    } else {
-      // Restore scroll position
-      const scrollY = document.body.style.top
-      document.body.style.position = ''
-      document.body.style.top = ''
-      document.body.style.width = ''
-      document.body.style.overflow = ''
-      if (scrollY) {
-        window.scrollTo(0, parseInt(scrollY || '0') * -1)
-      }
-    }
-
-    // Cleanup on unmount
-    return () => {
-      document.body.style.position = ''
-      document.body.style.top = ''
-      document.body.style.width = ''
-      document.body.style.overflow = ''
-    }
-  }, [isMenuOpen])
-
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    const trimmedQuery = searchQuery.trim()
-    // Only redirect if query has more than 3 characters
-    if (trimmedQuery.length > 3) {
-      router.push(`/search?q=${encodeURIComponent(trimmedQuery)}`)
+    if (searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
+      setIsMenuOpen(false)
+    } else {
+      router.push('/search')
       setIsMenuOpen(false)
     }
   }
@@ -105,7 +70,12 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, menuItems }) =
 
         <div className="hidden md:flex flex-1 justify-center">
           <Suspense fallback={<div className="flex items-center gap-2 text-sm" />}>
-            <HeaderNav data={data} menuItems={menuItems} variant="desktop" />
+            <HeaderNav
+              data={data}
+              items={items}
+              variant="desktop"
+              menuItemsCount={menuItemsCount}
+            />
           </Suspense>
         </div>
 
@@ -157,11 +127,6 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, menuItems }) =
                   type="search"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      handleSearchSubmit(e as any)
-                    }
-                  }}
                 />
               </div>
             </form>
@@ -169,8 +134,9 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, menuItems }) =
             <Suspense fallback={<div className="flex flex-col items-start gap-2" />}>
               <HeaderNav
                 data={data}
-                menuItems={menuItems}
+                items={items}
                 variant="mobile"
+                menuItemsCount={menuItemsCount}
                 onLinkClick={() => setIsMenuOpen(false)}
               />
             </Suspense>

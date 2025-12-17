@@ -128,6 +128,7 @@ export const Posts: CollectionConfig<'posts'> = {
               },
               hasMany: true,
               relationTo: 'categories',
+              maxDepth: 1, // Limit depth to prevent issues with parent relationships
             },
           ],
           label: 'Meta',

@@ -1,4 +1,5 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
@@ -21,12 +22,17 @@ const dirname = path.dirname(filename)
 export default buildConfig({
   admin: {
     components: {
+      // Logo for admin panel (login page and sidebar)
+      graphics: {
+        Logo: '@/components/AdminLogo',
+      },
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below.
       beforeLogin: ['@/components/BeforeLogin'],
-      // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
-      // Feel free to delete this at any time. Simply remove the line below.
-      beforeDashboard: ['@/components/BeforeDashboard'],
+      // The `AdminHeader` component adds a link to the site in the sidebar navigation.
+      beforeNavLinks: ['@/components/AdminHeader'],
+      // Error handler to suppress non-critical Lexical clipboard errors
+      header: ['@/components/AdminErrorHandler'],
     },
     importMap: {
       baseDir: path.resolve(dirname),
@@ -61,6 +67,24 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URI || '',
     },
+  }),
+  email: nodemailerAdapter({
+    defaultFromAddress: process.env.EMAIL_FROM_ADDRESS || 'noreply@example.com',
+    defaultFromName: process.env.EMAIL_FROM_NAME || 'BF News',
+    // Use SMTP if configured, otherwise use ethereal.email for development
+    ...(process.env.SMTP_HOST
+      ? {
+          transportOptions: {
+            host: process.env.SMTP_HOST,
+            port: parseInt(process.env.SMTP_PORT || '587'),
+            secure: process.env.SMTP_SECURE === 'true',
+            auth: {
+              user: process.env.SMTP_USER,
+              pass: process.env.SMTP_PASS,
+            },
+          },
+        }
+      : {}),
   }),
   collections: [Pages, Posts, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),

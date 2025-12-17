@@ -60,7 +60,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
     <nav
       className={clsx(
         'flex gap-2 text-sm',
-        variant === 'mobile' && 'flex-col items-start gap-2 w-full',
+        variant === 'mobile' && 'flex-col items-start gap-4 w-full',
         variant === 'desktop' && 'items-center justify-center flex-wrap',
       )}
     >
@@ -142,7 +142,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
         // Mobile with children - show as expandable
         if (variant === 'mobile' && hasChildren) {
           return (
-            <div key={i} className="w-full">
+            <div key={i} className="w-full mb-2">
               <div className="w-full text-left">{linkContent}</div>
               {item.children && item.children.length > 0 && (
                 <div className="ml-4 mt-1 flex flex-col gap-1 w-full">
@@ -158,10 +158,10 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
                           url={child.href}
                           label={child.label}
                           className={clsx(
-                            'block px-2 py-1 text-sm rounded-md w-full text-left',
+                            'block px-3 py-1 font-semibold rounded-md w-full text-left transition-colors',
                             isChildActive
-                              ? 'bg-gray-200 text-black font-semibold'
-                              : 'text-black hover:bg-gray-100',
+                              ? 'bg-gray-200 text-black'
+                              : 'text-black hover:bg-gray-200 hover:text-black',
                           )}
                         />
                       </div>
@@ -176,7 +176,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
         // Wrap in div with onClick for mobile variant to close menu on link click
         if (variant === 'mobile' && onLinkClick) {
           return (
-            <div key={i} onClick={onLinkClick} className="w-full text-left">
+            <div key={i} onClick={onLinkClick} className="w-full text-left mb-2">
               {linkContent}
             </div>
           )

@@ -1,0 +1,24 @@
+@import '~@payloadcms/ui/scss';
+
+.admin-header-link {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: calc(var(--base) * 0.5) var(--base);
+  text-decoration: none;
+  font-size: var(--font-size-small);
+  font-weight: 500;
+  color: var(--theme-text);
+  border-radius: var(--style-radius-m);
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: var(--theme-elevation-100);
+    color: var(--theme-text);
+  }
+
+  &:focus {
+    outline: 2px solid var(--theme-success-500);
+    outline-offset: 2px;
+  }
+}

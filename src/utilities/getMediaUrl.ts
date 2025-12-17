@@ -1,4 +1,5 @@
-import { getClientSideURL } from '@/utilities/getURL'
+import { getClientSideURL, getServerSideURL } from '@/utilities/getURL'
+import canUseDOM from '@/utilities/canUseDOM'
 
 /**
  * Processes media resource URL to ensure proper formatting
@@ -18,7 +19,14 @@ export const getMediaUrl = (url: string | null | undefined, cacheTag?: string | 
     return cacheTag ? `${url}?${cacheTag}` : url
   }
 
-  // Otherwise prepend client-side URL
-  const baseUrl = getClientSideURL()
+  // For relative URLs (starting with /), use them as-is for Next.js Image optimization
+  // Next.js will handle relative URLs correctly during SSR and client-side
+  if (url.startsWith('/')) {
+    return cacheTag ? `${url}?${cacheTag}` : url
+  }
+
+  // For relative paths without leading slash, use consistent URL source
+  // Use server-side URL during SSR, client-side URL on client to avoid hydration mismatch
+  const baseUrl = canUseDOM ? getClientSideURL() : getServerSideURL()
   return cacheTag ? `${baseUrl}${url}?${cacheTag}` : `${baseUrl}${url}`
 }

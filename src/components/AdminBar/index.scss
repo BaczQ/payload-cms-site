@@ -4,4 +4,10 @@
   @include small-break {
     display: none;
   }
+
+  // Hide "Payload CMS" text link
+  #payload-admin-bar > a.text-white,
+  #payload-admin-bar a.text-white[href*="/admin"] {
+    display: none !important;
+  }
 }

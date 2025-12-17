@@ -20,11 +20,22 @@ const nextConfig = {
       }),
     ],
   },
-  webpack: (webpackConfig) => {
+  webpack: (webpackConfig, { isServer }) => {
     webpackConfig.resolve.extensionAlias = {
       '.cjs': ['.cts', '.cjs'],
       '.js': ['.ts', '.tsx', '.js', '.jsx'],
       '.mjs': ['.mts', '.mjs'],
+    }
+
+    // Ignore source map warnings for Payload CMS packages
+    if (isServer) {
+      webpackConfig.ignoreWarnings = [
+        ...(webpackConfig.ignoreWarnings || []),
+        {
+          module: /@payloadcms/,
+          message: /Invalid source map/,
+        },
+      ]
     }
 
     return webpackConfig
