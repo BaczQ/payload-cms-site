@@ -1,4 +1,4 @@
-import type { CollectionConfig, CollectionAfterReadHook } from 'payload'
+import type { CollectionConfig, CollectionAfterReadHook, CollectionAfterChangeHook } from 'payload'
 
 import {
   FixedToolbarFeature,
@@ -37,24 +37,140 @@ const checkFileExists: CollectionAfterReadHook = async ({ doc, req }) => {
 
   // Check if image sizes exist
   if (doc.sizes && typeof doc.sizes === 'object') {
+    const mainUrl = doc.url as string
+    const mainFilename = mainUrl ? path.basename(mainUrl.replace(/^\/media\//, '')) : ''
+    const mainFilenameWithoutExt = mainFilename ? path.parse(mainFilename).name : ''
+    const mainExt = mainFilename ? path.parse(mainFilename).ext : ''
+
     Object.entries(doc.sizes).forEach(([sizeName, sizeData]) => {
       if (sizeData && typeof sizeData === 'object' && 'url' in sizeData && sizeData.url) {
         const sizeUrl = sizeData.url as string
         if (!sizeUrl.startsWith('http')) {
-          const sizeFilePath = path.join(mediaDir, sizeUrl.replace(/^\/media\//, ''))
+          // Try different path formats that Payload might use
+          const normalizedUrl = sizeUrl.replace(/^\/media\//, '').replace(/^\//, '')
+          const sizeFilePath = path.join(mediaDir, normalizedUrl)
 
-          if (!fs.existsSync(sizeFilePath)) {
+          // Build alternative paths based on Payload's naming convention
+          // Payload typically uses: filename-widthxheight.ext or filename-sizename.ext
+          const alternativePaths: string[] = [
+            sizeFilePath, // exact path from DB
+            path.join(mediaDir, sizeUrl), // with leading slash
+            path.join(mediaDir, sizeUrl.replace(/^\//, '')), // without leading slash
+          ]
+
+          // If we have the main filename, try to construct expected thumbnail paths
+          if (mainFilenameWithoutExt && mainExt) {
+            const sizeConfig = {
+              thumbnail: { width: 300 },
+              square: { width: 500, height: 500 },
+              small: { width: 600 },
+              medium: { width: 900 },
+              large: { width: 1400 },
+              xlarge: { width: 1920 },
+              og: { width: 1200, height: 630 },
+            }[sizeName]
+
+            if (sizeConfig) {
+              // Try format: filename-widthxheight.ext
+              if (sizeConfig.height) {
+                alternativePaths.push(
+                  path.join(
+                    mediaDir,
+                    `${mainFilenameWithoutExt}-${sizeConfig.width}x${sizeConfig.height}${mainExt}`,
+                  ),
+                )
+              } else {
+                alternativePaths.push(
+                  path.join(mediaDir, `${mainFilenameWithoutExt}-${sizeConfig.width}${mainExt}`),
+                )
+              }
+              // Try format: filename-sizename.ext
+              alternativePaths.push(
+                path.join(mediaDir, `${mainFilenameWithoutExt}-${sizeName}${mainExt}`),
+              )
+            }
+          }
+
+          const existingPaths = alternativePaths.filter((p) => fs.existsSync(p))
+          const fileExists = existingPaths.length > 0
+
+          if (!fileExists) {
             req.payload.logger.warn(
-              `Media file ${sizeUrl} for size "${sizeName}" is missing on disk. Expected path: ${sizeFilePath}`,
+              `❌ Media thumbnail "${sizeName}" MISSING for ${mainFilename || 'unknown'}. ` +
+                `URL in DB: "${sizeUrl}". ` +
+                `Checked ${alternativePaths.length} paths, none exist. ` +
+                `Example checked: ${alternativePaths[0]}`,
             )
             // Remove the missing size from the response to prevent broken image URLs
             if (sizeData && typeof sizeData === 'object') {
               delete (doc.sizes as any)[sizeName]
             }
+          } else {
+            req.payload.logger.info(
+              `✅ Found thumbnail "${sizeName}" for ${mainFilename} at: ${existingPaths[0]}`,
+            )
           }
         }
       }
     })
+  }
+
+  return doc
+}
+
+// Hook to log when thumbnails are missing for debugging
+// Payload should automatically generate thumbnails for all image formats including WebP
+const logMissingThumbnails: CollectionAfterChangeHook = async ({ doc, req, operation }) => {
+  // Only process on create operations
+  if (
+    operation !== 'create' ||
+    !doc ||
+    typeof doc !== 'object' ||
+    !('url' in doc) ||
+    !('mimeType' in doc)
+  ) {
+    return doc
+  }
+
+  // Only process image files
+  const mimeType = doc.mimeType as string
+  if (!mimeType || !mimeType.startsWith('image/')) {
+    return doc
+  }
+
+  const mediaDir = path.resolve(dirname, '../../public/media')
+  const url = doc.url as string
+
+  if (url && typeof url === 'string' && !url.startsWith('http')) {
+    const filePath = path.join(mediaDir, url.replace(/^\/media\//, ''))
+
+    // Check if file exists and if thumbnails are missing
+    if (fs.existsSync(filePath)) {
+      const sizes = (doc.sizes as Record<string, any>) || {}
+      const expectedSizes = ['thumbnail', 'square', 'small', 'medium', 'large', 'xlarge', 'og']
+      const missingSizes: string[] = []
+
+      for (const sizeName of expectedSizes) {
+        if (!sizes[sizeName] || !sizes[sizeName].url) {
+          missingSizes.push(sizeName)
+        }
+      }
+
+      if (missingSizes.length > 0) {
+        req.payload.logger.warn(
+          `⚠️ Missing thumbnails for ${url} (${mimeType}): ${missingSizes.join(', ')}. ` +
+            `Payload should generate them automatically.`,
+        )
+      } else {
+        // Log what thumbnails were created and their paths
+        const createdSizes = Object.entries(sizes)
+          .filter(([name]) => expectedSizes.includes(name))
+          .map(([name, data]: [string, any]) => `${name}: ${data?.url || 'no URL'}`)
+          .join(', ')
+
+        req.payload.logger.info(`✅ Thumbnails created for ${url} (${mimeType}): ${createdSizes}`)
+      }
+    }
   }
 
   return doc
@@ -71,6 +187,7 @@ export const Media: CollectionConfig = {
   },
   hooks: {
     afterRead: [checkFileExists],
+    afterChange: [logMissingThumbnails],
   },
   fields: [
     {
@@ -93,10 +210,13 @@ export const Media: CollectionConfig = {
     staticDir: path.resolve(dirname, '../../public/media'),
     adminThumbnail: 'thumbnail',
     focalPoint: true,
+    // Ensure all image formats are processed, including WebP
     imageSizes: [
       {
         name: 'thumbnail',
         width: 300,
+        // Don't specify format - let Payload preserve original format or convert as needed
+        // This ensures thumbnails are generated for all formats including WebP
       },
       {
         name: 'square',
