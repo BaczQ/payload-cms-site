@@ -111,11 +111,15 @@ export const Posts: CollectionConfig<'posts'> = {
                 position: 'sidebar',
               },
               filterOptions: ({ id }) => {
-                return {
-                  id: {
-                    not_in: [id],
-                  },
+                // Prevent selecting itself
+                if (id) {
+                  return {
+                    id: {
+                      not_in: [id],
+                    },
+                  }
                 }
+                return true
               },
               hasMany: true,
               relationTo: 'posts',

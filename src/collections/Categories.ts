@@ -40,7 +40,7 @@ export const Categories: CollectionConfig = {
             },
           }
         }
-        return {}
+        return true
       },
       maxDepth: 1, // Limit depth to prevent infinite nesting
     },
