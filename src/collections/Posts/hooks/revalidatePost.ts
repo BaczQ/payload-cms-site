@@ -16,6 +16,8 @@ export const revalidatePost: CollectionAfterChangeHook<Post> = ({
       payload.logger.info(`Revalidating post at path: ${path}`)
 
       revalidatePath(path)
+      // Also revalidate the posts list page so new posts appear immediately
+      revalidatePath('/posts', 'page')
       revalidateTag('posts-sitemap')
     }
 
@@ -26,6 +28,8 @@ export const revalidatePost: CollectionAfterChangeHook<Post> = ({
       payload.logger.info(`Revalidating old post at path: ${oldPath}`)
 
       revalidatePath(oldPath)
+      // Also revalidate the posts list page when a post is unpublished
+      revalidatePath('/posts', 'page')
       revalidateTag('posts-sitemap')
     }
   }
@@ -37,6 +41,8 @@ export const revalidateDelete: CollectionAfterDeleteHook<Post> = ({ doc, req: { 
     const path = `/posts/${doc?.slug}`
 
     revalidatePath(path)
+    // Also revalidate the posts list page when a post is deleted
+    revalidatePath('/posts', 'page')
     revalidateTag('posts-sitemap')
   }
 

@@ -1,0 +1,15 @@
+
+> bf-news@1.0.0 start /var/www/bf-news
+> cross-env NODE_OPTIONS=--no-deprecation PORT=4000 next start
+
+   ▲ Next.js 15.4.10
+   - Local:        http://localhost:4000
+   - Network:      http://45.12.239.174:4000
+
+ ✓ Starting...
+ ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+ ✓ Ready in 480ms
+E-mail configured with ethereal.email test account. 
+Log into mock email provider at https://ethereal.email
+Mock email account username: g55f53i6646zweau@ethereal.email
+Mock email account password: shDZK9haese3nyp5AB

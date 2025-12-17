@@ -8,8 +8,8 @@ import { getPayload } from 'payload'
 import React from 'react'
 import PageClient from './page.client'
 
-export const dynamic = 'force-static'
-export const revalidate = 600
+export const dynamic = 'force-dynamic'
+// Remove revalidate for dynamic rendering - page will update immediately when posts are published
 
 export default async function Page() {
   const payload = await getPayload({ config: configPromise })

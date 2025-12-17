@@ -25,20 +25,40 @@ const checkFileExists: CollectionAfterReadHook = async ({ doc, req }) => {
 
   // Check if main file exists
   if (doc.url && typeof doc.url === 'string' && !doc.url.startsWith('http')) {
-    const filePath = path.join(mediaDir, doc.url.replace(/^\/media\//, ''))
+    // Handle both /media/ and /api/media/file/ URL formats
+    let filename = ''
+    if (doc.url.includes('/api/media/file/')) {
+      filename = doc.url.replace('/api/media/file/', '')
+    } else {
+      filename = doc.url.replace(/^\/media\//, '')
+    }
+    const filePath = path.join(mediaDir, filename)
 
     if (!fs.existsSync(filePath)) {
       req.payload.logger.warn(
         `Media file ${doc.url} is missing on disk. Expected path: ${filePath}`,
       )
       // Don't fail, just log - the URL will still be returned but the file won't load
+    } else {
+      // Update URL to correct format if it was /api/media/file/
+      if (doc.url.includes('/api/media/file/')) {
+        ;(doc as any).url = `/media/${filename}`
+      }
     }
   }
 
   // Check if image sizes exist
   if (doc.sizes && typeof doc.sizes === 'object') {
     const mainUrl = doc.url as string
-    const mainFilename = mainUrl ? path.basename(mainUrl.replace(/^\/media\//, '')) : ''
+    // Extract filename from URL - handle both /media/ and /api/media/file/ formats
+    let mainFilename = ''
+    if (mainUrl) {
+      if (mainUrl.includes('/api/media/file/')) {
+        mainFilename = mainUrl.replace('/api/media/file/', '')
+      } else {
+        mainFilename = path.basename(mainUrl.replace(/^\/media\//, ''))
+      }
+    }
     const mainFilenameWithoutExt = mainFilename ? path.parse(mainFilename).name : ''
     const mainExt = mainFilename ? path.parse(mainFilename).ext : ''
 
@@ -46,16 +66,17 @@ const checkFileExists: CollectionAfterReadHook = async ({ doc, req }) => {
       if (sizeData && typeof sizeData === 'object' && 'url' in sizeData && sizeData.url) {
         const sizeUrl = sizeData.url as string
         if (!sizeUrl.startsWith('http')) {
-          // Try different path formats that Payload might use
-          const normalizedUrl = sizeUrl.replace(/^\/media\//, '').replace(/^\//, '')
-          const sizeFilePath = path.join(mediaDir, normalizedUrl)
+          // Extract filename from sizeUrl - handle /api/media/file/ format
+          let thumbnailFilename = ''
+          if (sizeUrl.includes('/api/media/file/')) {
+            thumbnailFilename = sizeUrl.replace('/api/media/file/', '')
+          } else {
+            thumbnailFilename = sizeUrl.replace(/^\/media\//, '').replace(/^\//, '')
+          }
 
           // Build alternative paths based on Payload's naming convention
-          // Payload typically uses: filename-widthxheight.ext or filename-sizename.ext
           const alternativePaths: string[] = [
-            sizeFilePath, // exact path from DB
-            path.join(mediaDir, sizeUrl), // with leading slash
-            path.join(mediaDir, sizeUrl.replace(/^\//, '')), // without leading slash
+            path.join(mediaDir, thumbnailFilename), // direct filename from URL
           ]
 
           // If we have the main filename, try to construct expected thumbnail paths
@@ -71,7 +92,7 @@ const checkFileExists: CollectionAfterReadHook = async ({ doc, req }) => {
             }[sizeName]
 
             if (sizeConfig) {
-              // Try format: filename-widthxheight.ext
+              // Try format: filename-widthxheight.ext (most common Payload format)
               if (sizeConfig.height) {
                 alternativePaths.push(
                   path.join(
@@ -80,6 +101,7 @@ const checkFileExists: CollectionAfterReadHook = async ({ doc, req }) => {
                   ),
                 )
               } else {
+                // For thumbnail without height, try with calculated height or just width
                 alternativePaths.push(
                   path.join(mediaDir, `${mainFilenameWithoutExt}-${sizeConfig.width}${mainExt}`),
                 )
@@ -98,16 +120,21 @@ const checkFileExists: CollectionAfterReadHook = async ({ doc, req }) => {
             req.payload.logger.warn(
               `❌ Media thumbnail "${sizeName}" MISSING for ${mainFilename || 'unknown'}. ` +
                 `URL in DB: "${sizeUrl}". ` +
-                `Checked ${alternativePaths.length} paths, none exist. ` +
-                `Example checked: ${alternativePaths[0]}`,
+                `Checked ${alternativePaths.length} paths: ${alternativePaths.slice(0, 3).join(', ')}`,
             )
             // Remove the missing size from the response to prevent broken image URLs
             if (sizeData && typeof sizeData === 'object') {
               delete (doc.sizes as any)[sizeName]
             }
           } else {
-            req.payload.logger.info(
-              `✅ Found thumbnail "${sizeName}" for ${mainFilename} at: ${existingPaths[0]}`,
+            // Update the URL in the document to point to the correct file path
+            const foundPath = existingPaths[0]
+            const relativePath = `/media/${path.basename(foundPath)}`
+            if (sizeData && typeof sizeData === 'object') {
+              ;(sizeData as any).url = relativePath
+            }
+            req.payload.logger.debug(
+              `✅ Found thumbnail "${sizeName}" for ${mainFilename} at: ${foundPath}, updated URL to: ${relativePath}`,
             )
           }
         }
