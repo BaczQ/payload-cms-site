@@ -4,22 +4,32 @@ import redirects from './redirects.js'
 
 const NEXT_PUBLIC_SERVER_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
   ? `http://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-  : undefined || process.env.__NEXT_PRIVATE_ORIGIN || process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:4000'
+  : process.env.__NEXT_PRIVATE_ORIGIN ||
+    process.env.NEXT_PUBLIC_SERVER_URL ||
+    'http://localhost:4000'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
   images: {
     remotePatterns: [
-      ...[NEXT_PUBLIC_SERVER_URL /* 'https://example.com' */].map((item) => {
-        const url = new URL(item)
+      ...(NEXT_PUBLIC_SERVER_URL ? [NEXT_PUBLIC_SERVER_URL] : [])
+        .map((item) => {
+          if (!item) return null
+          try {
+            const url = new URL(item)
 
-        return {
-          hostname: url.hostname,
-          protocol: url.protocol.replace(':', ''),
-          port: url.port || '',
-        }
-      }),
+            return {
+              hostname: url.hostname,
+              protocol: url.protocol.replace(':', ''),
+              port: url.port || '',
+            }
+          } catch (error) {
+            console.warn(`Failed to create URL object from URL: ${item}, skipping`)
+            return null
+          }
+        })
+        .filter(Boolean),
       // Allow localhost for development
       {
         hostname: 'localhost',
