@@ -19,6 +19,14 @@ export const getMediaUrl = (url: string | null | undefined, cacheTag?: string | 
     return cacheTag ? `${url}?${cacheTag}` : url
   }
 
+  // Convert /api/media/file/ paths to direct /media/ paths for better compatibility
+  // This is especially important in standalone mode where Payload API may not work correctly
+  if (url.startsWith('/api/media/file/')) {
+    const filename = url.replace('/api/media/file/', '')
+    const directUrl = `/media/${filename}`
+    return cacheTag ? `${directUrl}?${cacheTag}` : directUrl
+  }
+
   // For relative URLs (starting with /), use them as-is for Next.js Image optimization
   // Next.js will handle relative URLs correctly during SSR and client-side
   if (url.startsWith('/')) {

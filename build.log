@@ -1,0 +1,10 @@
+
+> bf-news@1.0.0 build
+> cross-env NODE_OPTIONS=--no-deprecation next build
+
+   ▲ Next.js 15.4.10
+   - Environments: .env
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 72s
+   Linting and checking validity of types ...

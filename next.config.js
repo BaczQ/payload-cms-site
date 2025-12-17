@@ -3,8 +3,8 @@ import { withPayload } from '@payloadcms/next/withPayload'
 import redirects from './redirects.js'
 
 const NEXT_PUBLIC_SERVER_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
-  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-  : undefined || process.env.__NEXT_PRIVATE_ORIGIN || 'http://localhost:3000'
+  ? `http://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : undefined || process.env.__NEXT_PRIVATE_ORIGIN || process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:4000'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -17,9 +17,27 @@ const nextConfig = {
         return {
           hostname: url.hostname,
           protocol: url.protocol.replace(':', ''),
+          port: url.port || '',
         }
       }),
+      // Allow localhost for development
+      {
+        hostname: 'localhost',
+        protocol: 'http',
+      },
+      // Allow production domain
+      {
+        hostname: 'bfnews.ru',
+        protocol: 'http',
+      },
+      {
+        hostname: 'www.bfnews.ru',
+        protocol: 'http',
+      },
     ],
+    // Disable image optimization to fix 400 errors with /api/media/file/
+    // Images will be served directly without optimization
+    unoptimized: true,
   },
   webpack: (webpackConfig, { isServer }) => {
     webpackConfig.resolve.extensionAlias = {
