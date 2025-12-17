@@ -1,0 +1,25 @@
+# Пример конфигурации SSH для подключения к удалённому серверу
+# Скопируйте этот файл в ~/.ssh/config и заполните данные вашего сервера
+
+# Host имя_сервера
+#   HostName IP_адрес_или_домен
+#   User ваш_пользователь
+#   Port 22
+#   IdentityFile ~/.ssh/id_rsa
+#   ForwardAgent yes
+#   ServerAliveInterval 60
+#   ServerAliveCountMax 3
+
+# Пример:
+# Host production
+#   HostName 192.168.1.100
+#   User deploy
+#   Port 22
+#   IdentityFile ~/.ssh/id_rsa
+#   ForwardAgent yes
+
+# Host staging
+#   HostName staging.example.com
+#   User deploy
+#   Port 2222
+#   IdentityFile ~/.ssh/staging_key
