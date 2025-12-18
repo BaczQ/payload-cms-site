@@ -75,6 +75,14 @@ export default async function Post({ params: paramsPromise }: Args) {
       <div className="flex flex-col items-center gap-4 pt-8">
         <div className="container">
           <RichText className="max-w-[48rem] mx-auto" data={post.content} enableGutter={false} />
+          {typeof post.heroImage === 'object' && post.heroImage?.url ? (
+            <div className="max-w-[48rem] mx-auto mt-6 text-sm text-muted-foreground break-all">
+              <span className="font-medium">Hero image URL:</span>{' '}
+              <a className="underline" href={post.heroImage.url} target="_blank" rel="noreferrer">
+                {post.heroImage.url}
+              </a>
+            </div>
+          ) : null}
           {post.relatedPosts && post.relatedPosts.length > 0 && (
             <RelatedPosts
               className="mt-12 max-w-[52rem] lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"

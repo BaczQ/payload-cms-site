@@ -1,14 +1,15 @@
 # Инструкция по запуску на сервере
 
-## Вариант 1: Docker (Рекомендуется)
+## Прямой запуск на сервере (без Docker)
 
 ### Требования
-- Docker и Docker Compose установлены на сервере
-- PostgreSQL база данных (можно использовать внешнюю или в docker-compose)
+- Node.js 18.20.2+ или 20.9.0+
+- pnpm 9+ или 10+
+- PostgreSQL база данных
 
 ### Шаги деплоя
 
-1. **Клонируйте репозиторий на сервер:**
+1. **Клонируйте репозиторий:**
 ```bash
 git clone git@github.com:BaczQ/payload-cms-site.git
 cd payload-cms-site
@@ -34,45 +35,10 @@ SMTP_PASS=your-password
 CRON_SECRET=ваш-секрет-для-cron
 ```
 
-3. **Соберите и запустите Docker контейнер:**
-```bash
-# Сборка образа
-docker build -t payload-cms-site .
-
-# Запуск контейнера
-docker run -d \
-  --name payload-cms \
-  -p 3000:3000 \
-  --env-file .env \
-  payload-cms-site
-```
-
-Или используйте docker-compose (нужно обновить docker-compose.yml для production):
-```bash
-docker-compose up -d
-```
-
-## Вариант 2: Прямой запуск на сервере
-
-### Требования
-- Node.js 18.20.2+ или 20.9.0+
-- pnpm 9+ или 10+
-- PostgreSQL база данных
-
-### Шаги деплоя
-
-1. **Клонируйте репозиторий:**
-```bash
-git clone git@github.com:BaczQ/payload-cms-site.git
-cd payload-cms-site
-```
-
-2. **Установите зависимости:**
+3. **Установите зависимости:**
 ```bash
 pnpm install
 ```
-
-3. **Создайте файл `.env`** (см. выше)
 
 4. **Соберите проект:**
 ```bash
@@ -84,7 +50,7 @@ pnpm build
 pnpm start
 ```
 
-Приложение будет доступно на `http://localhost:3000`
+Приложение будет доступно на `http://localhost:4000`
 
 ### Использование PM2 для управления процессом
 
@@ -118,7 +84,7 @@ server {
     server_name ваш-домен.com;
 
     location / {
-        proxy_pass http://localhost:3000;
+        proxy_pass http://localhost:4000;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
@@ -163,7 +129,7 @@ postgresql://username:password@host:port/database
 5. **Для production** убедитесь, что:
    - Все переменные окружения установлены
    - База данных доступна
-   - Порт 3000 открыт (или используйте reverse proxy)
+   - Порт 4000 открыт (или используйте reverse proxy)
    - SSL сертификат настроен
 
 ## Проверка работоспособности
@@ -177,17 +143,12 @@ postgresql://username:password@host:port/database
 
 ```bash
 # Остановите приложение
-docker stop payload-cms  # или pm2 stop payload-cms
+pm2 stop payload-cms
 
 # Получите последние изменения
 git pull
 
-# Пересоберите (для Docker)
-docker build -t payload-cms-site .
-docker rm payload-cms
-docker run -d --name payload-cms -p 3000:3000 --env-file .env payload-cms-site
-
-# Или для прямого запуска
+# Пересоберите
 pnpm build
 pm2 restart payload-cms
 ```
