@@ -9,7 +9,6 @@
     "postbuild": "next-sitemap --config next-sitemap.config.cjs",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "deploy": "./scripts/deploy.sh",
-    "restart": "./scripts/restart.sh",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
     "migrate:post-category": "cross-env NODE_OPTIONS=--no-deprecation payload run src/scripts/migratePostCategory.ts",

@@ -7,6 +7,7 @@ import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
 import RichText from '@/components/RichText'
+import { Media } from '@/components/Media'
 
 import type { Post } from '@/payload-types'
 
@@ -76,11 +77,23 @@ export default async function Post({ params: paramsPromise }: Args) {
         <div className="container">
           <RichText className="max-w-[48rem] mx-auto" data={post.content} enableGutter={false} />
           {typeof post.heroImage === 'object' && post.heroImage?.url ? (
-            <div className="max-w-[48rem] mx-auto mt-6 text-sm text-muted-foreground break-all">
-              <span className="font-medium">Hero image URL:</span>{' '}
-              <a className="underline" href={post.heroImage.url} target="_blank" rel="noreferrer">
-                {post.heroImage.url}
-              </a>
+            <div className="max-w-[48rem] mx-auto mt-6">
+              <div className="text-sm text-muted-foreground break-all">
+                <span className="font-medium">Hero image URL:</span>{' '}
+                <a className="underline" href={post.heroImage.url} target="_blank" rel="noreferrer">
+                  {post.heroImage.url}
+                </a>
+              </div>
+              <div className="relative mt-3 overflow-hidden rounded-md border border-border aspect-[16/9] bg-muted/20">
+                <Media
+                  fill
+                  priority
+                  resource={post.heroImage}
+                  className="absolute inset-0"
+                  pictureClassName="block w-full h-full"
+                  imgClassName="object-cover"
+                />
+              </div>
             </div>
           ) : null}
           {post.relatedPosts && post.relatedPosts.length > 0 && (

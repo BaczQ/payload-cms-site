@@ -61,7 +61,7 @@ export const FooterClient: React.FC<FooterClientProps> = ({ navItems }) => {
 
         <div className="border-t border-gray-700 pt-4 text-[11px] text-gray-500 flex flex-col sm:flex-row gap-2 justify-between">
           <span>© {year} BF News</span>
-          <span>Built with Payload &amp; Next.js</span>
+          <span>Built with BF_load &amp; Next.js</span>
         </div>
       </div>
     </footer>

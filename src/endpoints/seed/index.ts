@@ -286,7 +286,7 @@ export const seed = async ({
           {
             link: {
               type: 'custom',
-              label: 'Payload',
+              label: 'BF_load',
               newTab: true,
               url: 'https://payloadcms.com/',
             },
