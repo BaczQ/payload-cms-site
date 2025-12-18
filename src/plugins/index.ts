@@ -15,7 +15,7 @@ import { getServerSideURL } from '@/utilities/getURL'
 import { getPostPath } from '@/utilities/getPostPath'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
-  return doc?.title ? `${doc.title} | BF_load Website Template` : 'BF_load Website Template'
+  return doc?.title ? `${doc.title} | BF-load Website Template` : 'BF-load Website Template'
 }
 
 const generateURL: GenerateURL<Post | Page> = ({ doc }) => {

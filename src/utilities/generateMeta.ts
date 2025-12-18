@@ -27,8 +27,8 @@ export const generateMeta = async (args: {
   const ogImage = getImageURL(doc?.meta?.image)
 
   const title = doc?.meta?.title
-    ? doc?.meta?.title + ' | BF_load Website Template'
-    : 'BF_load Website Template'
+    ? doc?.meta?.title + ' | BF-load Website Template'
+    : 'BF-load Website Template'
 
   return {
     description: doc?.meta?.description,

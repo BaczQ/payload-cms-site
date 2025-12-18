@@ -105,6 +105,6 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
 
 export function generateMetadata(): Metadata {
   return {
-    title: `BF_load Website Template Search`,
+    title: `BF-load Website Template Search`,
   }
 }

@@ -3,14 +3,14 @@ import { getServerSideURL } from './getURL'
 
 const defaultOpenGraph: Metadata['openGraph'] = {
   type: 'website',
-  description: 'An open-source website built with BF_load and Next.js.',
+  description: 'An open-source website built with BF-load and Next.js.',
   images: [
     {
       url: `${getServerSideURL()}/website-template-OG.webp`,
     },
   ],
-  siteName: 'BF_load Website Template',
-  title: 'BF_load Website Template',
+  siteName: 'BF-load Website Template',
+  title: 'BF-load Website Template',
 }
 
 export const mergeOpenGraph = (og?: Metadata['openGraph']): Metadata['openGraph'] => {

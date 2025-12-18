@@ -9,6 +9,16 @@ export async function Footer() {
   const footerData: Footer = await getCachedGlobal('footer', 1)()
 
   const navItems = footerData?.navItems || []
+  const socialLinks = footerData?.socialLinks || []
+  const copyrightText = footerData?.copyrightText || ''
+  const builtWithText = footerData?.builtWithText || ''
 
-  return <FooterClient navItems={navItems} />
+  return (
+    <FooterClient
+      navItems={navItems}
+      socialLinks={socialLinks}
+      copyrightText={copyrightText}
+      builtWithText={builtWithText}
+    />
+  )
 }

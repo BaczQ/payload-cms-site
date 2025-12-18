@@ -47,7 +47,7 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
                   format: 0,
                   mode: 'normal',
                   style: '',
-                  text: 'BF_load Website Template',
+                  text: 'BF-load Website Template',
                   version: 1,
                 },
               ],
@@ -666,9 +666,9 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
       },
     ],
     meta: {
-      description: 'An open-source website built with BF_load and Next.js.',
+      description: 'An open-source website built with BF-load and Next.js.',
       image: heroImage.id,
-      title: 'BF_load Website Template',
+      title: 'BF-load Website Template',
     },
     title: 'Home',
   }

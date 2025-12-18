@@ -10,13 +10,21 @@ import type { Footer } from '@/payload-types'
 
 type FooterClientProps = {
   navItems: Footer['navItems']
+  socialLinks: Footer['socialLinks']
+  copyrightText: Footer['copyrightText']
+  builtWithText: Footer['builtWithText']
 }
 
-export const FooterClient: React.FC<FooterClientProps> = ({ navItems }) => {
-  const social = ['Facebook', 'X', 'Instagram', 'YouTube', 'LinkedIn']
-  const year = new Date().getFullYear()
+export const FooterClient: React.FC<FooterClientProps> = ({
+  navItems,
+  socialLinks,
+  copyrightText,
+  builtWithText,
+}) => {
   const pathname = usePathname()
   const isHome = pathname === '/'
+  const defaultCopyrightText = `© ${new Date().getFullYear()} BF News`
+  const defaultBuiltWithText = 'Built with BF-load & Next.js'
 
   return (
     <footer className="mt-12 border-t bg-black text-gray-300">
@@ -46,22 +54,22 @@ export const FooterClient: React.FC<FooterClientProps> = ({ navItems }) => {
           </div>
 
           <div className="flex flex-wrap gap-3 text-[11px] uppercase tracking-wide">
-            {social.map((item) => (
-              <button
-                key={item}
-                type="button"
-                className="text-gray-400 hover:text-white transition-colors"
-                aria-label={item}
-              >
-                {item}
-              </button>
-            ))}
+            {(socialLinks || []).map(({ link }, i) => {
+              return (
+                <CMSLink
+                  key={i}
+                  {...link}
+                  className="text-gray-400 hover:text-white transition-colors"
+                  appearance="inline"
+                />
+              )
+            })}
           </div>
         </div>
 
         <div className="border-t border-gray-700 pt-4 text-[11px] text-gray-500 flex flex-col sm:flex-row gap-2 justify-between">
-          <span>© {year} BF News</span>
-          <span>Built with BF_load &amp; Next.js</span>
+          <span>{(copyrightText || '').trim() || defaultCopyrightText}</span>
+          <span>{(builtWithText || '').trim() || defaultBuiltWithText}</span>
         </div>
       </div>
     </footer>

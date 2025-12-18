@@ -59,6 +59,6 @@ export default async function Page() {
 
 export function generateMetadata(): Metadata {
   return {
-    title: `BF_load Website Template Posts`,
+    title: `BF-load Website Template Posts`,
   }
 }

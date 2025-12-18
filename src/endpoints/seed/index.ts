@@ -286,12 +286,56 @@ export const seed = async ({
           {
             link: {
               type: 'custom',
-              label: 'BF_load',
+              label: 'BF-load',
               newTab: true,
               url: 'https://payloadcms.com/',
             },
           },
         ],
+        socialLinks: [
+          {
+            link: {
+              type: 'custom',
+              label: 'Facebook',
+              newTab: true,
+              url: 'https://www.facebook.com/',
+            },
+          },
+          {
+            link: {
+              type: 'custom',
+              label: 'X',
+              newTab: true,
+              url: 'https://x.com/',
+            },
+          },
+          {
+            link: {
+              type: 'custom',
+              label: 'Instagram',
+              newTab: true,
+              url: 'https://www.instagram.com/',
+            },
+          },
+          {
+            link: {
+              type: 'custom',
+              label: 'YouTube',
+              newTab: true,
+              url: 'https://www.youtube.com/',
+            },
+          },
+          {
+            link: {
+              type: 'custom',
+              label: 'LinkedIn',
+              newTab: true,
+              url: 'https://www.linkedin.com/',
+            },
+          },
+        ],
+        copyrightText: '© 2025 BF News',
+        builtWithText: 'Built with BF-load & Next.js',
       },
     }),
   ])

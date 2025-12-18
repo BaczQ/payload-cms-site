@@ -1708,6 +1708,34 @@ export interface Footer {
         id?: string | null;
       }[]
     | null;
+  socialLinks?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Left-side footer text (supports any plain text).
+   */
+  copyrightText?: string | null;
+  /**
+   * Right-side footer text (supports any plain text).
+   */
+  builtWithText?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1753,6 +1781,22 @@ export interface FooterSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  socialLinks?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+        id?: T;
+      };
+  copyrightText?: T;
+  builtWithText?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

@@ -27,19 +27,31 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
   variant = 'desktop',
   onLinkClick,
 }) => {
-  const fallbackNav =
-    data?.navItems?.map(({ link }) => ({
-      label: link.label || '',
-      href:
-        link.type === 'reference' &&
-        typeof link.reference?.value === 'object' &&
-        link.reference.value.slug
-          ? `${link.reference?.relationTo !== 'pages' ? `/${link.reference?.relationTo}` : ''}/${link.reference.value.slug}`
-          : link.url || '',
-    })) || []
+  const adminNavItems: { label: string; href: string }[] =
+    data?.navItems
+      ?.map(({ link }) => ({
+        label: link.label || '',
+        href:
+          link.type === 'reference' &&
+          typeof link.reference?.value === 'object' &&
+          link.reference.value.slug
+            ? `${link.reference?.relationTo !== 'pages' ? `/${link.reference?.relationTo}` : ''}/${link.reference.value.slug}`
+            : link.url || '',
+      }))
+      .filter((item) => Boolean(item.label) && Boolean(item.href)) || []
 
-  const navItems =
-    menuItems.length > 0 ? menuItems : fallbackNav.map((item) => ({ ...item, children: [] }))
+  const navItems: MenuItem[] = [
+    ...menuItems,
+    ...(adminNavItems.length > 0
+      ? [
+          {
+            label: 'More',
+            href: '',
+            children: adminNavItems,
+          },
+        ]
+      : []),
+  ]
   const pathname = usePathname()
 
   // Check if we're on a category page
@@ -66,9 +78,11 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
     >
       {navItems.map((item, i) => {
         const categorySlug = getCategorySlug(item.href)
+        const isChildActive = item.children?.some((child) => pathname === child.href) ?? false
         const isActive =
-          item.href &&
-          (pathname === item.href || (isCategoryPage && categorySlug === currentCategorySlug))
+          (item.href &&
+            (pathname === item.href || (isCategoryPage && categorySlug === currentCategorySlug))) ||
+          isChildActive
 
         const hasChildren = item.children && item.children.length > 0
 
@@ -88,17 +102,19 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
                 {item.label} ▾
               </button>
               <div className="pointer-events-auto invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-opacity absolute left-0 top-full mt-1 min-w-[200px] rounded-md border border-gray-200 bg-white shadow-lg z-50 py-1">
-                <CMSLink
-                  appearance="inline"
-                  url={item.href}
-                  label={item.label}
-                  className={clsx(
-                    'block px-3 py-1 text-sm font-medium rounded-md',
-                    isActive
-                      ? 'bg-gray-200 text-black font-semibold'
-                      : 'text-black hover:text-black hover:bg-gray-100',
-                  )}
-                />
+                {item.href ? (
+                  <CMSLink
+                    appearance="inline"
+                    url={item.href}
+                    label={item.label}
+                    className={clsx(
+                      'block px-3 py-1 text-sm font-medium rounded-md',
+                      isActive
+                        ? 'bg-gray-200 text-black font-semibold'
+                        : 'text-black hover:text-black hover:bg-gray-100',
+                    )}
+                  />
+                ) : null}
                 {item.children?.map((child) => {
                   const childSlug = getCategorySlug(child.href)
                   const isChildActive =
@@ -125,7 +141,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
         }
 
         // Regular menu item (desktop without children or mobile)
-        const linkContent = (
+        const linkContent = item.href ? (
           <CMSLink
             appearance="inline"
             url={item.href}
@@ -137,6 +153,17 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
               isActive ? 'bg-gray-200 text-black' : 'text-black hover:bg-gray-200 hover:text-black',
             )}
           />
+        ) : (
+          <span
+            className={clsx(
+              variant === 'desktop' && 'whitespace-nowrap',
+              'rounded-full px-3 py-1 font-semibold transition-colors inline-flex items-center',
+              variant === 'mobile' && 'w-full text-left',
+              isActive ? 'bg-gray-200 text-black' : 'text-black hover:bg-gray-200 hover:text-black',
+            )}
+          >
+            {item.label}
+          </span>
         )
 
         // Mobile with children - show as expandable

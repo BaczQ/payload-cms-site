@@ -21,6 +21,9 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
+    meta: {
+      titleSuffix: 'BF-load',
+    },
     components: {
       // Logo for admin panel (login page and sidebar)
       graphics: {
