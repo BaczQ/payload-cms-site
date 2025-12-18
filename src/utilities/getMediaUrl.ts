@@ -16,6 +16,12 @@ export const getMediaUrl = (url: string | null | undefined, cacheTag?: string | 
 
   // Check if URL already has http/https protocol
   if (url.startsWith('http://') || url.startsWith('https://')) {
+    // If the site is served over HTTPS but the media URL is HTTP,
+    // upgrade it to HTTPS to avoid mixed-content blocks in the browser.
+    if (canUseDOM && window.location.protocol === 'https:' && url.startsWith('http://')) {
+      const upgraded = url.replace(/^http:\/\//, 'https://')
+      return cacheTag ? `${upgraded}?${cacheTag}` : upgraded
+    }
     return cacheTag ? `${url}?${cacheTag}` : url
   }
 

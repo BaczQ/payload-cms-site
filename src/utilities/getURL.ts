@@ -1,11 +1,38 @@
 import canUseDOM from './canUseDOM'
 
+const normalizeServerURL = (raw: string): string => {
+  const trimmed = raw?.trim()
+  if (!trimmed) return ''
+
+  // If server URL is provided without protocol, assume https in production
+  if (!trimmed.startsWith('http://') && !trimmed.startsWith('https://')) {
+    const assumed = `${process.env.NODE_ENV === 'production' ? 'https' : 'http'}://${trimmed}`
+    return assumed
+  }
+
+  // In production, avoid generating http URLs (unless explicitly localhost)
+  if (
+    process.env.NODE_ENV === 'production' &&
+    trimmed.startsWith('http://') &&
+    !trimmed.startsWith('http://localhost') &&
+    !trimmed.startsWith('http://127.0.0.1')
+  ) {
+    return trimmed.replace(/^http:\/\//, 'https://')
+  }
+
+  return trimmed
+}
+
 export const getServerSideURL = () => {
-  const url =
+  const raw =
     process.env.NEXT_PUBLIC_SERVER_URL ||
     (process.env.VERCEL_PROJECT_PRODUCTION_URL
-      ? `http://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-      : 'http://localhost:4000')
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : process.env.NODE_ENV === 'production'
+        ? 'https://bfnews.ru'
+        : 'http://localhost:4000')
+
+  const url = normalizeServerURL(raw)
 
   // Validate URL format
   if (!url || url.trim() === '') {
@@ -26,8 +53,8 @@ export const getClientSideURL = () => {
   }
 
   if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
-    return `http://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
   }
 
-  return process.env.NEXT_PUBLIC_SERVER_URL || ''
+  return normalizeServerURL(process.env.NEXT_PUBLIC_SERVER_URL || '')
 }

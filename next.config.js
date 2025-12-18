@@ -3,7 +3,7 @@ import { withPayload } from '@payloadcms/next/withPayload'
 import redirects from './redirects.js'
 
 const NEXT_PUBLIC_SERVER_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
-  ? `http://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
   : process.env.__NEXT_PRIVATE_ORIGIN ||
     process.env.NEXT_PUBLIC_SERVER_URL ||
     'http://localhost:4000'
@@ -30,7 +30,7 @@ const nextConfig = {
               protocol: url.protocol.replace(':', ''),
               port: url.port || '',
             }
-          } catch (error) {
+          } catch (_error) {
             console.warn(`Failed to create URL object from URL: ${item}, skipping`)
             return null
           }
@@ -47,8 +47,16 @@ const nextConfig = {
         protocol: 'http',
       },
       {
+        hostname: 'bfnews.ru',
+        protocol: 'https',
+      },
+      {
         hostname: 'www.bfnews.ru',
         protocol: 'http',
+      },
+      {
+        hostname: 'www.bfnews.ru',
+        protocol: 'https',
       },
     ],
     // Disable image optimization to fix 400 errors with /api/media/file/
