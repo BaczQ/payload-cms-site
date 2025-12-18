@@ -243,7 +243,14 @@ export interface Post {
     [k: string]: unknown;
   };
   relatedPosts?: (number | Post)[] | null;
+  /**
+   * Устаревшее поле (раньше можно было выбрать несколько). Используйте поле "Category".
+   */
   categories?: (number | Category)[] | null;
+  /**
+   * Выберите одну категорию или подкатегорию.
+   */
+  category: number | Category;
   meta?: {
     title?: string | null;
     /**
@@ -854,6 +861,8 @@ export interface Search {
     | {
         relationTo?: string | null;
         categoryID?: string | null;
+        slug?: string | null;
+        parentSlug?: string | null;
         title?: string | null;
         id?: string | null;
       }[]
@@ -1204,6 +1213,7 @@ export interface PostsSelect<T extends boolean = true> {
   content?: T;
   relatedPosts?: T;
   categories?: T;
+  category?: T;
   meta?:
     | T
     | {
@@ -1550,6 +1560,8 @@ export interface SearchSelect<T extends boolean = true> {
     | {
         relationTo?: T;
         categoryID?: T;
+        slug?: T;
+        parentSlug?: T;
         title?: T;
         id?: T;
       };

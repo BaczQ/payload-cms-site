@@ -53,6 +53,14 @@ export const searchFields: Field[] = [
         type: 'text',
       },
       {
+        name: 'slug',
+        type: 'text',
+      },
+      {
+        name: 'parentSlug',
+        type: 'text',
+      },
+      {
         name: 'title',
         type: 'text',
       },

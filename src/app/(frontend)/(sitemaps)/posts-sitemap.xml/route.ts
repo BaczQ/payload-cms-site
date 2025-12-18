@@ -2,20 +2,23 @@ import { getServerSideSitemap } from 'next-sitemap'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { unstable_cache } from 'next/cache'
+import { getPostPath } from '@/utilities/getPostPath'
 
 const getPostsSitemap = unstable_cache(
   async () => {
     const payload = await getPayload({ config })
     const SITE_URL =
       process.env.NEXT_PUBLIC_SERVER_URL ||
-      (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `http://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : null) ||
+      (process.env.VERCEL_PROJECT_PRODUCTION_URL
+        ? `http://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+        : null) ||
       'http://localhost:4000'
 
     const results = await payload.find({
       collection: 'posts',
       overrideAccess: false,
       draft: false,
-      depth: 0,
+      depth: 2,
       limit: 1000,
       pagination: false,
       where: {
@@ -26,6 +29,7 @@ const getPostsSitemap = unstable_cache(
       select: {
         slug: true,
         updatedAt: true,
+        category: true,
       },
     })
 
@@ -35,7 +39,7 @@ const getPostsSitemap = unstable_cache(
       ? results.docs
           .filter((post) => Boolean(post?.slug))
           .map((post) => ({
-            loc: `${SITE_URL}/posts/${post?.slug}`,
+            loc: `${SITE_URL}${getPostPath(post as any)}`,
             lastmod: post.updatedAt || dateFallback,
           }))
       : []

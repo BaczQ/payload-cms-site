@@ -8,8 +8,6 @@ import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
 import RichText from '@/components/RichText'
 
-import type { Post } from '@/payload-types'
-
 import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
@@ -25,40 +23,42 @@ export async function generateStaticParams() {
     limit: 1000,
     overrideAccess: false,
     pagination: false,
+    depth: 2,
     select: {
       slug: true,
+      category: true,
     },
   })
 
-  const params = posts.docs.map(({ slug }) => {
-    return { slug }
-  })
-
-  return params
+  return posts.docs
+    .filter((post) => Boolean(post?.slug))
+    .map((post) => {
+      const path = getPostPath(post as any)
+      const parts = path.split('/').filter(Boolean) // ['news', ...]
+      return { segments: parts.slice(1) } // drop 'news'
+    })
 }
 
 type Args = {
   params: Promise<{
-    slug?: string
+    segments?: string[]
   }>
 }
 
-export default async function Post({ params: paramsPromise }: Args) {
+export default async function NewsPost({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
-  const { slug = '' } = await paramsPromise
-  // Decode to support slugs with special characters
-  const decodedSlug = decodeURIComponent(slug)
-  const url = '/posts/' + decodedSlug
-  const post = await queryPostBySlug({ slug: decodedSlug })
+  const { segments = [] } = await paramsPromise
 
+  const decodedSegments = segments.map((s) => decodeURIComponent(s))
+  const decodedSlug = decodedSegments[decodedSegments.length - 1] || ''
+  const url = `/news/${decodedSegments.join('/')}`
+
+  const post = await queryPostBySlug({ slug: decodedSlug })
   if (!post) return <PayloadRedirects url={url} />
 
-  // Backwards-compatible redirect: /posts/<slug> -> /news/<category...>/<slug>
-  if (!draft) {
-    const canonicalPath = getPostPath(post as any)
-    if (canonicalPath.startsWith('/news/')) {
-      redirect(canonicalPath)
-    }
+  const canonicalPath = getPostPath(post as any)
+  if (!draft && canonicalPath.startsWith('/news/') && canonicalPath !== url) {
+    redirect(canonicalPath)
   }
 
   return (
@@ -88,9 +88,9 @@ export default async function Post({ params: paramsPromise }: Args) {
 }
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
-  const { slug = '' } = await paramsPromise
-  // Decode to support slugs with special characters
-  const decodedSlug = decodeURIComponent(slug)
+  const { segments = [] } = await paramsPromise
+  const decodedSegments = segments.map((s) => decodeURIComponent(s))
+  const decodedSlug = decodedSegments[decodedSegments.length - 1] || ''
   const post = await queryPostBySlug({ slug: decodedSlug })
 
   return generateMeta({ doc: post })
@@ -98,13 +98,12 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
 
 const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
   const { isEnabled: draft } = await draftMode()
-
   const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({
     collection: 'posts',
     draft,
-    depth: 2, // Load relationships including heroImage with full media data
+    depth: 2,
     limit: 1,
     overrideAccess: draft,
     pagination: false,

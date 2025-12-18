@@ -50,14 +50,14 @@ export default async function CategoryPage({ params, searchParams }: Props) {
     page,
     overrideAccess: false,
     where: {
-      categories: {
-        contains: category.id,
+      category: {
+        equals: category.id,
       },
     },
     select: {
       title: true,
       slug: true,
-      categories: true,
+      category: true,
       heroImage: true,
       meta: true,
     },

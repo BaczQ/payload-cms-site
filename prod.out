@@ -8,9 +8,53 @@
 
  ✓ Starting...
  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
- ✓ Ready in 480ms
+ ✓ Ready in 493ms
 E-mail configured with ethereal.email test account. 
 Log into mock email provider at https://ethereal.email
-Mock email account username: g55f53i6646zweau@ethereal.email
-Mock email account password: shDZK9haese3nyp5AB
- ELIFECYCLE  Command failed with exit code 1.
+Mock email account username: val3ww4joahiklaw@ethereal.email
+Mock email account password: 6ZCttjGUaaqh5jSvcS
+[05:34:32] [33mWARN[39m: [36mMedia file /api/media/file/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png is missing on disk. Expected path: /var/www/bf-news/public/media/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png[39m
+[05:34:33] [33mWARN[39m: [36mMedia file /api/media/file/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png is missing on disk. Expected path: /var/www/bf-news/public/media/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png[39m
+[05:34:52] [31mERROR[39m: [36mFailed to create URL object from URL: , falling back to http://localhost[39m
+[05:34:53] [33mWARN[39m: [36mMedia file /api/media/file/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png is missing on disk. Expected path: /var/www/bf-news/public/media/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png[39m
+[05:34:53] [31mERROR[39m: [36mFailed to create URL object from URL: , falling back to http://localhost[39m
+[05:34:53] [33mWARN[39m: [36mMedia file /api/media/file/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png is missing on disk. Expected path: /var/www/bf-news/public/media/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png[39m
+[05:34:53] [33mWARN[39m: [36mMedia file /api/media/file/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png is missing on disk. Expected path: /var/www/bf-news/public/media/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png[39m
+[05:34:55] [33mWARN[39m: [36mMedia file /api/media/file/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png is missing on disk. Expected path: /var/www/bf-news/public/media/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png[39m
+[05:34:55] [33mWARN[39m: [36mMedia file /api/media/file/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png is missing on disk. Expected path: /var/www/bf-news/public/media/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png[39m
+[05:34:55] [33mWARN[39m: [36mMedia file /api/media/file/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png is missing on disk. Expected path: /var/www/bf-news/public/media/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png[39m
+[05:34:55] [33mWARN[39m: [36mMedia file /api/media/file/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png is missing on disk. Expected path: /var/www/bf-news/public/media/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png[39m
+[05:35:07] [32mINFO[39m: [36mRevalidating old post at path: /posts/test4442[39m
+[05:35:08] [32mINFO[39m: [36mRevalidating post at path: /posts/test4442[39m
+[05:35:11] [32mINFO[39m: [36mRevalidating old post at path: /posts/test4442[39m
+[05:35:18] [32mINFO[39m: [36mRevalidating old post at path: /posts/11[39m
+[05:35:18] [33mWARN[39m: [36mMedia file /api/media/file/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png is missing on disk. Expected path: /var/www/bf-news/public/media/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png[39m
+[05:35:18] [33mWARN[39m: [36mMedia file /api/media/file/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png is missing on disk. Expected path: /var/www/bf-news/public/media/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png[39m
+[05:35:19] [32mINFO[39m: [36mRevalidating post at path: /posts/11[39m
+[05:35:19] [33mWARN[39m: [36mMedia file /api/media/file/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png is missing on disk. Expected path: /var/www/bf-news/public/media/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png[39m
+[05:35:19] [33mWARN[39m: [36mMedia file /api/media/file/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png is missing on disk. Expected path: /var/www/bf-news/public/media/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png[39m
+[05:35:24] [31mERROR[39m: [36mFailed to create URL object from URL: , falling back to http://localhost[39m
+[05:35:26] [31mERROR[39m: [36mFailed to create URL object from URL: , falling back to http://localhost[39m
+[05:35:27] [31mERROR[39m: [36mFailed to create URL object from URL: , falling back to http://localhost[39m
+[05:35:28] [31mERROR[39m: [36mFailed to create URL object from URL: , falling back to http://localhost[39m
+[05:35:35] [32mINFO[39m: [36mRevalidating post at path: /posts/testest-212[39m
+[05:35:39] [32mINFO[39m: [36mRevalidating old post at path: /posts/test[39m
+[05:35:41] [32mINFO[39m: [36mRevalidating post at path: /posts/test[39m
+[05:35:48] [32mINFO[39m: [36mRevalidating old post at path: /posts/machado-has-left-oslo-after-the-nobel-prize-ceremony-her-spokesman-says-[39m
+[05:35:49] [32mINFO[39m: [36mRevalidating post at path: /posts/machado-has-left-oslo-after-the-nobel-prize-ceremony-her-spokesman-says-[39m
+[05:35:57] [32mINFO[39m: [36mRevalidating old post at path: /posts/the-philippines-long-battle-against-islamist-extremism-is-back-in-the-spotlight-following-bondi-attack-[39m
+[05:35:58] [32mINFO[39m: [36mRevalidating post at path: /posts/the-philippines-long-battle-against-islamist-extremism-is-back-in-the-spotlight-following-bondi-attack-[39m
+[05:36:22] [31mERROR[39m: [36mFailed to create URL object from URL: , falling back to http://localhost[39m
+[05:36:28] [32mINFO[39m: [36mRevalidating old post at path: /posts/dollar-and-sense-the-financial-forecast[39m
+[05:36:30] [32mINFO[39m: [36mRevalidating post at path: /posts/dollar-and-sense-the-financial-forecast[39m
+[05:36:37] [33mWARN[39m: [36mMedia file /api/media/file/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png is missing on disk. Expected path: /var/www/bf-news/public/media/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png[39m
+[05:36:37] [33mWARN[39m: [36mMedia file /api/media/file/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png is missing on disk. Expected path: /var/www/bf-news/public/media/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png[39m
+[05:36:39] [33mWARN[39m: [36mMedia file /api/media/file/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png is missing on disk. Expected path: /var/www/bf-news/public/media/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png[39m
+[05:36:42] [33mWARN[39m: [36mMedia file /api/media/file/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png is missing on disk. Expected path: /var/www/bf-news/public/media/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png[39m
+[05:36:42] [33mWARN[39m: [36mMedia file /api/media/file/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png is missing on disk. Expected path: /var/www/bf-news/public/media/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png[39m
+[05:36:42] [33mWARN[39m: [36mMedia file /api/media/file/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png is missing on disk. Expected path: /var/www/bf-news/public/media/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png[39m
+[05:36:42] [33mWARN[39m: [36mMedia file /api/media/file/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png is missing on disk. Expected path: /var/www/bf-news/public/media/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png[39m
+[05:36:46] [33mWARN[39m: [36mMedia file /api/media/file/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png is missing on disk. Expected path: /var/www/bf-news/public/media/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png[39m
+[05:36:49] [33mWARN[39m: [36mMedia file /api/media/file/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png is missing on disk. Expected path: /var/www/bf-news/public/media/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png[39m
+[05:36:52] [33mWARN[39m: [36mMedia file /api/media/file/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png is missing on disk. Expected path: /var/www/bf-news/public/media/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png[39m
+[05:36:56] [33mWARN[39m: [36mMedia file /api/media/file/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png is missing on disk. Expected path: /var/www/bf-news/public/media/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-12-10%20141608.png[39m

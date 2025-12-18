@@ -15,6 +15,7 @@ import { Banner } from '../../blocks/Banner/config'
 import { Code } from '../../blocks/Code/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
+import { getPostPath } from '../../utilities/getPostPath'
 import { populateAuthors } from './hooks/populateAuthors'
 import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
 
@@ -41,7 +42,7 @@ export const Posts: CollectionConfig<'posts'> = {
   defaultPopulate: {
     title: true,
     slug: true,
-    categories: true,
+    category: true,
     meta: {
       image: true,
       description: true,
@@ -55,6 +56,7 @@ export const Posts: CollectionConfig<'posts'> = {
           slug: data?.slug,
           collection: 'posts',
           req,
+          path: data?.slug ? getPostPath(data as any) : undefined,
         }),
     },
     preview: (data, { req }) =>
@@ -62,6 +64,7 @@ export const Posts: CollectionConfig<'posts'> = {
         slug: data?.slug as string,
         collection: 'posts',
         req,
+        path: data?.slug ? getPostPath(data as any) : undefined,
       }),
     useAsTitle: 'title',
   },
@@ -129,10 +132,30 @@ export const Posts: CollectionConfig<'posts'> = {
               type: 'relationship',
               admin: {
                 position: 'sidebar',
+                hidden: true,
+                description:
+                  'Устаревшее поле (раньше можно было выбрать несколько). Используйте поле "Category".',
               },
               hasMany: true,
               relationTo: 'categories',
               maxDepth: 1, // Limit depth to prevent issues with parent relationships
+              access: {
+                create: () => false,
+                read: () => false,
+                update: () => false,
+              },
+            },
+            {
+              name: 'category',
+              type: 'relationship',
+              label: 'Category',
+              required: true,
+              admin: {
+                position: 'sidebar',
+                description: 'Выберите одну категорию или подкатегорию.',
+              },
+              relationTo: 'categories',
+              maxDepth: 2, // Need parent slug to build /news/<parent>/<child>/<post>
             },
           ],
           label: 'Meta',
@@ -222,6 +245,23 @@ export const Posts: CollectionConfig<'posts'> = {
     slugField(),
   ],
   hooks: {
+    beforeValidate: [
+      ({ data }) => {
+        // Backwards compat: if legacy `categories` was used, copy its first value into `category`.
+        const anyData = data as any
+        if (!anyData) return data
+
+        if (
+          !anyData.category &&
+          Array.isArray(anyData.categories) &&
+          anyData.categories.length > 0
+        ) {
+          anyData.category = anyData.categories[0]
+        }
+
+        return anyData
+      },
+    ],
     afterChange: [revalidatePost],
     afterRead: [populateAuthors],
     afterDelete: [revalidateDelete],

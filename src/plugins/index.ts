@@ -12,6 +12,7 @@ import { beforeSyncWithSearch } from '@/search/beforeSync'
 
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
+import { getPostPath } from '@/utilities/getPostPath'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
@@ -20,7 +21,13 @@ const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
 const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
   const url = getServerSideURL()
 
-  return doc?.slug ? `${url}/${doc.slug}` : url
+  if (!doc?.slug) return url
+  if ((doc as any)?.slug && (doc as any)?.content) {
+    // Posts
+    return `${url}${getPostPath(doc as any)}`
+  }
+  // Pages
+  return `${url}/${doc.slug}`
 }
 
 export const plugins: Plugin[] = [

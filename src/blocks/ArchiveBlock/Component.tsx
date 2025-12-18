@@ -33,7 +33,7 @@ export const ArchiveBlock: React.FC<
       ...(flattenedCategories && flattenedCategories.length > 0
         ? {
             where: {
-              categories: {
+              category: {
                 in: flattenedCategories,
               },
             },

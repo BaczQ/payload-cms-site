@@ -73,7 +73,29 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
       </div>
 
       {posts.totalDocs > 0 ? (
-        <CollectionArchive posts={posts.docs as CardPostData[]} />
+        <CollectionArchive
+          posts={
+            posts.docs.map((doc: any) => {
+              const first = Array.isArray(doc.categories) ? doc.categories[0] : undefined
+              const category =
+                first && first.slug
+                  ? {
+                      slug: first.slug,
+                      parent: first.parentSlug ? { slug: first.parentSlug } : null,
+                      title: first.title,
+                    }
+                  : undefined
+
+              return {
+                slug: doc.slug,
+                title: doc.title,
+                meta: doc.meta,
+                heroImage: doc.meta?.image,
+                category,
+              } as any as CardPostData
+            }) as any
+          }
+        />
       ) : (
         <div className="container">No results found.</div>
       )}
