@@ -43,6 +43,27 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   const category = categoryRes.docs?.[0]
   if (!category) notFound()
 
+  const childCategoryRes = await payload.find({
+    collection: 'categories',
+    depth: 0,
+    limit: 1000,
+    overrideAccess: false,
+    pagination: false,
+    where: {
+      parent: {
+        equals: category.id,
+      },
+    },
+    select: {
+      id: true,
+    },
+  })
+
+  const categoryIds = [
+    category.id,
+    ...childCategoryRes.docs.map((childCategory) => childCategory.id),
+  ]
+
   const posts = await payload.find({
     collection: 'posts',
     depth: 1,
@@ -51,7 +72,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
     overrideAccess: false,
     where: {
       category: {
-        equals: category.id,
+        in: categoryIds,
       },
     },
     select: {
