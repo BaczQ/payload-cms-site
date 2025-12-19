@@ -88,19 +88,35 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
 
         // Desktop dropdown menu
         if (variant === 'desktop' && hasChildren) {
+          const parentLink = item.href ? (
+            <CMSLink
+              appearance="inline"
+              url={item.href}
+              label={`${item.label} ▾`}
+              className={clsx(
+                'whitespace-nowrap rounded-full px-3 py-1 font-semibold transition-colors',
+                isActive
+                  ? 'bg-gray-200 text-black'
+                  : 'text-black hover:bg-gray-200 hover:text-black',
+              )}
+            />
+          ) : (
+            <button
+              type="button"
+              className={clsx(
+                'whitespace-nowrap rounded-full px-3 py-1 font-semibold transition-colors',
+                isActive
+                  ? 'bg-gray-200 text-black'
+                  : 'text-black hover:bg-gray-200 hover:text-black',
+              )}
+            >
+              {item.label} ▾
+            </button>
+          )
+
           return (
             <div key={i} className="relative group">
-              <button
-                type="button"
-                className={clsx(
-                  'whitespace-nowrap rounded-full px-3 py-1 font-semibold transition-colors',
-                  isActive
-                    ? 'bg-gray-200 text-black'
-                    : 'text-black hover:bg-gray-200 hover:text-black',
-                )}
-              >
-                {item.label} ▾
-              </button>
+              {parentLink}
               <div className="pointer-events-auto invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-opacity absolute left-0 top-full mt-1 min-w-[200px] rounded-md border border-gray-200 bg-white shadow-lg z-50 py-1">
                 {item.children?.map((child) => {
                   const childSlug = getCategorySlug(child.href)
