@@ -102,19 +102,6 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
                 {item.label} ▾
               </button>
               <div className="pointer-events-auto invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-opacity absolute left-0 top-full mt-1 min-w-[200px] rounded-md border border-gray-200 bg-white shadow-lg z-50 py-1">
-                {item.href ? (
-                  <CMSLink
-                    appearance="inline"
-                    url={item.href}
-                    label={item.label}
-                    className={clsx(
-                      'block px-3 py-1 text-sm font-medium rounded-md',
-                      isActive
-                        ? 'bg-gray-200 text-black font-semibold'
-                        : 'text-black hover:text-black hover:bg-gray-100',
-                    )}
-                  />
-                ) : null}
                 {item.children?.map((child) => {
                   const childSlug = getCategorySlug(child.href)
                   const isChildActive =
