@@ -8,9 +8,15 @@ import type { Header as HeaderType } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
 
+type NavItem = {
+  label: string
+  href: string
+  children?: { label: string; href: string }[]
+}
+
 type HeaderNavProps = {
   data: HeaderType
-  items: { label: string; href: string }[]
+  items: NavItem[]
   variant?: 'desktop' | 'mobile'
   menuItemsCount: number
   onLinkClick?: () => void
@@ -23,7 +29,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
   menuItemsCount,
   onLinkClick,
 }) => {
-  const fallbackNav =
+  const fallbackNav: NavItem[] =
     data?.navItems?.map(({ link }) => ({
       label: link.label || '',
       href:
@@ -32,6 +38,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
         link.reference.value.slug
           ? `${link.reference?.relationTo !== 'pages' ? `/${link.reference?.relationTo}` : ''}/${link.reference.value.slug}`
           : link.url || '',
+      children: undefined,
     })) || []
 
   const navItems = items.length > 0 ? items : fallbackNav
@@ -74,11 +81,55 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
         variant === 'desktop' && 'justify-center',
       )}
     >
-      {primary.map(({ href, label }, i) => {
+      {primary.map(({ href, label, children }, i) => {
         const categorySlug = getCategorySlug(href)
         const isActive =
           href && (pathname === href || (isCategoryPage && categorySlug === currentCategorySlug))
 
+        const hasChildren = children && children.length > 0
+
+        // For items with children, show dropdown menu
+        if (hasChildren && variant === 'desktop') {
+          return (
+            <div key={i} className="relative group flex-shrink-0">
+              <CMSLink
+                appearance="inline"
+                url={href}
+                label={`${label} ▾`}
+                className={clsx(
+                  'whitespace-nowrap rounded-full px-3 py-1 font-semibold transition-colors',
+                  isActive
+                    ? 'bg-gray-200 text-black'
+                    : 'text-black hover:bg-gray-200 hover:text-black',
+                )}
+              />
+              <div className="pointer-events-auto invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-opacity absolute left-0 top-full mt-1 min-w-[200px] rounded-md border border-gray-200 bg-white shadow-lg z-50 py-1">
+                {children.map((child) => {
+                  const childSlug = getCategorySlug(child.href)
+                  const isChildActive =
+                    (child.href && pathname === child.href) ||
+                    (isCategoryPage && childSlug === currentCategorySlug)
+                  return (
+                    <CMSLink
+                      key={child.href}
+                      appearance="inline"
+                      url={child.href}
+                      label={child.label}
+                      className={clsx(
+                        'block px-3 py-1 text-sm font-medium rounded-md',
+                        isChildActive
+                          ? 'bg-gray-200 text-black font-semibold'
+                          : 'text-black hover:text-black hover:bg-gray-100',
+                      )}
+                    />
+                  )
+                })}
+              </div>
+            </div>
+          )
+        }
+
+        // For items without children or mobile variant, show regular link
         const linkContent = (
           <CMSLink
             appearance="inline"
@@ -117,11 +168,55 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
             More ▾
           </button>
           <div className="pointer-events-auto invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-opacity absolute left-0 top-full mt-1 min-w-[200px] rounded-md border border-gray-200 bg-white shadow-lg z-50 py-1">
-            {secondary.map(({ href, label }) => {
+            {secondary.map(({ href, label, children }) => {
               const categorySlug = getCategorySlug(href)
               const isActive =
                 (href && pathname === href) ||
                 (isCategoryPage && categorySlug === currentCategorySlug)
+              const hasChildren = children && children.length > 0
+
+              // For items with children, show nested dropdown
+              if (hasChildren) {
+                return (
+                  <div key={href} className="relative group/nested">
+                    <CMSLink
+                      appearance="inline"
+                      url={href}
+                      label={label}
+                      className={clsx(
+                        'block px-3 py-1 text-sm font-medium rounded-md',
+                        isActive
+                          ? 'bg-gray-200 text-black font-semibold'
+                          : 'text-black hover:text-black hover:bg-gray-100',
+                      )}
+                    />
+                    <div className="pointer-events-auto invisible opacity-0 group-hover/nested:visible group-hover/nested:opacity-100 transition-opacity absolute left-full top-0 ml-1 min-w-[200px] rounded-md border border-gray-200 bg-white shadow-lg z-50 py-1">
+                      {children.map((child) => {
+                        const childSlug = getCategorySlug(child.href)
+                        const isChildActive =
+                          (child.href && pathname === child.href) ||
+                          (isCategoryPage && childSlug === currentCategorySlug)
+                        return (
+                          <CMSLink
+                            key={child.href}
+                            appearance="inline"
+                            url={child.href}
+                            label={child.label}
+                            className={clsx(
+                              'block px-3 py-1 text-sm font-medium rounded-md',
+                              isChildActive
+                                ? 'bg-gray-200 text-black font-semibold'
+                                : 'text-black hover:text-black hover:bg-gray-100',
+                            )}
+                          />
+                        )
+                      })}
+                    </div>
+                  </div>
+                )
+              }
+
+              // Regular item without children
               return (
                 <CMSLink
                   key={href}

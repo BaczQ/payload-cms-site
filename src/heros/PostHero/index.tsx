@@ -25,18 +25,19 @@ export const PostHero: React.FC<{
     const items: Array<{ label: string; href: string }> = []
 
     // Add parent category if exists
-    if (
-      category.parent &&
-      typeof category.parent !== 'string' &&
-      typeof category.parent !== 'number' &&
-      category.parent !== null &&
-      'slug' in category.parent &&
-      category.parent.slug
-    ) {
-      items.push({
-        label: (category.parent.title as string) || category.parent.slug,
-        href: `/categories/${encodeURIComponent(category.parent.slug)}`,
-      })
+    const parent = category.parent
+    if (parent && typeof parent === 'object' && parent !== null) {
+      // Check if parent is populated (has slug property)
+      const parentAny = parent as any
+      const parentSlug = parentAny?.slug
+      const parentTitle = parentAny?.title
+
+      if (parentSlug && typeof parentSlug === 'string') {
+        items.push({
+          label: parentTitle || parentSlug,
+          href: `/categories/${encodeURIComponent(parentSlug)}`,
+        })
+      }
     }
 
     // Add current category

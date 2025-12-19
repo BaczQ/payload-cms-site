@@ -3,6 +3,7 @@
 .admin-header-link {
   display: flex;
   align-items: center;
+  gap: calc(var(--base) * 0.5);
   width: 100%;
   padding: calc(var(--base) * 0.5) var(--base);
   text-decoration: none;
@@ -11,6 +12,16 @@
   color: var(--theme-text);
   border-radius: var(--style-radius-m);
   transition: background-color 0.2s ease;
+
+  .admin-header-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  span {
+    flex: 1;
+  }
 
   &:hover {
     background-color: var(--theme-elevation-100);
