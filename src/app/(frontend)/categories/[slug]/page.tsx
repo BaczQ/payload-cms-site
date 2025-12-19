@@ -54,9 +54,6 @@ export default async function CategoryPage({ params, searchParams }: Props) {
         equals: category.id,
       },
     },
-    select: {
-      id: true,
-    },
   })
 
   const categoryIds = [
