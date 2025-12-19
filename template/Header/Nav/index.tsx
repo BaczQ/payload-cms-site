@@ -71,7 +71,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
       className={clsx(
         'flex items-center gap-2 text-sm',
         variant === 'mobile' && 'flex-col items-start gap-2',
-        variant === 'desktop' && 'justify-center flex-wrap',
+        variant === 'desktop' && 'justify-center',
       )}
     >
       {primary.map(({ href, label }, i) => {
@@ -85,7 +85,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
             url={href}
             label={label}
             className={clsx(
-              'whitespace-nowrap rounded-full px-3 py-1 font-semibold transition-colors',
+              'whitespace-nowrap rounded-full px-3 py-1 font-semibold transition-colors flex-shrink-0',
               isActive ? 'bg-gray-200 text-black' : 'text-black hover:bg-gray-200 hover:text-black',
             )}
           />
@@ -104,7 +104,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
       })}
 
       {variant === 'desktop' && secondary.length > 0 && (
-        <div className="relative group">
+        <div className="relative group flex-shrink-0">
           <button
             type="button"
             className={clsx(

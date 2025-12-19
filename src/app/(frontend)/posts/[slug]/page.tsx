@@ -71,38 +71,33 @@ export default async function Post({ params: paramsPromise }: Args) {
 
       {draft && <LivePreviewListener />}
 
-      <PostHero post={post} />
-
       <div className="flex flex-col items-center gap-4 pt-8">
         <div className="container">
-          <RichText className="max-w-[48rem] mx-auto" data={post.content} enableGutter={false} />
-          {typeof post.heroImage === 'object' && post.heroImage?.url ? (
-            <div className="max-w-[48rem] mx-auto mt-6">
-              <div className="text-sm text-muted-foreground break-all">
-                <span className="font-medium">Hero image URL:</span>{' '}
-                <a className="underline" href={post.heroImage.url} target="_blank" rel="noreferrer">
-                  {post.heroImage.url}
-                </a>
-              </div>
-              <div className="relative mt-3 overflow-hidden rounded-md border border-border aspect-[16/9] bg-muted/20">
-                <Media
-                  fill
-                  priority
-                  resource={post.heroImage}
-                  className="absolute inset-0"
-                  pictureClassName="block w-full h-full"
-                  imgClassName="object-cover"
-                />
-              </div>
+          <div className="flex flex-col lg:flex-row gap-8">
+            {/* Sidebar - только для ≥1024px */}
+            <aside className="hidden lg:block lg:w-[300px] lg:flex-shrink-0">
+              <div className="sticky top-8">{/* Пустой сайдбар для отступа */}</div>
+            </aside>
+
+            {/* Main content */}
+            <div className="flex-1 min-w-0">
+              <PostHero post={post} />
+              <RichText
+                className="max-w-[48rem] mx-auto lg:mx-0"
+                data={post.content}
+                enableGutter={false}
+              />
             </div>
-          ) : null}
-          {post.relatedPosts && post.relatedPosts.length > 0 && (
+          </div>
+        </div>
+        {post.relatedPosts && post.relatedPosts.length > 0 && (
+          <div className="container mt-12">
             <RelatedPosts
-              className="mt-12 max-w-[52rem] lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"
+              className="max-w-[52rem] mx-auto lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"
               docs={post.relatedPosts.filter((post) => typeof post === 'object')}
             />
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </article>
   )
@@ -125,7 +120,7 @@ const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
   const result = await payload.find({
     collection: 'posts',
     draft,
-    depth: 2, // Load relationships including heroImage with full media data
+    depth: 4, // Increased depth to load category.parent as object (depth 4 ensures parent is fully populated)
     limit: 1,
     overrideAccess: draft,
     pagination: false,

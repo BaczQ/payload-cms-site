@@ -1,78 +1,109 @@
 import { formatDateTime } from 'src/utilities/formatDateTime'
 import React from 'react'
+import Link from 'next/link'
 
 import type { Post } from '@/payload-types'
 
 import { Media } from '@/components/Media'
 import { formatAuthors } from '@/utilities/formatAuthors'
+import RichText from '@/components/RichText'
 
 export const PostHero: React.FC<{
   post: Post
 }> = ({ post }) => {
-  const { category, heroImage, populatedAuthors, publishedAt, subTitle, title } = post
+  const { heroImage, populatedAuthors, publishedAt, subTitle, title, category } = post
 
   const hasAuthors =
     populatedAuthors && populatedAuthors.length > 0 && formatAuthors(populatedAuthors) !== ''
 
+  // Build breadcrumbs from category
+  const breadcrumbs = React.useMemo(() => {
+    if (!category || typeof category === 'string' || typeof category === 'number') {
+      return null
+    }
+
+    const items: Array<{ label: string; href: string }> = []
+
+    // Add parent category if exists
+    if (
+      category.parent &&
+      typeof category.parent !== 'string' &&
+      typeof category.parent !== 'number' &&
+      category.parent !== null &&
+      'slug' in category.parent &&
+      category.parent.slug
+    ) {
+      items.push({
+        label: (category.parent.title as string) || category.parent.slug,
+        href: `/categories/${encodeURIComponent(category.parent.slug)}`,
+      })
+    }
+
+    // Add current category
+    if (category.slug) {
+      items.push({
+        label: category.title || category.slug,
+        href: `/categories/${encodeURIComponent(category.slug)}`,
+      })
+    }
+
+    return items.length > 0 ? items : null
+  }, [category])
+
   return (
-    <div className="relative -mt-[10.4rem] flex items-end">
-      <div className="container z-10 relative lg:grid lg:grid-cols-[1fr_48rem_1fr] text-white pb-8">
-        <div className="col-start-1 col-span-1 md:col-start-2 md:col-span-2">
-          <div className="uppercase text-sm mb-6">
-            {category && typeof category === 'object' ? (
-              <React.Fragment>
-                {category?.parent &&
-                typeof category.parent === 'object' &&
-                category.parent.title ? (
-                  <React.Fragment>
-                    {category.parent.title}
-                    <React.Fragment> / </React.Fragment>
-                  </React.Fragment>
-                ) : null}
-                {category.title || 'Untitled category'}
-              </React.Fragment>
-            ) : null}
-          </div>
-
-          <div className="">
-            <h1 className="mb-6 text-3xl md:text-5xl lg:text-6xl">{title}</h1>
-            {subTitle ? (
-              <p className="text-base md:text-lg lg:text-xl text-white/90 -mt-4 mb-6">{subTitle}</p>
-            ) : null}
-          </div>
-
-          <div className="flex flex-col md:flex-row gap-4 md:gap-16">
-            {hasAuthors && (
-              <div className="flex flex-col gap-4">
-                <div className="flex flex-col gap-1">
-                  <p className="text-sm">Author</p>
-
-                  <p>{formatAuthors(populatedAuthors)}</p>
-                </div>
-              </div>
-            )}
-            {publishedAt && (
-              <div className="flex flex-col gap-1">
-                <p className="text-sm">Date Published</p>
-
-                <time dateTime={publishedAt}>{formatDateTime(publishedAt)}</time>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-      <div className="relative min-h-[80vh] select-none">
-        {heroImage && typeof heroImage !== 'string' && (
-          <Media
-            fill
-            priority
-            className="absolute inset-0"
-            pictureClassName="w-full h-full"
-            imgClassName="object-cover"
-            resource={heroImage}
-          />
+    <div className="text-black dark:text-white">
+      <div className="w-full max-w-[48rem] mx-auto lg:mx-0">
+        {breadcrumbs && breadcrumbs.length > 0 && (
+          <nav className="mb-4 text-sm text-black/70 dark:text-white/70">
+            <ol className="flex items-center gap-2 flex-wrap">
+              {breadcrumbs.map((item, index) => (
+                <React.Fragment key={item.href}>
+                  <li>
+                    <Link
+                      href={item.href}
+                      className="hover:text-black dark:hover:text-white transition-colors"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                  {index < breadcrumbs.length - 1 && (
+                    <li className="text-black/50 dark:text-white/50">/</li>
+                  )}
+                </React.Fragment>
+              ))}
+            </ol>
+          </nav>
         )}
-        <div className="absolute pointer-events-none left-0 bottom-0 w-full h-1/2 bg-gradient-to-t from-black to-transparent" />
+        <h1 className="mb-6 text-3xl md:text-5xl lg:text-6xl text-black dark:text-white text-left">
+          {title}
+        </h1>
+        {subTitle ? (
+          <p className="text-base md:text-lg lg:text-xl text-black/90 dark:text-white/90 mb-6 text-left">
+            {subTitle}
+          </p>
+        ) : null}
+        {publishedAt && (
+          <time dateTime={publishedAt} className="block mb-6 text-left">
+            {formatDateTime(publishedAt)}
+          </time>
+        )}
+        {heroImage && typeof heroImage !== 'string' && typeof heroImage === 'object' && (
+          <div className="w-full lg:max-w-[48rem] lg:mx-auto mb-6">
+            <Media
+              priority
+              resource={heroImage}
+              className="relative w-full"
+              pictureClassName="relative w-full block"
+              imgClassName="w-full h-auto border border-border rounded-[0.8rem] m-0"
+            />
+            {heroImage.caption && typeof heroImage.caption === 'object' && (
+              <div className="mt-3">
+                <RichText data={heroImage.caption} enableGutter={false} />
+              </div>
+            )}
+          </div>
+        )}
+        {hasAuthors && <p className="text-left">{formatAuthors(populatedAuthors)}</p>}
       </div>
     </div>
   )

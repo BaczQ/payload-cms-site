@@ -7,6 +7,7 @@ import { useSelectedLayoutSegments } from 'next/navigation'
 import { PayloadAdminBar } from '@payloadcms/admin-bar'
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 import './index.scss'
 
@@ -35,32 +36,34 @@ export const AdminBar: React.FC<{
   const { adminBarProps } = props || {}
   const segments = useSelectedLayoutSegments()
   const [show, setShow] = useState(false)
+  const [user, setUser] = useState<PayloadMeUser | null>(null)
   const collection = (
     collectionLabels[segments?.[1] as keyof typeof collectionLabels] ? segments[1] : 'pages'
   ) as keyof typeof collectionLabels
   const router = useRouter()
+  const cmsURL = getClientSideURL()
 
-  const onAuthChange = React.useCallback((user: PayloadMeUser) => {
-    setShow(Boolean(user?.id))
+  const onAuthChange = React.useCallback((userData: PayloadMeUser) => {
+    setShow(Boolean(userData?.id))
+    setUser(userData || null)
   }, [])
 
+  const linkClassName = 'font-medium text-white text-sm hover:opacity-80 transition-opacity'
+  const linkStyle = {
+    color: 'inherit',
+    textDecoration: 'none',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap' as const,
+  }
+
   return (
-    <div
-      className={cn(baseClass, 'py-2 bg-black text-white', {
-        block: show,
-        hidden: !show,
-      })}
-    >
-      <div className="container">
+    <>
+      {/* Hidden PayloadAdminBar for auth detection */}
+      <div style={{ display: 'none' }}>
         <PayloadAdminBar
           {...adminBarProps}
-          className="py-2 text-white"
-          classNames={{
-            controls: 'font-medium text-white',
-            logo: 'text-white',
-            user: 'text-white',
-          }}
-          cmsURL={getClientSideURL()}
+          cmsURL={cmsURL}
           collectionSlug={collection}
           collectionLabels={{
             plural: collectionLabels[collection]?.plural || 'Pages',
@@ -73,14 +76,44 @@ export const AdminBar: React.FC<{
               router.refresh()
             })
           }}
-          style={{
-            backgroundColor: 'transparent',
-            padding: 0,
-            position: 'relative',
-            zIndex: 'unset',
-          }}
         />
       </div>
-    </div>
+
+      {/* Custom Admin Bar */}
+      <div
+        className={cn(baseClass, 'py-2 bg-black text-white relative z-[9999]', {
+          block: show,
+          hidden: !show,
+        })}
+      >
+        <div className="container flex items-center justify-between gap-4">
+          {/* User email on the left */}
+          {user?.email && (
+            <div className="font-medium text-white text-sm truncate">{user.email}</div>
+          )}
+
+          {/* Links on the right */}
+          <div className="flex items-center gap-4">
+            <Link
+              href={`${cmsURL}/admin/collections/pages/create`}
+              className={linkClassName}
+              style={linkStyle}
+            >
+              New Page
+            </Link>
+            <Link
+              href={`${cmsURL}/admin/collections/posts/create`}
+              className={linkClassName}
+              style={linkStyle}
+            >
+              New Post
+            </Link>
+            <Link href={`${cmsURL}/admin/logout`} className={linkClassName} style={linkStyle}>
+              Logout
+            </Link>
+          </div>
+        </div>
+      </div>
+    </>
   )
 }
