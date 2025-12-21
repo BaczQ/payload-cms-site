@@ -96,6 +96,13 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['@payloadcms/ui'],
   },
+  // Optimize CSS handling to prevent preload warnings
+  compiler: {
+    // Remove console logs in production
+    removeConsole: process.env.NODE_ENV === 'production' ? {
+      exclude: ['error', 'warn'],
+    } : false,
+  },
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })
