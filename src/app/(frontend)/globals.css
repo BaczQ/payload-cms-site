@@ -9,8 +9,8 @@
   h4,
   h5,
   h6 {
-    font-size: unset;
-    font-weight: unset;
+    font-size: inherit;
+    font-weight: inherit;
   }
 
   /* Heading font for all headings */

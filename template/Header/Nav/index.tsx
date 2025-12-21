@@ -91,7 +91,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
         // For items with children, show dropdown menu
         if (hasChildren && variant === 'desktop') {
           return (
-            <div key={i} className="relative group flex-shrink-0">
+            <div key={i} className="relative group flex-shrink-0 pb-4 group-hover:z-50">
               <CMSLink
                 appearance="inline"
                 url={href}
@@ -103,6 +103,8 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
                     : 'text-black hover:bg-gray-200 hover:text-black',
                 )}
               />
+              {/* Невидимая область между кнопкой и подменю для поддержания hover */}
+              <div className="absolute left-0 top-full w-full h-1 pointer-events-none group-hover:pointer-events-auto" />
               <div className="pointer-events-auto invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-opacity absolute left-0 top-full mt-1 min-w-[200px] rounded-md border border-gray-200 bg-white shadow-lg z-50 py-1">
                 {children.map((child) => {
                   const childSlug = getCategorySlug(child.href)
@@ -125,6 +127,8 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
                   )
                 })}
               </div>
+              {/* Невидимая область под подменю для поддержания hover */}
+              <div className="absolute left-0 top-full mt-1 min-w-[200px] h-4 pointer-events-none group-hover:pointer-events-auto" />
             </div>
           )
         }
@@ -155,7 +159,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
       })}
 
       {variant === 'desktop' && secondary.length > 0 && (
-        <div className="relative group flex-shrink-0">
+        <div className="relative group flex-shrink-0 pb-4 group-hover:z-50">
           <button
             type="button"
             className={clsx(
@@ -167,6 +171,8 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
           >
             More ▾
           </button>
+          {/* Невидимая область между кнопкой и подменю для поддержания hover */}
+          <div className="absolute left-0 top-full w-full h-1 pointer-events-none group-hover:pointer-events-auto" />
           <div className="pointer-events-auto invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-opacity absolute left-0 top-full mt-1 min-w-[200px] rounded-md border border-gray-200 bg-white shadow-lg z-50 py-1">
             {secondary.map(({ href, label, children }) => {
               const categorySlug = getCategorySlug(href)
@@ -178,7 +184,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
               // For items with children, show nested dropdown
               if (hasChildren) {
                 return (
-                  <div key={href} className="relative group/nested">
+                  <div key={href} className="relative group/nested group-hover/nested:z-50">
                     <CMSLink
                       appearance="inline"
                       url={href}
@@ -233,6 +239,8 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
               )
             })}
           </div>
+          {/* Невидимая область под подменю для поддержания hover */}
+          <div className="absolute left-0 top-full mt-1 min-w-[200px] h-4 pointer-events-none group-hover:pointer-events-auto" />
         </div>
       )}
     </nav>

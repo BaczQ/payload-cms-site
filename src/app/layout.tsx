@@ -7,6 +7,7 @@ import React from 'react'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 
 import { getServerSideURL } from '@/utilities/getURL'
+import { ChunkLoadErrorHandler } from '@/components/ChunkLoadErrorHandler'
 
 export const metadata: Metadata = {
   metadataBase: new URL(getServerSideURL()),
@@ -24,7 +25,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
-      <body>{children}</body>
+      <body>
+        <ChunkLoadErrorHandler />
+        {children}
+      </body>
     </html>
   )
 }

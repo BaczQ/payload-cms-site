@@ -89,7 +89,7 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
                   format: 0,
                   mode: 'normal',
                   style: '',
-                  text: " to begin managing this site's content. The code for this template is completely open-source and can be found ",
+                  text: " to JUST begin managing this site's content. The code for this template is completely open-source and can be found ",
                   version: 1,
                 },
                 {

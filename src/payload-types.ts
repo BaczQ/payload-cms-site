@@ -200,7 +200,7 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | NewsPostsBlock)[];
   meta?: {
     title?: string | null;
     /**
@@ -797,6 +797,36 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewsPostsBlock".
+ */
+export interface NewsPostsBlock {
+  /**
+   * Заголовок для секции новостей на главной странице
+   */
+  title?: string | null;
+  /**
+   * Slug категории "новости". По умолчанию: "news". Блок найдет эту категорию и все её подкатегории.
+   */
+  categorySlug?: string | null;
+  /**
+   * Сколько постов показывать на главной странице
+   */
+  limit?: number | null;
+  /**
+   * Показывать ли ссылку на страницу со всеми новостями
+   */
+  showMoreLink?: boolean | null;
+  moreLinkText?: string | null;
+  /**
+   * Куда ведет ссылка "Все новости"
+   */
+  moreLinkUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'newsPosts';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1105,6 +1135,7 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        newsPosts?: T | NewsPostsBlockSelect<T>;
       };
   meta?:
     | T
@@ -1201,6 +1232,20 @@ export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
   enableIntro?: T;
   introContent?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewsPostsBlock_select".
+ */
+export interface NewsPostsBlockSelect<T extends boolean = true> {
+  title?: T;
+  categorySlug?: T;
+  limit?: T;
+  showMoreLink?: T;
+  moreLinkText?: T;
+  moreLinkUrl?: T;
   id?: T;
   blockName?: T;
 }

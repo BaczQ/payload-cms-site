@@ -117,27 +117,32 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
           return (
             <div key={i} className="relative group">
               {parentLink}
-              <div className="pointer-events-auto invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-opacity absolute left-0 top-full mt-1 min-w-[200px] rounded-md border border-gray-200 bg-white shadow-lg z-50 py-1">
-                {item.children?.map((child) => {
-                  const childSlug = getCategorySlug(child.href)
-                  const isChildActive =
-                    (child.href && pathname === child.href) ||
-                    (isCategoryPage && childSlug === currentCategorySlug)
-                  return (
-                    <CMSLink
-                      key={child.href}
-                      appearance="inline"
-                      url={child.href}
-                      label={child.label}
-                      className={clsx(
-                        'block px-3 py-1 text-sm font-medium rounded-md',
-                        isChildActive
-                          ? 'bg-gray-200 text-black font-semibold'
-                          : 'text-black hover:text-black hover:bg-gray-100',
-                      )}
-                    />
-                  )
-                })}
+              <div className="pointer-events-none invisible opacity-0 group-hover:visible group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity absolute left-0 top-full">
+                {/* Invisible hover bridge to cover the gap */}
+                <div className="absolute left-0 -top-2 h-2 w-full bg-transparent" />
+                {/* Menu panel with visible gap */}
+                <div className="mt-2 min-w-[200px] rounded-md border border-gray-200 bg-white shadow-lg z-50 py-1">
+                  {item.children?.map((child) => {
+                    const childSlug = getCategorySlug(child.href)
+                    const isChildActive =
+                      (child.href && pathname === child.href) ||
+                      (isCategoryPage && childSlug === currentCategorySlug)
+                    return (
+                      <CMSLink
+                        key={child.href}
+                        appearance="inline"
+                        url={child.href}
+                        label={child.label}
+                        className={clsx(
+                          'block px-3 py-1 text-sm font-medium rounded-md',
+                          isChildActive
+                            ? 'bg-gray-200 text-black font-semibold'
+                            : 'text-black hover:text-black hover:bg-gray-100',
+                        )}
+                      />
+                    )
+                  })}
+                </div>
               </div>
             </div>
           )

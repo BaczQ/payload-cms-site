@@ -63,7 +63,7 @@ const nextConfig = {
     // Images will be served directly without optimization
     unoptimized: true,
   },
-  webpack: (webpackConfig, { isServer }) => {
+  webpack: (webpackConfig, { isServer, dev }) => {
     webpackConfig.resolve.extensionAlias = {
       '.cjs': ['.cts', '.cjs'],
       '.js': ['.ts', '.tsx', '.js', '.jsx'],
@@ -85,6 +85,17 @@ const nextConfig = {
   },
   reactStrictMode: true,
   redirects,
+  // Optimize static asset handling
+  onDemandEntries: {
+    // Period (in ms) where the server will keep pages in the buffer
+    maxInactiveAge: 60 * 1000,
+    // Number of pages that should be kept simultaneously without being disposed
+    pagesBufferLength: 5,
+  },
+  // Generate stable chunk IDs for better caching
+  experimental: {
+    optimizePackageImports: ['@payloadcms/ui'],
+  },
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })
