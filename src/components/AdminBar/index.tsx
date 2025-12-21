@@ -3,7 +3,7 @@
 import type { PayloadAdminBarProps, PayloadMeUser } from '@payloadcms/admin-bar'
 
 import { cn } from '@/utilities/ui'
-import { useSelectedLayoutSegments } from 'next/navigation'
+import { usePathname, useSelectedLayoutSegments } from 'next/navigation'
 import { PayloadAdminBar } from '@payloadcms/admin-bar'
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -37,10 +37,12 @@ export const AdminBar: React.FC<{
   const segments = useSelectedLayoutSegments()
   const [show, setShow] = useState(false)
   const [user, setUser] = useState<PayloadMeUser | null>(null)
+  const [editPostHref, setEditPostHref] = useState<string | null>(null)
   const collection = (
     collectionLabels[segments?.[1] as keyof typeof collectionLabels] ? segments[1] : 'pages'
   ) as keyof typeof collectionLabels
   const router = useRouter()
+  const pathname = usePathname()
   const cmsURL = getClientSideURL()
 
   const onAuthChange = React.useCallback((userData: PayloadMeUser) => {
@@ -56,6 +58,51 @@ export const AdminBar: React.FC<{
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap' as const,
   }
+
+  React.useEffect(() => {
+    const getSlugFromPathname = () => {
+      if (!pathname) return null
+      const segments = pathname.split('/').filter(Boolean)
+      if (segments.length < 2) return null
+      const [base] = segments
+      if (base !== 'posts' && base !== 'news') return null
+      return segments[segments.length - 1]
+    }
+
+    const slug = getSlugFromPathname()
+    if (!slug || !cmsURL) {
+      setEditPostHref(null)
+      return
+    }
+
+    const controller = new AbortController()
+    const loadPostId = async () => {
+      const response = await fetch(
+        `${cmsURL}/api/posts?depth=0&draft=true&limit=1&where[slug][equals]=${encodeURIComponent(
+          slug,
+        )}`,
+        {
+          credentials: 'include',
+          signal: controller.signal,
+        },
+      )
+
+      if (!response.ok) {
+        setEditPostHref(null)
+        return
+      }
+
+      const data = (await response.json()) as { docs?: Array<{ id?: string }> }
+      const postId = data.docs?.[0]?.id
+      setEditPostHref(postId ? `${cmsURL}/admin/collections/posts/${postId}` : null)
+    }
+
+    loadPostId().catch(() => {
+      setEditPostHref(null)
+    })
+
+    return () => controller.abort()
+  }, [cmsURL, pathname])
 
   return (
     <>
@@ -94,6 +141,11 @@ export const AdminBar: React.FC<{
 
           {/* Links on the right */}
           <div className="flex items-center gap-4">
+            {editPostHref && (
+              <Link href={editPostHref} className={linkClassName} style={linkStyle}>
+                Edit Post
+              </Link>
+            )}
             <Link
               href={`${cmsURL}/admin/collections/pages/create`}
               className={linkClassName}
