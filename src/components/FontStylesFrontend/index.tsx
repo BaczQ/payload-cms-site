@@ -62,7 +62,7 @@ export default function FontStylesFrontend() {
         if (fonts.postText) {
           const fontFamily = fontFamilyMap[fonts.postText] || fontFamilyMap.roboto
           cssRules.push(
-            `.payload-richtext p, .payload-richtext li { font-family: ${fontFamily} !important; }`,
+            `.payload-richtext, .payload-richtext p, .payload-richtext li { font-family: ${fontFamily} !important; }`,
           )
         }
 
@@ -122,4 +122,3 @@ export default function FontStylesFrontend() {
 
   return <style dangerouslySetInnerHTML={{ __html: styles }} />
 }
-

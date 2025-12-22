@@ -104,7 +104,7 @@ export const PostHero: React.FC<{
             )}
           </div>
         )}
-        {hasAuthors && <p className="text-left">{formatAuthors(populatedAuthors)}</p>}
+        {hasAuthors && <p className="text-left author">{formatAuthors(populatedAuthors)}</p>}
       </div>
     </div>
   )
