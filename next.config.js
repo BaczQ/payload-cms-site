@@ -103,6 +103,20 @@ const nextConfig = {
       exclude: ['error', 'warn'],
     } : false,
   },
+  // Add headers to prevent caching issues with chunks
+  async headers() {
+    return [
+      {
+        source: '/_next/static/chunks/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+    ]
+  },
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })
