@@ -79,7 +79,7 @@ export const PostHero: React.FC<{
           {title}
         </h1>
         {subTitle ? (
-          <p className="text-base md:text-lg lg:text-xl text-black/90 dark:text-white/90 mb-6 text-left">
+          <p className="mb-6 text-left">
             {subTitle}
           </p>
         ) : null}
@@ -98,7 +98,7 @@ export const PostHero: React.FC<{
               imgClassName="w-full h-auto border border-border rounded-[0.8rem] m-0"
             />
             {heroImage.caption && typeof heroImage.caption === 'object' && (
-              <div className="mt-3">
+              <div className="mt-3 image-caption">
                 <RichText data={heroImage.caption} enableGutter={false} />
               </div>
             )}

@@ -40,23 +40,6 @@ export default function FontLoader() {
         stylesheet.rel = 'stylesheet'
         document.head.appendChild(stylesheet)
       }
-
-      // Load local font Libre Franklin
-      const existingLibreFranklin = document.querySelector('style[data-font="libre-franklin"]')
-      if (!existingLibreFranklin) {
-        const fontStyle = document.createElement('style')
-        fontStyle.setAttribute('data-font', 'libre-franklin')
-        fontStyle.textContent = `
-          @font-face {
-            font-family: 'Libre Franklin';
-            src: url('/fonts/1.woff2') format('woff2');
-            font-display: swap;
-            font-weight: normal;
-            font-style: normal;
-          }
-        `
-        document.head.appendChild(fontStyle)
-      }
     } catch (error) {
       // Silently fail - don't break the app
       console.error('Failed to load fonts:', error)

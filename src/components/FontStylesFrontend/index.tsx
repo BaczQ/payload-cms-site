@@ -14,7 +14,8 @@ const fontFamilyMap: Record<string, string> = {
   'roboto-flex': 'var(--font-roboto-flex), system-ui, sans-serif',
   'roboto-condensed': 'var(--font-roboto-condensed), system-ui, sans-serif',
   tinos: 'var(--font-tinos), Georgia, serif',
-  'libre-franklin': '"Libre Franklin", system-ui, sans-serif',
+  'system-ui': 'system-ui, -apple-system, sans-serif',
+  'sans-serif': 'sans-serif',
 }
 
 export default function FontStylesFrontend() {
@@ -69,7 +70,7 @@ export default function FontStylesFrontend() {
         // Menu - текст в меню
         if (fonts.menu) {
           const fontFamily = fontFamilyMap[fonts.menu] || fontFamilyMap.roboto
-          cssRules.push(`header nav, header nav a, nav, nav a, .nav, .nav a { font-family: ${fontFamily} !important; }`)
+          cssRules.push(`header nav, header nav a, header nav button, nav, nav a, nav button, .nav, .nav a, .nav button, [class*="nav"] button { font-family: ${fontFamily} !important; }`)
         }
 
         // Caption - подпись изображения

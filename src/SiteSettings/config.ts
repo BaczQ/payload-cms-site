@@ -34,8 +34,12 @@ const fontOptions = [
     value: 'tinos',
   },
   {
-    label: 'Libre Franklin',
-    value: 'libre-franklin',
+    label: 'System UI',
+    value: 'system-ui',
+  },
+  {
+    label: 'Sans Serif',
+    value: 'sans-serif',
   },
 ]
 

@@ -128,6 +128,12 @@ const config = {
                 fontWeight: 'normal',
                 marginBottom: '0.25em',
               },
+              figcaption: {
+                fontSize: '0.875rem', // 14px
+                lineHeight: '1.25', // 17.5px (17.5/14)
+                fontWeight: '400',
+                color: 'rgb(75 85 99)', // gray-600 - чуть серее
+              },
             },
           ],
         },

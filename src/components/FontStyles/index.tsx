@@ -12,11 +12,8 @@ const fontFamilyMap: Record<string, string> = {
   'roboto-flex': '"Roboto Flex", sans-serif',
   'roboto-condensed': '"Roboto Condensed", sans-serif',
   tinos: '"Tinos", serif',
-  'libre-franklin': '"Libre Franklin", system-ui, sans-serif',
-  // Handle potential variations of the font name
-  'librefranklin': '"Libre Franklin", system-ui, sans-serif',
-  'libreFranklin': '"Libre Franklin", system-ui, sans-serif',
-  'LibreFranklin': '"Libre Franklin", system-ui, sans-serif',
+  'system-ui': 'system-ui, -apple-system, sans-serif',
+  'sans-serif': 'sans-serif',
 }
 
 // Fallback fonts (current fonts)
@@ -29,11 +26,8 @@ const fallbackFonts: Record<string, string> = {
   'roboto-flex': 'var(--font-sans)',
   'roboto-condensed': 'var(--font-sans)',
   tinos: 'var(--font-serif)',
-  'libre-franklin': 'system-ui, sans-serif',
-  // Handle potential variations of the font name
-  'librefranklin': 'system-ui, sans-serif',
-  'libreFranklin': 'system-ui, sans-serif',
-  'LibreFranklin': 'system-ui, sans-serif',
+  'system-ui': 'system-ui, -apple-system, sans-serif',
+  'sans-serif': 'sans-serif',
 }
 
 // Helper function to normalize font value (handles case variations)
@@ -41,10 +35,6 @@ function normalizeFontValue(value: string | null | undefined): string | null {
   if (!value || typeof value !== 'string') return null
   // Convert to lowercase and handle variations
   const normalized = value.toLowerCase().trim()
-  // Map common variations to correct key
-  if (normalized === 'librefranklin' || normalized === 'libre-franklin') {
-    return 'libre-franklin'
-  }
   return normalized
 }
 
@@ -66,14 +56,14 @@ export default function FontStyles() {
         const response = await fetch('/api/globals/site-settings?depth=0', {
           credentials: 'include',
         })
-        
+
         if (!response.ok) {
           // If global doesn't exist yet, that's okay
           return
         }
 
         const siteSettings = await response.json()
-        
+
         if (!siteSettings || typeof siteSettings !== 'object') {
           return
         }
@@ -170,4 +160,3 @@ export default function FontStyles() {
 
   return <style dangerouslySetInnerHTML={{ __html: styles }} />
 }
-

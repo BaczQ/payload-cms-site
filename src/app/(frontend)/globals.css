@@ -124,6 +124,27 @@
   body {
     @apply bg-background text-foreground min-h-[100vh] flex flex-col font-sans;
   }
+  /* Caption styles for image captions */
+  figcaption {
+    font-size: 14px;
+    line-height: 17.5px;
+    font-weight: 400;
+    color: rgb(75 85 99); /* gray-600 - чуть серее */
+  }
+  [data-theme='dark'] figcaption {
+    color: rgb(156 163 175); /* gray-400 для темной темы */
+  }
+  /* Image caption styles (for RichText captions under images) */
+  .image-caption p {
+    font-size: 14px;
+    line-height: 17.5px;
+    font-weight: 400;
+    color: rgb(75 85 99); /* gray-600 - чуть серее */
+    font-style: italic;
+  }
+  [data-theme='dark'] .image-caption p {
+    color: rgb(156 163 175); /* gray-400 для темной темы */
+  }
 }
 
 html {

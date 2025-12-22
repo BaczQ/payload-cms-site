@@ -105,7 +105,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
             <button
               type="button"
               className={clsx(
-                'whitespace-nowrap rounded-full px-3 py-1 font-semibold font-inherit transition-colors',
+                'whitespace-nowrap rounded-full px-3 py-1 font-semibold transition-colors',
                 isActive
                   ? 'bg-gray-200 text-black'
                   : 'text-black hover:bg-gray-200 hover:text-black',
@@ -118,11 +118,17 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
           return (
             <div key={i} className="relative group" style={{ zIndex: 9999 }}>
               {parentLink}
-              <div className="pointer-events-none invisible opacity-0 group-hover:visible group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity absolute left-0 top-full" style={{ zIndex: 9999 }}>
+              <div
+                className="pointer-events-none invisible opacity-0 group-hover:visible group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity absolute left-0 top-full"
+                style={{ zIndex: 9999 }}
+              >
                 {/* Invisible hover bridge to cover the gap */}
                 <div className="absolute left-0 -top-2 h-2 w-full bg-transparent pointer-events-none" />
                 {/* Menu panel with visible gap */}
-                <div className="mt-2 min-w-[200px] rounded-md border border-gray-200 bg-white shadow-lg py-1" style={{ zIndex: 9999 }}>
+                <div
+                  className="mt-2 min-w-[200px] rounded-md border border-gray-200 bg-white shadow-lg py-1"
+                  style={{ zIndex: 9999 }}
+                >
                   {item.children?.map((child) => {
                     const childSlug = getCategorySlug(child.href)
                     const isChildActive =
