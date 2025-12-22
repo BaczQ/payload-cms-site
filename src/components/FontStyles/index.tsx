@@ -13,6 +13,10 @@ const fontFamilyMap: Record<string, string> = {
   'roboto-condensed': '"Roboto Condensed", sans-serif',
   tinos: '"Tinos", serif',
   'libre-franklin': '"Libre Franklin", system-ui, sans-serif',
+  // Handle potential variations of the font name
+  'librefranklin': '"Libre Franklin", system-ui, sans-serif',
+  'libreFranklin': '"Libre Franklin", system-ui, sans-serif',
+  'LibreFranklin': '"Libre Franklin", system-ui, sans-serif',
 }
 
 // Fallback fonts (current fonts)
@@ -26,12 +30,32 @@ const fallbackFonts: Record<string, string> = {
   'roboto-condensed': 'var(--font-sans)',
   tinos: 'var(--font-serif)',
   'libre-franklin': 'system-ui, sans-serif',
+  // Handle potential variations of the font name
+  'librefranklin': 'system-ui, sans-serif',
+  'libreFranklin': 'system-ui, sans-serif',
+  'LibreFranklin': 'system-ui, sans-serif',
+}
+
+// Helper function to normalize font value (handles case variations)
+function normalizeFontValue(value: string | null | undefined): string | null {
+  if (!value || typeof value !== 'string') return null
+  // Convert to lowercase and handle variations
+  const normalized = value.toLowerCase().trim()
+  // Map common variations to correct key
+  if (normalized === 'librefranklin' || normalized === 'libre-franklin') {
+    return 'libre-franklin'
+  }
+  return normalized
 }
 
 export default function FontStyles() {
   const [styles, setStyles] = useState<string>('')
+  const [mounted, setMounted] = useState<boolean>(false)
 
   useEffect(() => {
+    // Mark as mounted to prevent hydration mismatch
+    setMounted(true)
+
     async function loadFontStyles() {
       try {
         // Only load in admin panel
@@ -61,10 +85,19 @@ export default function FontStyles() {
         const fonts = siteSettings.fonts
         const cssRules: string[] = []
 
+        // Helper function to get font family safely
+        const getFontFamily = (fontValue: string | null | undefined) => {
+          const normalized = normalizeFontValue(fontValue)
+          if (!normalized) return { family: fontFamilyMap.roboto, fallback: fallbackFonts.roboto }
+          return {
+            family: fontFamilyMap[normalized] || fontFamilyMap.roboto,
+            fallback: fallbackFonts[normalized] || fallbackFonts.roboto,
+          }
+        }
+
         // H1 styles
         if (fonts.h1) {
-          const fontFamily = fontFamilyMap[fonts.h1] || fontFamilyMap.roboto
-          const fallback = fallbackFonts[fonts.h1] || fallbackFonts.roboto
+          const { family: fontFamily, fallback } = getFontFamily(fonts.h1)
           cssRules.push(
             `.payload-admin .payload-rich-text h1 { font-family: ${fontFamily}, ${fallback}; }`,
           )
@@ -72,8 +105,7 @@ export default function FontStyles() {
 
         // Post text (p, li)
         if (fonts.postText) {
-          const fontFamily = fontFamilyMap[fonts.postText] || fontFamilyMap.roboto
-          const fallback = fallbackFonts[fonts.postText] || fallbackFonts.roboto
+          const { family: fontFamily, fallback } = getFontFamily(fonts.postText)
           cssRules.push(
             `.payload-admin .payload-rich-text p, .payload-admin .payload-rich-text li { font-family: ${fontFamily}, ${fallback}; }`,
           )
@@ -81,15 +113,15 @@ export default function FontStyles() {
 
         // Menu
         if (fonts.menu) {
-          const fontFamily = fontFamilyMap[fonts.menu] || fontFamilyMap.roboto
-          const fallback = fallbackFonts[fonts.menu] || fallbackFonts.roboto
-          cssRules.push(`.payload-admin .nav { font-family: ${fontFamily}, ${fallback}; }`)
+          const { family: fontFamily, fallback } = getFontFamily(fonts.menu)
+          cssRules.push(
+            `.payload-admin .nav, .payload-admin .nav *, .payload-admin .nav button, .payload-admin .nav a, .payload-admin .nav .nav__item, .payload-admin [class*="nav"] button, .payload-admin [class*="nav"] a { font-family: ${fontFamily}, ${fallback} !important; }`,
+          )
         }
 
         // Caption
         if (fonts.caption) {
-          const fontFamily = fontFamilyMap[fonts.caption] || fontFamilyMap.roboto
-          const fallback = fallbackFonts[fonts.caption] || fallbackFonts.roboto
+          const { family: fontFamily, fallback } = getFontFamily(fonts.caption)
           cssRules.push(
             `.payload-admin .payload-rich-text figcaption { font-family: ${fontFamily}, ${fallback}; }`,
           )
@@ -97,8 +129,7 @@ export default function FontStyles() {
 
         // H2-H5
         if (fonts.h2h5) {
-          const fontFamily = fontFamilyMap[fonts.h2h5] || fontFamilyMap.roboto
-          const fallback = fallbackFonts[fonts.h2h5] || fallbackFonts.roboto
+          const { family: fontFamily, fallback } = getFontFamily(fonts.h2h5)
           cssRules.push(
             `.payload-admin .payload-rich-text h2, .payload-admin .payload-rich-text h3, .payload-admin .payload-rich-text h4, .payload-admin .payload-rich-text h5 { font-family: ${fontFamily}, ${fallback}; }`,
           )
@@ -106,8 +137,7 @@ export default function FontStyles() {
 
         // Author
         if (fonts.author) {
-          const fontFamily = fontFamilyMap[fonts.author] || fontFamilyMap.roboto
-          const fallback = fallbackFonts[fonts.author] || fallbackFonts.roboto
+          const { family: fontFamily, fallback } = getFontFamily(fonts.author)
           cssRules.push(
             `.payload-admin .payload-rich-text .author { font-family: ${fontFamily}, ${fallback}; }`,
           )
@@ -115,8 +145,7 @@ export default function FontStyles() {
 
         // Date
         if (fonts.date) {
-          const fontFamily = fontFamilyMap[fonts.date] || fontFamilyMap.roboto
-          const fallback = fallbackFonts[fonts.date] || fallbackFonts.roboto
+          const { family: fontFamily, fallback } = getFontFamily(fonts.date)
           cssRules.push(
             `.payload-admin .payload-rich-text .date { font-family: ${fontFamily}, ${fallback}; }`,
           )
@@ -134,7 +163,8 @@ export default function FontStyles() {
     loadFontStyles()
   }, [])
 
-  if (!styles) {
+  // Prevent hydration mismatch: only render style tag after mounting on client
+  if (!mounted || !styles) {
     return null
   }
 

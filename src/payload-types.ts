@@ -1824,6 +1824,7 @@ export interface SiteSetting {
           | 'roboto-flex'
           | 'roboto-condensed'
           | 'tinos'
+          | 'libre-franklin'
         )
       | null;
     /**
@@ -1839,6 +1840,7 @@ export interface SiteSetting {
           | 'roboto-flex'
           | 'roboto-condensed'
           | 'tinos'
+          | 'libre-franklin'
         )
       | null;
     /**
@@ -1854,6 +1856,7 @@ export interface SiteSetting {
           | 'roboto-flex'
           | 'roboto-condensed'
           | 'tinos'
+          | 'libre-franklin'
         )
       | null;
     /**
@@ -1869,6 +1872,7 @@ export interface SiteSetting {
           | 'roboto-flex'
           | 'roboto-condensed'
           | 'tinos'
+          | 'libre-franklin'
         )
       | null;
     /**
@@ -1884,6 +1888,7 @@ export interface SiteSetting {
           | 'roboto-flex'
           | 'roboto-condensed'
           | 'tinos'
+          | 'libre-franklin'
         )
       | null;
     /**
@@ -1899,6 +1904,7 @@ export interface SiteSetting {
           | 'roboto-flex'
           | 'roboto-condensed'
           | 'tinos'
+          | 'libre-franklin'
         )
       | null;
     /**
@@ -1914,6 +1920,7 @@ export interface SiteSetting {
           | 'roboto-flex'
           | 'roboto-condensed'
           | 'tinos'
+          | 'libre-franklin'
         )
       | null;
   };
