@@ -105,7 +105,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
             <button
               type="button"
               className={clsx(
-                'whitespace-nowrap rounded-full px-3 py-1 font-semibold transition-colors',
+                'whitespace-nowrap rounded-full px-3 py-1 font-semibold font-inherit transition-colors',
                 isActive
                   ? 'bg-gray-200 text-black'
                   : 'text-black hover:bg-gray-200 hover:text-black',
