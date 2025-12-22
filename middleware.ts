@@ -16,7 +16,19 @@ export function middleware(req: NextRequest) {
     ? forwardedProto.split(',')[0]?.trim().toLowerCase() === 'http'
     : req.nextUrl.protocol === 'http:'
 
-  if (!isHttp) return NextResponse.next()
+  if (!isHttp) {
+    const response = NextResponse.next()
+
+    if (req.method === 'GET') {
+      const acceptHeader = req.headers.get('accept') ?? ''
+
+      if (acceptHeader.includes('text/html')) {
+        response.headers.set('Cache-Control', 'no-store')
+      }
+    }
+
+    return response
+  }
 
   const url = req.nextUrl.clone()
   url.protocol = 'https:'
