@@ -255,6 +255,12 @@ export const Media: CollectionConfig = {
         width: 600,
       },
       {
+        name: 'card',
+        width: 600,
+        height: 338, // 16:9 aspect ratio (600 / 16 * 9 = 337.5, rounded to 338)
+        crop: 'center',
+      },
+      {
         name: 'medium',
         width: 900,
       },

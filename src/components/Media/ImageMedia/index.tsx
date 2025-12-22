@@ -36,15 +36,56 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
   let src: StaticImageData | string = srcFromProps || ''
 
   if (!src && resource && typeof resource === 'object') {
-    const { alt: altFromResource, height: fullHeight, url, width: fullWidth } = resource
+    const { alt: altFromResource, height: fullHeight, url, width: fullWidth, sizes } = resource
 
-    width = fullWidth!
-    height = fullHeight!
+    // Determine which size to use based on the size prop
+    // For cards in grid (33vw), use medium (900px) which is appropriate for ~400px display width
+    let sizeData: { url?: string | null; width?: number | null; height?: number | null } | null = null
+
+    if (sizes && typeof sizes === 'object') {
+      // If size prop contains "vw", estimate the needed size
+      if (sizeFromProps && sizeFromProps.includes('vw')) {
+        // For 33vw on large screens (1200px+), we need ~400px display width
+        // With 2x retina, that's ~800px, so medium (900px) is perfect
+        // For smaller vw values, use smaller sizes
+        const vwValue = parseFloat(sizeFromProps)
+        if (vwValue <= 25) {
+          // Very small images - use small or thumbnail
+          sizeData = (sizes.small && sizes.small.url) ? sizes.small : (sizes.thumbnail && sizes.thumbnail.url) ? sizes.thumbnail : null
+        } else if (vwValue <= 50) {
+          // Medium images (cards) - use card size with fixed 16:9 aspect ratio
+          sizeData = (sizes.card && sizes.card.url) ? sizes.card : (sizes.medium && sizes.medium.url) ? sizes.medium : (sizes.small && sizes.small.url) ? sizes.small : null
+        } else {
+          // Large images - use large
+          sizeData = (sizes.large && sizes.large.url) ? sizes.large : (sizes.medium && sizes.medium.url) ? sizes.medium : null
+        }
+      } else {
+        // Default to card for cards/grid layouts (fixed 16:9 aspect ratio)
+        sizeData = (sizes.card && sizes.card.url) ? sizes.card : (sizes.medium && sizes.medium.url) ? sizes.medium : (sizes.small && sizes.small.url) ? sizes.small : null
+      }
+
+      // Use the selected size if available, otherwise fall back to original
+      if (sizeData && sizeData.url) {
+        width = (sizeData.width ?? fullWidth) ?? undefined
+        height = (sizeData.height ?? fullHeight) ?? undefined
+        const cacheTag = resource.updatedAt
+        src = getMediaUrl(sizeData.url, cacheTag)
+      } else {
+        // Fall back to original if selected size is not available
+        width = fullWidth ?? undefined
+        height = fullHeight ?? undefined
+        const cacheTag = resource.updatedAt
+        src = getMediaUrl(url, cacheTag)
+      }
+    } else {
+      // No sizes available, use original
+      width = fullWidth ?? undefined
+      height = fullHeight ?? undefined
+      const cacheTag = resource.updatedAt
+      src = getMediaUrl(url, cacheTag)
+    }
+
     alt = altFromResource || ''
-
-    const cacheTag = resource.updatedAt
-
-    src = getMediaUrl(url, cacheTag)
   }
 
   const loading = loadingFromProps || (!priority ? 'lazy' : undefined)

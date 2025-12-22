@@ -69,7 +69,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, menuItems }) =
   }
 
   return (
-    <header className="relative z-30 border-b border-gray-200 bg-white text-black">
+    <header className="relative z-[100] border-b border-gray-200 bg-white text-black">
       <div className="container relative flex h-16 items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <button
@@ -103,7 +103,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, menuItems }) =
           )}
         </div>
 
-        <div className="hidden md:flex flex-1 justify-center">
+        <div className="hidden md:flex flex-1 justify-center relative" style={{ zIndex: 9999 }}>
           <Suspense fallback={<div className="flex items-center gap-2 text-sm" />}>
             <HeaderNav data={data} menuItems={menuItems} variant="desktop" />
           </Suspense>

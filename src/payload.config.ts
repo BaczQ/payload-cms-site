@@ -12,6 +12,7 @@ import { Posts } from './collections/Posts'
 import { Users } from './collections/Users'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
+import { SiteSettings } from './SiteSettings/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
@@ -35,7 +36,7 @@ export default buildConfig({
       // The `AdminHeader` component adds a link to the site in the sidebar navigation.
       beforeNavLinks: ['@/components/AdminHeader'],
       // Error handler to suppress non-critical Lexical clipboard errors
-      header: ['@/components/AdminErrorHandler'],
+      header: ['@/components/AdminErrorHandler', '@/components/FontLoader', '@/components/FontStyles'],
     },
     importMap: {
       baseDir: path.resolve(dirname),
@@ -91,7 +92,7 @@ export default buildConfig({
   }),
   collections: [Pages, Posts, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer],
+  globals: [Header, Footer, SiteSettings],
   plugins,
   secret: process.env.PAYLOAD_SECRET,
   sharp,

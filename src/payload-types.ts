@@ -112,10 +112,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    'site-settings': SiteSetting;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
   };
   locale: null;
   user: User & {
@@ -329,6 +331,14 @@ export interface Media {
       filename?: string | null;
     };
     small?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    card?: {
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -1334,6 +1344,16 @@ export interface MediaSelect<T extends boolean = true> {
               filesize?: T;
               filename?: T;
             };
+        card?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
         medium?:
           | T
           | {
@@ -1786,6 +1806,122 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: number;
+  fonts?: {
+    /**
+     * Шрифт для заголовков H1 в редакторе
+     */
+    h1?:
+      | (
+          | 'roboto'
+          | 'gloock'
+          | 'antonio'
+          | 'manufacturing-consent'
+          | 'noto-sans-display'
+          | 'roboto-flex'
+          | 'roboto-condensed'
+          | 'tinos'
+        )
+      | null;
+    /**
+     * Шрифт для текста поста (p, li)
+     */
+    postText?:
+      | (
+          | 'roboto'
+          | 'gloock'
+          | 'antonio'
+          | 'manufacturing-consent'
+          | 'noto-sans-display'
+          | 'roboto-flex'
+          | 'roboto-condensed'
+          | 'tinos'
+        )
+      | null;
+    /**
+     * Шрифт для навигационного меню
+     */
+    menu?:
+      | (
+          | 'roboto'
+          | 'gloock'
+          | 'antonio'
+          | 'manufacturing-consent'
+          | 'noto-sans-display'
+          | 'roboto-flex'
+          | 'roboto-condensed'
+          | 'tinos'
+        )
+      | null;
+    /**
+     * Шрифт для подписей к изображениям (figcaption)
+     */
+    caption?:
+      | (
+          | 'roboto'
+          | 'gloock'
+          | 'antonio'
+          | 'manufacturing-consent'
+          | 'noto-sans-display'
+          | 'roboto-flex'
+          | 'roboto-condensed'
+          | 'tinos'
+        )
+      | null;
+    /**
+     * Шрифт для подзаголовков H2, H3, H4, H5
+     */
+    h2h5?:
+      | (
+          | 'roboto'
+          | 'gloock'
+          | 'antonio'
+          | 'manufacturing-consent'
+          | 'noto-sans-display'
+          | 'roboto-flex'
+          | 'roboto-condensed'
+          | 'tinos'
+        )
+      | null;
+    /**
+     * Шрифт для имени автора
+     */
+    author?:
+      | (
+          | 'roboto'
+          | 'gloock'
+          | 'antonio'
+          | 'manufacturing-consent'
+          | 'noto-sans-display'
+          | 'roboto-flex'
+          | 'roboto-condensed'
+          | 'tinos'
+        )
+      | null;
+    /**
+     * Шрифт для даты публикации
+     */
+    date?:
+      | (
+          | 'roboto'
+          | 'gloock'
+          | 'antonio'
+          | 'manufacturing-consent'
+          | 'noto-sans-display'
+          | 'roboto-flex'
+          | 'roboto-condensed'
+          | 'tinos'
+        )
+      | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -1842,6 +1978,26 @@ export interface FooterSelect<T extends boolean = true> {
       };
   copyrightText?: T;
   builtWithText?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  fonts?:
+    | T
+    | {
+        h1?: T;
+        postText?: T;
+        menu?: T;
+        caption?: T;
+        h2h5?: T;
+        author?: T;
+        date?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

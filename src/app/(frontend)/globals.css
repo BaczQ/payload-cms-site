@@ -21,7 +21,7 @@
   h5,
   h6,
   h7 {
-    font-family: var(--font-heading, var(--font-dm-serif-display));
+    font-family: var(--font-heading, var(--font-roboto), system-ui, sans-serif);
   }
 
   :root {
@@ -58,6 +58,11 @@
     --success: 196 52% 74%;
     --warning: 34 89% 85%;
     --error: 10 100% 86%;
+
+    /* Font fallback variables */
+    --font-sans: var(--font-roboto), system-ui, -apple-system, sans-serif;
+    --font-serif: var(--font-tinos), Georgia, serif;
+    --font-heading: var(--font-roboto), system-ui, sans-serif;
   }
 
   [data-theme='dark'] {
