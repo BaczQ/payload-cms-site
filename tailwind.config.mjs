@@ -123,6 +123,7 @@ const config = {
             {
               '--tw-prose-body': 'var(--text)',
               '--tw-prose-headings': 'var(--text)',
+              fontFamily: 'var(--font-sans), system-ui, sans-serif',
               h1: {
                 fontWeight: 'normal',
                 marginBottom: '0.25em',

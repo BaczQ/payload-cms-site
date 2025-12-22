@@ -14,6 +14,7 @@ const fontFamilyMap: Record<string, string> = {
   'roboto-flex': 'var(--font-roboto-flex), system-ui, sans-serif',
   'roboto-condensed': 'var(--font-roboto-condensed), system-ui, sans-serif',
   tinos: 'var(--font-tinos), Georgia, serif',
+  'libre-franklin': '"Libre Franklin", system-ui, sans-serif',
 }
 
 export default function FontStylesFrontend() {

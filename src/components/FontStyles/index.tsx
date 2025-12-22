@@ -12,6 +12,7 @@ const fontFamilyMap: Record<string, string> = {
   'roboto-flex': '"Roboto Flex", sans-serif',
   'roboto-condensed': '"Roboto Condensed", sans-serif',
   tinos: '"Tinos", serif',
+  'libre-franklin': '"Libre Franklin", system-ui, sans-serif',
 }
 
 // Fallback fonts (current fonts)
@@ -24,6 +25,7 @@ const fallbackFonts: Record<string, string> = {
   'roboto-flex': 'var(--font-sans)',
   'roboto-condensed': 'var(--font-sans)',
   tinos: 'var(--font-serif)',
+  'libre-franklin': 'system-ui, sans-serif',
 }
 
 export default function FontStyles() {

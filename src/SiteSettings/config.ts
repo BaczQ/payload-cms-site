@@ -33,6 +33,10 @@ const fontOptions = [
     label: 'Tinos',
     value: 'tinos',
   },
+  {
+    label: 'Libre Franklin',
+    value: 'libre-franklin',
+  },
 ]
 
 export const SiteSettings: GlobalConfig = {
