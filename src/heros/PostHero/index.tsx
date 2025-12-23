@@ -79,9 +79,11 @@ export const PostHero: React.FC<{
           {title}
         </h1>
         {subTitle ? (
-          <p className="mb-6 text-left">
-            {subTitle}
-          </p>
+          <div className="prose md:prose-md dark:prose-invert max-w-none mb-6 payload-richtext">
+            <p className="text-left">
+              {subTitle}
+            </p>
+          </div>
         ) : null}
         {publishedAt && (
           <time dateTime={publishedAt} className="block mb-6 text-left">
@@ -98,7 +100,7 @@ export const PostHero: React.FC<{
               imgClassName="w-full h-auto border border-border rounded-[0.8rem] m-0"
             />
             {heroImage.caption && typeof heroImage.caption === 'object' && (
-              <div className="mt-3 image-caption">
+              <div className="mt-1.5 image-caption">
                 <RichText data={heroImage.caption} enableGutter={false} />
               </div>
             )}

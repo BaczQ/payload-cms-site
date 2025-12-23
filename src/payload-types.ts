@@ -1811,118 +1811,307 @@ export interface Footer {
 export interface SiteSetting {
   id: number;
   fonts?: {
-    /**
-     * Шрифт для заголовков H1 в редакторе
-     */
-    h1?:
-      | (
-          | 'roboto'
-          | 'gloock'
-          | 'antonio'
-          | 'manufacturing-consent'
-          | 'noto-sans-display'
-          | 'roboto-flex'
-          | 'roboto-condensed'
-          | 'tinos'
-          | 'libre-franklin'
-        )
-      | null;
-    /**
-     * Шрифт для текста поста (p, li)
-     */
-    postText?:
-      | (
-          | 'roboto'
-          | 'gloock'
-          | 'antonio'
-          | 'manufacturing-consent'
-          | 'noto-sans-display'
-          | 'roboto-flex'
-          | 'roboto-condensed'
-          | 'tinos'
-          | 'libre-franklin'
-        )
-      | null;
-    /**
-     * Шрифт для навигационного меню
-     */
-    menu?:
-      | (
-          | 'roboto'
-          | 'gloock'
-          | 'antonio'
-          | 'manufacturing-consent'
-          | 'noto-sans-display'
-          | 'roboto-flex'
-          | 'roboto-condensed'
-          | 'tinos'
-          | 'libre-franklin'
-        )
-      | null;
-    /**
-     * Шрифт для подписей к изображениям (figcaption)
-     */
-    caption?:
-      | (
-          | 'roboto'
-          | 'gloock'
-          | 'antonio'
-          | 'manufacturing-consent'
-          | 'noto-sans-display'
-          | 'roboto-flex'
-          | 'roboto-condensed'
-          | 'tinos'
-          | 'libre-franklin'
-        )
-      | null;
-    /**
-     * Шрифт для подзаголовков H2, H3, H4, H5
-     */
-    h2h5?:
-      | (
-          | 'roboto'
-          | 'gloock'
-          | 'antonio'
-          | 'manufacturing-consent'
-          | 'noto-sans-display'
-          | 'roboto-flex'
-          | 'roboto-condensed'
-          | 'tinos'
-          | 'libre-franklin'
-        )
-      | null;
-    /**
-     * Шрифт для имени автора
-     */
-    author?:
-      | (
-          | 'roboto'
-          | 'gloock'
-          | 'antonio'
-          | 'manufacturing-consent'
-          | 'noto-sans-display'
-          | 'roboto-flex'
-          | 'roboto-condensed'
-          | 'tinos'
-          | 'libre-franklin'
-        )
-      | null;
-    /**
-     * Шрифт для даты публикации
-     */
-    date?:
-      | (
-          | 'roboto'
-          | 'gloock'
-          | 'antonio'
-          | 'manufacturing-consent'
-          | 'noto-sans-display'
-          | 'roboto-flex'
-          | 'roboto-condensed'
-          | 'tinos'
-          | 'libre-franklin'
-        )
-      | null;
+    h1?: {
+      /**
+       * Шрифт для заголовков H1 в редакторе
+       */
+      fontFamily?:
+        | (
+            | 'roboto'
+            | 'gloock'
+            | 'antonio'
+            | 'manufacturing-consent'
+            | 'noto-sans-display'
+            | 'roboto-flex'
+            | 'roboto-condensed'
+            | 'tinos'
+            | 'system-ui'
+            | 'sans-serif'
+          )
+        | null;
+      mobile?: {
+        /**
+         * Например: 16px, 1rem, 1.2em
+         */
+        fontSize?: string | null;
+        /**
+         * Например: 1.5, 24px, 1.5em
+         */
+        lineHeight?: string | null;
+        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
+        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
+      };
+      desktop?: {
+        /**
+         * Например: 16px, 1rem, 1.2em
+         */
+        fontSize?: string | null;
+        /**
+         * Например: 1.5, 24px, 1.5em
+         */
+        lineHeight?: string | null;
+        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
+        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
+      };
+    };
+    postText?: {
+      /**
+       * Шрифт для текста поста (p, li)
+       */
+      fontFamily?:
+        | (
+            | 'roboto'
+            | 'gloock'
+            | 'antonio'
+            | 'manufacturing-consent'
+            | 'noto-sans-display'
+            | 'roboto-flex'
+            | 'roboto-condensed'
+            | 'tinos'
+            | 'system-ui'
+            | 'sans-serif'
+          )
+        | null;
+      mobile?: {
+        /**
+         * Например: 16px, 1rem, 1.2em
+         */
+        fontSize?: string | null;
+        /**
+         * Например: 1.5, 24px, 1.5em
+         */
+        lineHeight?: string | null;
+        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
+        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
+      };
+      desktop?: {
+        /**
+         * Например: 16px, 1rem, 1.2em
+         */
+        fontSize?: string | null;
+        /**
+         * Например: 1.5, 24px, 1.5em
+         */
+        lineHeight?: string | null;
+        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
+        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
+      };
+    };
+    menu?: {
+      /**
+       * Шрифт для навигационного меню
+       */
+      fontFamily?:
+        | (
+            | 'roboto'
+            | 'gloock'
+            | 'antonio'
+            | 'manufacturing-consent'
+            | 'noto-sans-display'
+            | 'roboto-flex'
+            | 'roboto-condensed'
+            | 'tinos'
+            | 'system-ui'
+            | 'sans-serif'
+          )
+        | null;
+      mobile?: {
+        /**
+         * Например: 16px, 1rem, 1.2em
+         */
+        fontSize?: string | null;
+        /**
+         * Например: 1.5, 24px, 1.5em
+         */
+        lineHeight?: string | null;
+        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
+        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
+      };
+      desktop?: {
+        /**
+         * Например: 16px, 1rem, 1.2em
+         */
+        fontSize?: string | null;
+        /**
+         * Например: 1.5, 24px, 1.5em
+         */
+        lineHeight?: string | null;
+        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
+        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
+      };
+    };
+    caption?: {
+      /**
+       * Шрифт для подписей к изображениям (figcaption)
+       */
+      fontFamily?:
+        | (
+            | 'roboto'
+            | 'gloock'
+            | 'antonio'
+            | 'manufacturing-consent'
+            | 'noto-sans-display'
+            | 'roboto-flex'
+            | 'roboto-condensed'
+            | 'tinos'
+            | 'system-ui'
+            | 'sans-serif'
+          )
+        | null;
+      mobile?: {
+        /**
+         * Например: 16px, 1rem, 1.2em
+         */
+        fontSize?: string | null;
+        /**
+         * Например: 1.5, 24px, 1.5em
+         */
+        lineHeight?: string | null;
+        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
+        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
+      };
+      desktop?: {
+        /**
+         * Например: 16px, 1rem, 1.2em
+         */
+        fontSize?: string | null;
+        /**
+         * Например: 1.5, 24px, 1.5em
+         */
+        lineHeight?: string | null;
+        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
+        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
+      };
+    };
+    h2h5?: {
+      /**
+       * Шрифт для подзаголовков H2, H3, H4, H5
+       */
+      fontFamily?:
+        | (
+            | 'roboto'
+            | 'gloock'
+            | 'antonio'
+            | 'manufacturing-consent'
+            | 'noto-sans-display'
+            | 'roboto-flex'
+            | 'roboto-condensed'
+            | 'tinos'
+            | 'system-ui'
+            | 'sans-serif'
+          )
+        | null;
+      mobile?: {
+        /**
+         * Например: 16px, 1rem, 1.2em
+         */
+        fontSize?: string | null;
+        /**
+         * Например: 1.5, 24px, 1.5em
+         */
+        lineHeight?: string | null;
+        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
+        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
+      };
+      desktop?: {
+        /**
+         * Например: 16px, 1rem, 1.2em
+         */
+        fontSize?: string | null;
+        /**
+         * Например: 1.5, 24px, 1.5em
+         */
+        lineHeight?: string | null;
+        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
+        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
+      };
+    };
+    author?: {
+      /**
+       * Шрифт для имени автора
+       */
+      fontFamily?:
+        | (
+            | 'roboto'
+            | 'gloock'
+            | 'antonio'
+            | 'manufacturing-consent'
+            | 'noto-sans-display'
+            | 'roboto-flex'
+            | 'roboto-condensed'
+            | 'tinos'
+            | 'system-ui'
+            | 'sans-serif'
+          )
+        | null;
+      mobile?: {
+        /**
+         * Например: 16px, 1rem, 1.2em
+         */
+        fontSize?: string | null;
+        /**
+         * Например: 1.5, 24px, 1.5em
+         */
+        lineHeight?: string | null;
+        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
+        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
+      };
+      desktop?: {
+        /**
+         * Например: 16px, 1rem, 1.2em
+         */
+        fontSize?: string | null;
+        /**
+         * Например: 1.5, 24px, 1.5em
+         */
+        lineHeight?: string | null;
+        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
+        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
+      };
+    };
+    date?: {
+      /**
+       * Шрифт для даты публикации
+       */
+      fontFamily?:
+        | (
+            | 'roboto'
+            | 'gloock'
+            | 'antonio'
+            | 'manufacturing-consent'
+            | 'noto-sans-display'
+            | 'roboto-flex'
+            | 'roboto-condensed'
+            | 'tinos'
+            | 'system-ui'
+            | 'sans-serif'
+          )
+        | null;
+      mobile?: {
+        /**
+         * Например: 16px, 1rem, 1.2em
+         */
+        fontSize?: string | null;
+        /**
+         * Например: 1.5, 24px, 1.5em
+         */
+        lineHeight?: string | null;
+        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
+        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
+      };
+      desktop?: {
+        /**
+         * Например: 16px, 1rem, 1.2em
+         */
+        fontSize?: string | null;
+        /**
+         * Например: 1.5, 24px, 1.5em
+         */
+        lineHeight?: string | null;
+        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
+        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
+      };
+    };
   };
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -1997,13 +2186,153 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   fonts?:
     | T
     | {
-        h1?: T;
-        postText?: T;
-        menu?: T;
-        caption?: T;
-        h2h5?: T;
-        author?: T;
-        date?: T;
+        h1?:
+          | T
+          | {
+              fontFamily?: T;
+              mobile?:
+                | T
+                | {
+                    fontSize?: T;
+                    lineHeight?: T;
+                    fontWeight?: T;
+                    fontStyle?: T;
+                  };
+              desktop?:
+                | T
+                | {
+                    fontSize?: T;
+                    lineHeight?: T;
+                    fontWeight?: T;
+                    fontStyle?: T;
+                  };
+            };
+        postText?:
+          | T
+          | {
+              fontFamily?: T;
+              mobile?:
+                | T
+                | {
+                    fontSize?: T;
+                    lineHeight?: T;
+                    fontWeight?: T;
+                    fontStyle?: T;
+                  };
+              desktop?:
+                | T
+                | {
+                    fontSize?: T;
+                    lineHeight?: T;
+                    fontWeight?: T;
+                    fontStyle?: T;
+                  };
+            };
+        menu?:
+          | T
+          | {
+              fontFamily?: T;
+              mobile?:
+                | T
+                | {
+                    fontSize?: T;
+                    lineHeight?: T;
+                    fontWeight?: T;
+                    fontStyle?: T;
+                  };
+              desktop?:
+                | T
+                | {
+                    fontSize?: T;
+                    lineHeight?: T;
+                    fontWeight?: T;
+                    fontStyle?: T;
+                  };
+            };
+        caption?:
+          | T
+          | {
+              fontFamily?: T;
+              mobile?:
+                | T
+                | {
+                    fontSize?: T;
+                    lineHeight?: T;
+                    fontWeight?: T;
+                    fontStyle?: T;
+                  };
+              desktop?:
+                | T
+                | {
+                    fontSize?: T;
+                    lineHeight?: T;
+                    fontWeight?: T;
+                    fontStyle?: T;
+                  };
+            };
+        h2h5?:
+          | T
+          | {
+              fontFamily?: T;
+              mobile?:
+                | T
+                | {
+                    fontSize?: T;
+                    lineHeight?: T;
+                    fontWeight?: T;
+                    fontStyle?: T;
+                  };
+              desktop?:
+                | T
+                | {
+                    fontSize?: T;
+                    lineHeight?: T;
+                    fontWeight?: T;
+                    fontStyle?: T;
+                  };
+            };
+        author?:
+          | T
+          | {
+              fontFamily?: T;
+              mobile?:
+                | T
+                | {
+                    fontSize?: T;
+                    lineHeight?: T;
+                    fontWeight?: T;
+                    fontStyle?: T;
+                  };
+              desktop?:
+                | T
+                | {
+                    fontSize?: T;
+                    lineHeight?: T;
+                    fontWeight?: T;
+                    fontStyle?: T;
+                  };
+            };
+        date?:
+          | T
+          | {
+              fontFamily?: T;
+              mobile?:
+                | T
+                | {
+                    fontSize?: T;
+                    lineHeight?: T;
+                    fontWeight?: T;
+                    fontStyle?: T;
+                  };
+              desktop?:
+                | T
+                | {
+                    fontSize?: T;
+                    lineHeight?: T;
+                    fontWeight?: T;
+                    fontStyle?: T;
+                  };
+            };
       };
   updatedAt?: T;
   createdAt?: T;

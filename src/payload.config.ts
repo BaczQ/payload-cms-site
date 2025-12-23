@@ -71,6 +71,7 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URI || '',
     },
+    push: process.env.NODE_ENV !== 'production', // Auto-create/update tables in development
   }),
   email: nodemailerAdapter({
     defaultFromAddress: process.env.EMAIL_FROM_ADDRESS || 'noreply@example.com',

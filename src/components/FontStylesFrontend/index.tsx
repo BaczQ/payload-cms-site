@@ -18,6 +18,87 @@ const fontFamilyMap: Record<string, string> = {
   'sans-serif': 'sans-serif',
 }
 
+// Helper function to get font family safely
+function getFontFamily(fontValue: string | null | undefined): string {
+  if (!fontValue || typeof fontValue !== 'string') {
+    return fontFamilyMap.roboto
+  }
+  return fontFamilyMap[fontValue] || fontFamilyMap.roboto
+}
+
+// Helper function to generate CSS for a font element
+function generateFontCSS(
+  selector: string,
+  fontConfig: {
+    fontFamily?: string | null
+    mobile?: {
+      fontSize?: string | null
+      lineHeight?: string | null
+      fontWeight?: string | null
+      fontStyle?: string | null
+    }
+    desktop?: {
+      fontSize?: string | null
+      lineHeight?: string | null
+      fontWeight?: string | null
+      fontStyle?: string | null
+    }
+  },
+): string[] {
+  const rules: string[] = []
+
+  if (!fontConfig || !fontConfig.fontFamily) {
+    return rules
+  }
+
+  const fontFamily = getFontFamily(fontConfig.fontFamily)
+
+  // Mobile styles (default, up to 767px)
+  const mobileStyles: string[] = []
+  mobileStyles.push(`font-family: ${fontFamily} !important;`)
+
+  if (fontConfig.mobile?.fontSize) {
+    mobileStyles.push(`font-size: ${fontConfig.mobile.fontSize} !important;`)
+  }
+  if (fontConfig.mobile?.lineHeight) {
+    mobileStyles.push(`line-height: ${fontConfig.mobile.lineHeight} !important;`)
+  }
+  if (fontConfig.mobile?.fontWeight) {
+    mobileStyles.push(`font-weight: ${fontConfig.mobile.fontWeight} !important;`)
+  }
+  if (fontConfig.mobile?.fontStyle) {
+    mobileStyles.push(`font-style: ${fontConfig.mobile.fontStyle} !important;`)
+  }
+
+  if (mobileStyles.length > 0) {
+    rules.push(`${selector} { ${mobileStyles.join(' ')} }`)
+  }
+
+  // Desktop styles (768px and above)
+  if (fontConfig.desktop) {
+    const desktopStyles: string[] = []
+
+    if (fontConfig.desktop.fontSize) {
+      desktopStyles.push(`font-size: ${fontConfig.desktop.fontSize} !important;`)
+    }
+    if (fontConfig.desktop.lineHeight) {
+      desktopStyles.push(`line-height: ${fontConfig.desktop.lineHeight} !important;`)
+    }
+    if (fontConfig.desktop.fontWeight) {
+      desktopStyles.push(`font-weight: ${fontConfig.desktop.fontWeight} !important;`)
+    }
+    if (fontConfig.desktop.fontStyle) {
+      desktopStyles.push(`font-style: ${fontConfig.desktop.fontStyle} !important;`)
+    }
+
+    if (desktopStyles.length > 0) {
+      rules.push(`@media (min-width: 768px) { ${selector} { ${desktopStyles.join(' ')} } }`)
+    }
+  }
+
+  return rules
+}
+
 export default function FontStylesFrontend() {
   const [styles, setStyles] = useState<string>('')
 
@@ -53,55 +134,57 @@ export default function FontStylesFrontend() {
 
         // H1 styles - заголовок поста (внутри RichText и вне его)
         if (fonts.h1) {
-          const fontFamily = fontFamilyMap[fonts.h1] || fontFamilyMap.roboto
-          cssRules.push(
-            `h1, .payload-richtext h1 { font-family: ${fontFamily} !important; }`,
-          )
+          cssRules.push(...generateFontCSS('h1, .payload-richtext h1', fonts.h1))
         }
 
         // Post text (p, li) - текст поста
         if (fonts.postText) {
-          const fontFamily = fontFamilyMap[fonts.postText] || fontFamilyMap.roboto
           cssRules.push(
-            `.payload-richtext, .payload-richtext p, .payload-richtext li { font-family: ${fontFamily} !important; }`,
+            ...generateFontCSS(
+              '.payload-richtext, .payload-richtext p, .payload-richtext li',
+              fonts.postText,
+            ),
           )
         }
 
         // Menu - текст в меню
         if (fonts.menu) {
-          const fontFamily = fontFamilyMap[fonts.menu] || fontFamilyMap.roboto
-          cssRules.push(`header nav, header nav a, header nav button, nav, nav a, nav button, .nav, .nav a, .nav button, [class*="nav"] button { font-family: ${fontFamily} !important; }`)
+          cssRules.push(
+            ...generateFontCSS(
+              'header nav, header nav a, header nav button, nav, nav a, nav button, .nav, .nav a, .nav button, [class*="nav"] button',
+              fonts.menu,
+            ),
+          )
         }
 
         // Caption - подпись изображения
         if (fonts.caption) {
-          const fontFamily = fontFamilyMap[fonts.caption] || fontFamilyMap.roboto
           cssRules.push(
-            `figcaption, .payload-richtext figcaption { font-family: ${fontFamily} !important; }`,
+            ...generateFontCSS('figcaption, .payload-richtext figcaption', fonts.caption),
           )
         }
 
         // H2-H5 - подзаголовки
         if (fonts.h2h5) {
-          const fontFamily = fontFamilyMap[fonts.h2h5] || fontFamilyMap.roboto
           cssRules.push(
-            `h2, h3, h4, h5, .payload-richtext h2, .payload-richtext h3, .payload-richtext h4, .payload-richtext h5 { font-family: ${fontFamily} !important; }`,
+            ...generateFontCSS(
+              'h2, h3, h4, h5, .payload-richtext h2, .payload-richtext h3, .payload-richtext h4, .payload-richtext h5',
+              fonts.h2h5,
+            ),
           )
         }
 
         // Author - автор
         if (fonts.author) {
-          const fontFamily = fontFamilyMap[fonts.author] || fontFamilyMap.roboto
           cssRules.push(
-            `.author, .payload-richtext .author { font-family: ${fontFamily} !important; }`,
+            ...generateFontCSS('.author, .payload-richtext .author', fonts.author),
           )
         }
 
         // Date - дата
         if (fonts.date) {
-          const fontFamily = fontFamilyMap[fonts.date] || fontFamilyMap.roboto
           cssRules.push(
-            `time, .date, .payload-richtext .date { font-family: ${fontFamily} !important; }`,
+            ...generateFontCSS('time, .date, .payload-richtext .date', fonts.date),
           )
         }
 

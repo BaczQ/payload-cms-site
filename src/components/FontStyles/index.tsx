@@ -38,6 +38,89 @@ function normalizeFontValue(value: string | null | undefined): string | null {
   return normalized
 }
 
+// Helper function to get font family safely
+function getFontFamily(fontValue: string | null | undefined) {
+  const normalized = normalizeFontValue(fontValue)
+  if (!normalized) return { family: fontFamilyMap.roboto, fallback: fallbackFonts.roboto }
+  return {
+    family: fontFamilyMap[normalized] || fontFamilyMap.roboto,
+    fallback: fallbackFonts[normalized] || fallbackFonts.roboto,
+  }
+}
+
+// Helper function to generate CSS for a font element
+function generateFontCSS(
+  selector: string,
+  fontConfig: {
+    fontFamily?: string | null
+    mobile?: {
+      fontSize?: string | null
+      lineHeight?: string | null
+      fontWeight?: string | null
+      fontStyle?: string | null
+    }
+    desktop?: {
+      fontSize?: string | null
+      lineHeight?: string | null
+      fontWeight?: string | null
+      fontStyle?: string | null
+    }
+  },
+): string[] {
+  const rules: string[] = []
+
+  if (!fontConfig || !fontConfig.fontFamily) {
+    return rules
+  }
+
+  const { family: fontFamily, fallback } = getFontFamily(fontConfig.fontFamily)
+
+  // Mobile styles (default, up to 767px)
+  const mobileStyles: string[] = []
+  mobileStyles.push(`font-family: ${fontFamily}, ${fallback};`)
+
+  if (fontConfig.mobile?.fontSize) {
+    mobileStyles.push(`font-size: ${fontConfig.mobile.fontSize};`)
+  }
+  if (fontConfig.mobile?.lineHeight) {
+    mobileStyles.push(`line-height: ${fontConfig.mobile.lineHeight};`)
+  }
+  if (fontConfig.mobile?.fontWeight) {
+    mobileStyles.push(`font-weight: ${fontConfig.mobile.fontWeight};`)
+  }
+  if (fontConfig.mobile?.fontStyle) {
+    mobileStyles.push(`font-style: ${fontConfig.mobile.fontStyle};`)
+  }
+
+  if (mobileStyles.length > 0) {
+    rules.push(`${selector} { ${mobileStyles.join(' ')} }`)
+  }
+
+  // Desktop styles (768px and above)
+  if (fontConfig.desktop) {
+    const desktopStyles: string[] = []
+
+    if (fontConfig.desktop.fontSize) {
+      desktopStyles.push(`font-size: ${fontConfig.desktop.fontSize};`)
+    }
+    if (fontConfig.desktop.lineHeight) {
+      desktopStyles.push(`line-height: ${fontConfig.desktop.lineHeight};`)
+    }
+    if (fontConfig.desktop.fontWeight) {
+      desktopStyles.push(`font-weight: ${fontConfig.desktop.fontWeight};`)
+    }
+    if (fontConfig.desktop.fontStyle) {
+      desktopStyles.push(`font-style: ${fontConfig.desktop.fontStyle};`)
+    }
+
+    if (desktopStyles.length > 0) {
+      rules.push(`@media (min-width: 768px) { ${selector} { ${desktopStyles.join(' ')} } }`)
+    }
+  }
+
+  return rules
+}
+
 export default function FontStyles() {
   const [styles, setStyles] = useState<string>('')
   const [mounted, setMounted] = useState<boolean>(false)
@@ -75,70 +158,58 @@ export default function FontStyles() {
         const fonts = siteSettings.fonts
         const cssRules: string[] = []
 
-        // Helper function to get font family safely
-        const getFontFamily = (fontValue: string | null | undefined) => {
-          const normalized = normalizeFontValue(fontValue)
-          if (!normalized) return { family: fontFamilyMap.roboto, fallback: fallbackFonts.roboto }
-          return {
-            family: fontFamilyMap[normalized] || fontFamilyMap.roboto,
-            fallback: fallbackFonts[normalized] || fallbackFonts.roboto,
-          }
-        }
-
         // H1 styles
         if (fonts.h1) {
-          const { family: fontFamily, fallback } = getFontFamily(fonts.h1)
-          cssRules.push(
-            `.payload-admin .payload-rich-text h1 { font-family: ${fontFamily}, ${fallback}; }`,
-          )
+          cssRules.push(...generateFontCSS('.payload-admin .payload-rich-text h1', fonts.h1))
         }
 
         // Post text (p, li)
         if (fonts.postText) {
-          const { family: fontFamily, fallback } = getFontFamily(fonts.postText)
           cssRules.push(
-            `.payload-admin .payload-rich-text p, .payload-admin .payload-rich-text li { font-family: ${fontFamily}, ${fallback}; }`,
+            ...generateFontCSS(
+              '.payload-admin .payload-rich-text p, .payload-admin .payload-rich-text li',
+              fonts.postText,
+            ),
           )
         }
 
         // Menu
         if (fonts.menu) {
-          const { family: fontFamily, fallback } = getFontFamily(fonts.menu)
           cssRules.push(
-            `.payload-admin .nav, .payload-admin .nav *, .payload-admin .nav button, .payload-admin .nav a, .payload-admin .nav .nav__item, .payload-admin [class*="nav"] button, .payload-admin [class*="nav"] a { font-family: ${fontFamily}, ${fallback} !important; }`,
+            ...generateFontCSS(
+              '.payload-admin .nav, .payload-admin .nav *, .payload-admin .nav button, .payload-admin .nav a, .payload-admin .nav .nav__item, .payload-admin [class*="nav"] button, .payload-admin [class*="nav"] a',
+              fonts.menu,
+            ),
           )
         }
 
         // Caption
         if (fonts.caption) {
-          const { family: fontFamily, fallback } = getFontFamily(fonts.caption)
           cssRules.push(
-            `.payload-admin .payload-rich-text figcaption { font-family: ${fontFamily}, ${fallback}; }`,
+            ...generateFontCSS('.payload-admin .payload-rich-text figcaption', fonts.caption),
           )
         }
 
         // H2-H5
         if (fonts.h2h5) {
-          const { family: fontFamily, fallback } = getFontFamily(fonts.h2h5)
           cssRules.push(
-            `.payload-admin .payload-rich-text h2, .payload-admin .payload-rich-text h3, .payload-admin .payload-rich-text h4, .payload-admin .payload-rich-text h5 { font-family: ${fontFamily}, ${fallback}; }`,
+            ...generateFontCSS(
+              '.payload-admin .payload-rich-text h2, .payload-admin .payload-rich-text h3, .payload-admin .payload-rich-text h4, .payload-admin .payload-rich-text h5',
+              fonts.h2h5,
+            ),
           )
         }
 
         // Author
         if (fonts.author) {
-          const { family: fontFamily, fallback } = getFontFamily(fonts.author)
           cssRules.push(
-            `.payload-admin .payload-rich-text .author { font-family: ${fontFamily}, ${fallback}; }`,
+            ...generateFontCSS('.payload-admin .payload-rich-text .author', fonts.author),
           )
         }
 
         // Date
         if (fonts.date) {
-          const { family: fontFamily, fallback } = getFontFamily(fonts.date)
-          cssRules.push(
-            `.payload-admin .payload-rich-text .date { font-family: ${fontFamily}, ${fallback}; }`,
-          )
+          cssRules.push(...generateFontCSS('.payload-admin .payload-rich-text .date', fonts.date))
         }
 
         if (cssRules.length > 0) {
