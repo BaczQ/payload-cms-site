@@ -102,7 +102,11 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 
       <div className="container">
         {posts.totalPages > 1 && posts.page && (
-          <Pagination page={posts.page} totalPages={posts.totalPages} />
+          <Pagination 
+            page={posts.page} 
+            totalPages={posts.totalPages}
+            basePath={`/categories/${slug}`}
+          />
         )}
       </div>
     </div>

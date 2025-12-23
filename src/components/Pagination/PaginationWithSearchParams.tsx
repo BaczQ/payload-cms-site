@@ -9,28 +9,37 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination'
 import { cn } from '@/utilities/ui'
-import { useRouter } from 'next/navigation'
-import React, { Suspense } from 'react'
-import { PaginationWithSearchParams } from './PaginationWithSearchParams'
+import { useRouter, useSearchParams } from 'next/navigation'
+import React from 'react'
 
-// Fallback component for when basePath is not provided (doesn't need searchParams)
-const PaginationWithoutSearchParams: React.FC<{
+// Component that uses useSearchParams - must be wrapped in Suspense when used
+export const PaginationWithSearchParams: React.FC<{
   className?: string
   page: number
   totalPages: number
+  basePath: string
 }> = (props) => {
   const router = useRouter()
+  const searchParams = useSearchParams()
 
-  const { className, page, totalPages } = props
+  const { className, page, totalPages, basePath } = props
   const hasNextPage = page < totalPages
   const hasPrevPage = page > 1
 
   const hasExtraPrevPages = page - 1 > 1
   const hasExtraNextPages = page + 1 < totalPages
 
-  // Build the URL for pagination (simple case without searchParams)
+  // Build the URL for pagination
   const buildPageUrl = (pageNum: number) => {
-    return `/posts/page/${pageNum}`
+    // For custom base paths (like categories), use query parameters
+    const params = new URLSearchParams(searchParams.toString())
+    if (pageNum === 1) {
+      params.delete('page')
+    } else {
+      params.set('page', pageNum.toString())
+    }
+    const queryString = params.toString()
+    return `${basePath}${queryString ? `?${queryString}` : ''}`
   }
 
   return (
@@ -107,24 +116,3 @@ const PaginationWithoutSearchParams: React.FC<{
   )
 }
 
-// Main component that conditionally renders with or without Suspense
-export const Pagination: React.FC<{
-  className?: string
-  page: number
-  totalPages: number
-  basePath?: string // Optional base path for custom routes (e.g., '/categories/news')
-}> = (props) => {
-  const { basePath } = props
-
-  // If basePath is provided, we need searchParams, so wrap in Suspense
-  if (basePath) {
-    return (
-      <Suspense fallback={<div className="my-12">Loading...</div>}>
-        <PaginationWithSearchParams {...props} basePath={basePath} />
-      </Suspense>
-    )
-  }
-
-  // Otherwise, use the simpler version without searchParams
-  return <PaginationWithoutSearchParams {...props} />
-}

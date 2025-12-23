@@ -2246,7 +2246,7 @@ export interface SiteSetting {
       };
     };
     /**
-     * Применяется к элементам a и button внутри nav_font
+     * Применяется к элементам a и button внутри элемента класса nav_font
      */
     headerMenu?: {
       /**

@@ -76,7 +76,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
   return (
     <nav
       className={clsx(
-        'nav_font flex items-center gap-2 text-sm',
+        'nav_font nav_font flex items-center gap-2 text-sm',
         variant === 'mobile' && 'flex-col items-start gap-2',
         variant === 'desktop' && 'justify-center',
       )}

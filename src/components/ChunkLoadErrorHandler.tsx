@@ -13,11 +13,13 @@ export function ChunkLoadErrorHandler() {
       const error = event.error || event.message
 
       // Check if this is a ChunkLoadError
+      const errorMessage = error?.message || String(error || '')
       const isChunkLoadError =
-        error?.message?.includes('ChunkLoadError') ||
-        error?.message?.includes('Loading chunk') ||
-        error?.message?.includes('Failed to fetch dynamically imported module') ||
-        error?.name === 'ChunkLoadError'
+        error?.name === 'ChunkLoadError' ||
+        errorMessage.includes('ChunkLoadError') ||
+        errorMessage.includes('Loading chunk') ||
+        errorMessage.includes('Failed to fetch dynamically imported module') ||
+        errorMessage.includes('chunk') && errorMessage.includes('failed')
 
       if (isChunkLoadError) {
         // Only reload once to prevent infinite loops
@@ -37,15 +39,17 @@ export function ChunkLoadErrorHandler() {
     // Handle unhandled errors
     window.addEventListener('error', handleError)
 
-    // Handle unhandled promise rejections (chunk loading can fail as promises)
-    const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
-      const reason = event.reason
-      const errorMessage = reason?.message || String(reason)
+      // Handle unhandled promise rejections (chunk loading can fail as promises)
+      const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
+        const reason = event.reason
+        const errorMessage = reason?.message || String(reason || '')
 
-      const isChunkLoadError =
-        errorMessage.includes('ChunkLoadError') ||
-        errorMessage.includes('Loading chunk') ||
-        errorMessage.includes('Failed to fetch dynamically imported module')
+        const isChunkLoadError =
+          reason?.name === 'ChunkLoadError' ||
+          errorMessage.includes('ChunkLoadError') ||
+          errorMessage.includes('Loading chunk') ||
+          errorMessage.includes('Failed to fetch dynamically imported module') ||
+          (errorMessage.includes('chunk') && errorMessage.includes('failed'))
 
       if (isChunkLoadError) {
         const hasReloaded = sessionStorage.getItem('chunk-error-reloaded')

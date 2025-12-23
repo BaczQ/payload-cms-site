@@ -74,7 +74,7 @@ const frontendSelectors: Record<FontKey, string> = {
     '.site-fonts footer div[class*="flex"][class*="flex-col"], .site-fonts footer div.flex.flex-col',
   footerText:
     '.site-fonts footer div[class*="border-t"][class*="text-gray-500"], .site-fonts footer div.border-t.text-gray-500',
-  headerMenu: '.site-fonts .nav_font a, .site-fonts .nav_font button',
+  headerMenu: '.site-fonts header nav a, .site-fonts header nav button',
 }
 
 const adminSelectors: Record<FontKey, string> = {
