@@ -1,5 +1,7 @@
 import type { Endpoint, Field, GlobalConfig } from 'payload'
 import { APIError } from 'payload'
+import { revalidateTag } from 'next/cache'
+import { writeFrontendFontStylesFile } from '@/lib/fontStyles'
 
 const fontOptions = [
   {
@@ -347,6 +349,22 @@ export const SiteSettings: GlobalConfig = {
 
         return doc
       },
+      async ({ doc }) => {
+        await writeFrontendFontStylesFile({
+          fonts: doc?.fonts,
+          updatedAt: doc?.updatedAt,
+        })
+        return doc
+      },
+    ],
+    afterChange: [
+      async ({ doc }) => {
+        await writeFrontendFontStylesFile({
+          fonts: doc?.fonts,
+          updatedAt: doc?.updatedAt,
+        })
+        revalidateTag('global_site-settings')
+      },
     ],
     beforeValidate: [
       async ({ data }) => {
@@ -516,4 +534,3 @@ export const SiteSettings: GlobalConfig = {
     },
   ],
 }
-

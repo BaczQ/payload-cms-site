@@ -54,7 +54,7 @@ export const notoSansDisplay = Noto_Sans_Display({
 })
 
 // Gloock и Manufacturing Consent не доступны в next/font/google
-// Они будут загружаться через FontLoaderFrontend, но оптимизированно
+// Они загружаются через теги в frontend head
 
 // CSS переменные для fallback шрифтов
 export const fontVariables = [
@@ -65,4 +65,3 @@ export const fontVariables = [
   antonio.variable,
   notoSansDisplay.variable,
 ].join(' ')
-

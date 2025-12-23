@@ -1,0 +1,61 @@
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: inherit;
+    font-weight: inherit;
+  }
+
+  /* Heading font for all headings */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  h7 {
+    font-family: var(--font-heading, var(--font-roboto), system-ui, sans-serif);
+  }
+
+  /* Default font for paragraphs and text elements */
+  p,
+  li,
+  span,
+  div {
+    font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  }
+
+  /* Ensure a universal default font for all elements */
+  html {
+    font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  }
+
+  * {
+    font-family: inherit;
+  }
+
+  /* Caption styles for image captions */
+  figcaption {
+    font-size: 14px;
+    line-height: 17.5px;
+    font-weight: 400;
+    color: rgb(75 85 99); /* gray-600 - чуть серее */
+  }
+  [data-theme='dark'] figcaption {
+    color: rgb(156 163 175); /* gray-400 для темной темы */
+  }
+  /* Image caption styles (for RichText captions under images) */
+  .image-caption p {
+    font-size: 14px;
+    line-height: 17.5px;
+    font-weight: 400;
+    color: rgb(75 85 99); /* gray-600 - чуть серее */
+    font-style: italic;
+  }
+  [data-theme='dark'] .image-caption p {
+    color: rgb(156 163 175); /* gray-400 для темной темы */
+  }
+}
