@@ -12,7 +12,7 @@ export default function FontLoader() {
     try {
       // Google Fonts URL with all fonts
       const googleFontsUrl =
-        'https://fonts.googleapis.com/css2?family=Antonio:wght@100..700&family=Gloock&family=Manufacturing+Consent&family=Noto+Sans+Display:ital,wght@0,100..900;1,100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto+Flex:opsz,wght,XOPQ,XTRA,YOPQ,YTDE,YTFI,YTLC,YTUC@8..144,100..1000,96,468,79,-203,738,514,712&family=Roboto:ital,wght@0,100..900;1,100..900&family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap'
+        'https://fonts.googleapis.com/css2?family=Antonio:wght@100..700&family=Gloock&family=Lobster&family=Manufacturing+Consent&family=Noto+Sans+Display:ital,wght@0,100..900;1,100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto+Flex:opsz,wght,XOPQ,XTRA,YOPQ,YTDE,YTFI,YTLC,YTUC@8..144,100..1000,96,468,79,-203,738,514,712&family=Roboto:ital,wght@0,100..900;1,100..900&family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap'
 
       // Check if links already exist
       const existingPreconnect1 = document.querySelector('link[href="https://fonts.googleapis.com"]')

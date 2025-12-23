@@ -1,4 +1,12 @@
-import { Roboto, Roboto_Condensed, Roboto_Flex, Tinos, Antonio, Noto_Sans_Display } from 'next/font/google'
+import {
+  Roboto,
+  Roboto_Condensed,
+  Roboto_Flex,
+  Tinos,
+  Antonio,
+  Noto_Sans_Display,
+  Lobster,
+} from 'next/font/google'
 
 // Основные шрифты для fallback
 export const roboto = Roboto({
@@ -53,6 +61,14 @@ export const notoSansDisplay = Noto_Sans_Display({
   preload: false,
 })
 
+export const lobster = Lobster({
+  weight: ['400'],
+  subsets: ['latin', 'cyrillic'],
+  variable: '--font-lobster',
+  display: 'swap',
+  preload: false,
+})
+
 // Gloock и Manufacturing Consent не доступны в next/font/google
 // Они загружаются через теги в frontend head
 
@@ -64,4 +80,5 @@ export const fontVariables = [
   tinos.variable,
   antonio.variable,
   notoSansDisplay.variable,
+  lobster.variable,
 ].join(' ')

@@ -53,55 +53,10 @@ async function migrateFontSettings() {
                 fontStyle: 'normal',
               },
             },
-            menu: {
+            buttonText: {
               fontFamily: 'roboto',
               mobile: {
-                fontSize: '14px',
-                lineHeight: '1.5',
-                fontWeight: '500',
-                fontStyle: 'normal',
-              },
-              desktop: {
                 fontSize: '16px',
-                lineHeight: '1.5',
-                fontWeight: '500',
-                fontStyle: 'normal',
-              },
-            },
-            caption: {
-              fontFamily: 'roboto',
-              mobile: {
-                fontSize: '12px',
-                lineHeight: '1.4',
-                fontWeight: '400',
-                fontStyle: 'normal',
-              },
-              desktop: {
-                fontSize: '14px',
-                lineHeight: '1.4',
-                fontWeight: '400',
-                fontStyle: 'normal',
-              },
-            },
-            h2h5: {
-              fontFamily: 'roboto',
-              mobile: {
-                fontSize: '20px',
-                lineHeight: '1.3',
-                fontWeight: '600',
-                fontStyle: 'normal',
-              },
-              desktop: {
-                fontSize: '24px',
-                lineHeight: '1.3',
-                fontWeight: '600',
-                fontStyle: 'normal',
-              },
-            },
-            author: {
-              fontFamily: 'roboto',
-              mobile: {
-                fontSize: '14px',
                 lineHeight: '1.5',
                 fontWeight: '400',
                 fontStyle: 'normal',
@@ -113,16 +68,76 @@ async function migrateFontSettings() {
                 fontStyle: 'normal',
               },
             },
-            date: {
+            allPostsLink: {
               fontFamily: 'roboto',
               mobile: {
-                fontSize: '12px',
+                fontSize: '16px',
                 lineHeight: '1.5',
                 fontWeight: '400',
                 fontStyle: 'normal',
               },
               desktop: {
-                fontSize: '14px',
+                fontSize: '16px',
+                lineHeight: '1.5',
+                fontWeight: '400',
+                fontStyle: 'normal',
+              },
+            },
+            cardCategory: {
+              fontFamily: 'roboto',
+              mobile: {
+                fontSize: '16px',
+                lineHeight: '1.5',
+                fontWeight: '400',
+                fontStyle: 'normal',
+              },
+              desktop: {
+                fontSize: '16px',
+                lineHeight: '1.5',
+                fontWeight: '400',
+                fontStyle: 'normal',
+              },
+            },
+            cardText: {
+              fontFamily: 'roboto',
+              mobile: {
+                fontSize: '16px',
+                lineHeight: '1.5',
+                fontWeight: '400',
+                fontStyle: 'normal',
+              },
+              desktop: {
+                fontSize: '16px',
+                lineHeight: '1.5',
+                fontWeight: '400',
+                fontStyle: 'normal',
+              },
+            },
+            footerMenu: {
+              fontFamily: 'roboto',
+              mobile: {
+                fontSize: '16px',
+                lineHeight: '1.5',
+                fontWeight: '400',
+                fontStyle: 'normal',
+              },
+              desktop: {
+                fontSize: '16px',
+                lineHeight: '1.5',
+                fontWeight: '400',
+                fontStyle: 'normal',
+              },
+            },
+            footerText: {
+              fontFamily: 'roboto',
+              mobile: {
+                fontSize: '16px',
+                lineHeight: '1.5',
+                fontWeight: '400',
+                fontStyle: 'normal',
+              },
+              desktop: {
+                fontSize: '16px',
                 lineHeight: '1.5',
                 fontWeight: '400',
                 fontStyle: 'normal',
@@ -153,30 +168,35 @@ async function migrateFontSettings() {
               mobile: { fontSize: '16px', lineHeight: '1.5', fontWeight: '400', fontStyle: 'normal' },
               desktop: { fontSize: '18px', lineHeight: '1.6', fontWeight: '400', fontStyle: 'normal' },
             },
-            menu: {
+            buttonText: {
               fontFamily: 'roboto',
-              mobile: { fontSize: '14px', lineHeight: '1.5', fontWeight: '500', fontStyle: 'normal' },
-              desktop: { fontSize: '16px', lineHeight: '1.5', fontWeight: '500', fontStyle: 'normal' },
-            },
-            caption: {
-              fontFamily: 'roboto',
-              mobile: { fontSize: '12px', lineHeight: '1.4', fontWeight: '400', fontStyle: 'normal' },
-              desktop: { fontSize: '14px', lineHeight: '1.4', fontWeight: '400', fontStyle: 'normal' },
-            },
-            h2h5: {
-              fontFamily: 'roboto',
-              mobile: { fontSize: '20px', lineHeight: '1.3', fontWeight: '600', fontStyle: 'normal' },
-              desktop: { fontSize: '24px', lineHeight: '1.3', fontWeight: '600', fontStyle: 'normal' },
-            },
-            author: {
-              fontFamily: 'roboto',
-              mobile: { fontSize: '14px', lineHeight: '1.5', fontWeight: '400', fontStyle: 'normal' },
+              mobile: { fontSize: '16px', lineHeight: '1.5', fontWeight: '400', fontStyle: 'normal' },
               desktop: { fontSize: '16px', lineHeight: '1.5', fontWeight: '400', fontStyle: 'normal' },
             },
-            date: {
+            allPostsLink: {
               fontFamily: 'roboto',
-              mobile: { fontSize: '12px', lineHeight: '1.5', fontWeight: '400', fontStyle: 'normal' },
-              desktop: { fontSize: '14px', lineHeight: '1.5', fontWeight: '400', fontStyle: 'normal' },
+              mobile: { fontSize: '16px', lineHeight: '1.5', fontWeight: '400', fontStyle: 'normal' },
+              desktop: { fontSize: '16px', lineHeight: '1.5', fontWeight: '400', fontStyle: 'normal' },
+            },
+            cardCategory: {
+              fontFamily: 'roboto',
+              mobile: { fontSize: '16px', lineHeight: '1.5', fontWeight: '400', fontStyle: 'normal' },
+              desktop: { fontSize: '16px', lineHeight: '1.5', fontWeight: '400', fontStyle: 'normal' },
+            },
+            cardText: {
+              fontFamily: 'roboto',
+              mobile: { fontSize: '16px', lineHeight: '1.5', fontWeight: '400', fontStyle: 'normal' },
+              desktop: { fontSize: '16px', lineHeight: '1.5', fontWeight: '400', fontStyle: 'normal' },
+            },
+            footerMenu: {
+              fontFamily: 'roboto',
+              mobile: { fontSize: '16px', lineHeight: '1.5', fontWeight: '400', fontStyle: 'normal' },
+              desktop: { fontSize: '16px', lineHeight: '1.5', fontWeight: '400', fontStyle: 'normal' },
+            },
+            footerText: {
+              fontFamily: 'roboto',
+              mobile: { fontSize: '16px', lineHeight: '1.5', fontWeight: '400', fontStyle: 'normal' },
+              desktop: { fontSize: '16px', lineHeight: '1.5', fontWeight: '400', fontStyle: 'normal' },
             },
           },
         },
@@ -185,7 +205,16 @@ async function migrateFontSettings() {
     }
 
     // Migrate old structure to new
-    const fontKeys = ['h1', 'postText', 'menu', 'caption', 'h2h5', 'author', 'date'] as const
+    const fontKeys = [
+      'h1',
+      'postText',
+      'buttonText',
+      'allPostsLink',
+      'cardCategory',
+      'cardText',
+      'footerMenu',
+      'footerText',
+    ] as const
     let needsUpdate = false
     const migratedFonts: any = {}
 
@@ -200,13 +229,13 @@ async function migrateFontSettings() {
           mobile: {
             fontSize: key === 'h1' ? '24px' : key === 'postText' ? '16px' : '14px',
             lineHeight: '1.5',
-            fontWeight: key === 'h1' || key === 'h2h5' ? '700' : '400',
+            fontWeight: key === 'h1' ? '700' : '400',
             fontStyle: 'normal',
           },
           desktop: {
             fontSize: key === 'h1' ? '32px' : key === 'postText' ? '18px' : '16px',
             lineHeight: '1.5',
-            fontWeight: key === 'h1' || key === 'h2h5' ? '700' : '400',
+            fontWeight: key === 'h1' ? '700' : '400',
             fontStyle: 'normal',
           },
         }
@@ -223,13 +252,13 @@ async function migrateFontSettings() {
           mobile: {
             fontSize: key === 'h1' ? '24px' : key === 'postText' ? '16px' : '14px',
             lineHeight: '1.5',
-            fontWeight: key === 'h1' || key === 'h2h5' ? '700' : '400',
+            fontWeight: key === 'h1' ? '700' : '400',
             fontStyle: 'normal',
           },
           desktop: {
             fontSize: key === 'h1' ? '32px' : key === 'postText' ? '18px' : '16px',
             lineHeight: '1.5',
-            fontWeight: key === 'h1' || key === 'h2h5' ? '700' : '400',
+            fontWeight: key === 'h1' ? '700' : '400',
             fontStyle: 'normal',
           },
         }

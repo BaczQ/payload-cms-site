@@ -64,55 +64,10 @@ async function resetSiteSettings() {
               fontStyle: 'normal',
             },
           },
-          menu: {
+          buttonText: {
             fontFamily: 'roboto',
             mobile: {
-              fontSize: '14px',
-              lineHeight: '1.5',
-              fontWeight: '500',
-              fontStyle: 'normal',
-            },
-            desktop: {
               fontSize: '16px',
-              lineHeight: '1.5',
-              fontWeight: '500',
-              fontStyle: 'normal',
-            },
-          },
-          caption: {
-            fontFamily: 'roboto',
-            mobile: {
-              fontSize: '12px',
-              lineHeight: '1.4',
-              fontWeight: '400',
-              fontStyle: 'normal',
-            },
-            desktop: {
-              fontSize: '14px',
-              lineHeight: '1.4',
-              fontWeight: '400',
-              fontStyle: 'normal',
-            },
-          },
-          h2h5: {
-            fontFamily: 'roboto',
-            mobile: {
-              fontSize: '20px',
-              lineHeight: '1.3',
-              fontWeight: '600',
-              fontStyle: 'normal',
-            },
-            desktop: {
-              fontSize: '24px',
-              lineHeight: '1.3',
-              fontWeight: '600',
-              fontStyle: 'normal',
-            },
-          },
-          author: {
-            fontFamily: 'roboto',
-            mobile: {
-              fontSize: '14px',
               lineHeight: '1.5',
               fontWeight: '400',
               fontStyle: 'normal',
@@ -124,16 +79,76 @@ async function resetSiteSettings() {
               fontStyle: 'normal',
             },
           },
-          date: {
+          allPostsLink: {
             fontFamily: 'roboto',
             mobile: {
-              fontSize: '12px',
+              fontSize: '16px',
               lineHeight: '1.5',
               fontWeight: '400',
               fontStyle: 'normal',
             },
             desktop: {
-              fontSize: '14px',
+              fontSize: '16px',
+              lineHeight: '1.5',
+              fontWeight: '400',
+              fontStyle: 'normal',
+            },
+          },
+          cardCategory: {
+            fontFamily: 'roboto',
+            mobile: {
+              fontSize: '16px',
+              lineHeight: '1.5',
+              fontWeight: '400',
+              fontStyle: 'normal',
+            },
+            desktop: {
+              fontSize: '16px',
+              lineHeight: '1.5',
+              fontWeight: '400',
+              fontStyle: 'normal',
+            },
+          },
+          cardText: {
+            fontFamily: 'roboto',
+            mobile: {
+              fontSize: '16px',
+              lineHeight: '1.5',
+              fontWeight: '400',
+              fontStyle: 'normal',
+            },
+            desktop: {
+              fontSize: '16px',
+              lineHeight: '1.5',
+              fontWeight: '400',
+              fontStyle: 'normal',
+            },
+          },
+          footerMenu: {
+            fontFamily: 'roboto',
+            mobile: {
+              fontSize: '16px',
+              lineHeight: '1.5',
+              fontWeight: '400',
+              fontStyle: 'normal',
+            },
+            desktop: {
+              fontSize: '16px',
+              lineHeight: '1.5',
+              fontWeight: '400',
+              fontStyle: 'normal',
+            },
+          },
+          footerText: {
+            fontFamily: 'roboto',
+            mobile: {
+              fontSize: '16px',
+              lineHeight: '1.5',
+              fontWeight: '400',
+              fontStyle: 'normal',
+            },
+            desktop: {
+              fontSize: '16px',
               lineHeight: '1.5',
               fontWeight: '400',
               fontStyle: 'normal',

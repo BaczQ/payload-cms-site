@@ -1,8 +1,18 @@
 import type { SiteSetting } from '@/payload-types'
-import fs from 'fs/promises'
 import path from 'path'
 
-const fontKeys = ['h1', 'postText', 'menu', 'caption', 'h2h5', 'author', 'date'] as const
+const fontKeys = [
+  'body',
+  'h1',
+  'postText',
+  'buttonText',
+  'allPostsLink',
+  'cardCategory',
+  'cardText',
+  'footerMenu',
+  'footerText',
+  'headerMenu',
+] as const
 type FontKey = (typeof fontKeys)[number]
 type FontConfig = NonNullable<SiteSetting['fonts']>[FontKey]
 
@@ -15,6 +25,7 @@ const frontendFontFamilyMap: Record<string, string> = {
   'roboto-flex': 'var(--font-roboto-flex), system-ui, sans-serif',
   'roboto-condensed': 'var(--font-roboto-condensed), system-ui, sans-serif',
   tinos: 'var(--font-tinos), Georgia, serif',
+  lobster: 'var(--font-lobster), cursive',
   'system-ui': 'system-ui, -apple-system, sans-serif',
   'sans-serif': 'sans-serif',
 }
@@ -28,6 +39,7 @@ const adminFontFamilyMap: Record<string, string> = {
   'roboto-flex': '"Roboto Flex", sans-serif',
   'roboto-condensed': '"Roboto Condensed", sans-serif',
   tinos: '"Tinos", serif',
+  lobster: '"Lobster", cursive',
   'system-ui': 'system-ui, -apple-system, sans-serif',
   'sans-serif': 'sans-serif',
 }
@@ -41,36 +53,42 @@ const adminFallbackFonts: Record<string, string> = {
   'roboto-flex': 'var(--font-sans)',
   'roboto-condensed': 'var(--font-sans)',
   tinos: 'var(--font-serif)',
+  lobster: 'cursive',
   'system-ui': 'system-ui, -apple-system, sans-serif',
   'sans-serif': 'sans-serif',
 }
 
 const frontendSelectors: Record<FontKey, string> = {
+  body: '.site-fonts', // Базовый шрифт применяется ко всему контейнеру
   h1: '.site-fonts h1, .site-fonts .payload-richtext h1',
   postText:
     '.site-fonts .payload-richtext, .site-fonts .payload-richtext p, .site-fonts .payload-richtext li',
-  menu:
-    '.site-fonts header nav, .site-fonts header nav a, .site-fonts header nav button, .site-fonts nav, .site-fonts nav a, .site-fonts nav button, .site-fonts .nav, .site-fonts .nav a, .site-fonts .nav button, .site-fonts [class*="nav"] button',
-  caption: '.site-fonts figcaption, .site-fonts .payload-richtext figcaption',
-  h2h5:
-    '.site-fonts h2, .site-fonts h3, .site-fonts h4, .site-fonts h5, .site-fonts .payload-richtext h2, .site-fonts .payload-richtext h3, .site-fonts .payload-richtext h4, .site-fonts .payload-richtext h5',
-  author: '.site-fonts .author, .site-fonts .payload-richtext .author',
-  date: '.site-fonts time, .site-fonts .date, .site-fonts .payload-richtext .date',
+  buttonText:
+    '.site-fonts a.inline-flex.items-center.justify-center, .site-fonts button.inline-flex.items-center.justify-center, .site-fonts a[class*="inline-flex"][class*="items-center"], .site-fonts button[class*="inline-flex"][class*="items-center"]',
+  allPostsLink:
+    '.site-fonts a.text-primary.underline[href*="/posts"], .site-fonts a[class*="text-primary"][class*="underline"][href*="/posts"]',
+  cardCategory:
+    '.site-fonts article[class*="border"] div[class*="uppercase"], .site-fonts article.border div.uppercase',
+  cardText: '.site-fonts article[class*="border"] p, .site-fonts article.border p',
+  footerMenu:
+    '.site-fonts footer div[class*="flex"][class*="flex-col"], .site-fonts footer div.flex.flex-col',
+  footerText:
+    '.site-fonts footer div[class*="border-t"][class*="text-gray-500"], .site-fonts footer div.border-t.text-gray-500',
+  headerMenu: '.site-fonts .nav_font a, .site-fonts .nav_font button',
 }
 
 const adminSelectors: Record<FontKey, string> = {
+  body: '.payload-admin', // Базовый шрифт для админки
   h1: '.payload-admin .payload-rich-text h1',
   postText: '.payload-admin .payload-rich-text p, .payload-admin .payload-rich-text li',
-  menu:
-    '.payload-admin .nav, .payload-admin .nav *, .payload-admin .nav button, .payload-admin .nav a, .payload-admin .nav .nav__item, .payload-admin [class*="nav"] button, .payload-admin [class*="nav"] a',
-  caption: '.payload-admin .payload-rich-text figcaption',
-  h2h5:
-    '.payload-admin .payload-rich-text h2, .payload-admin .payload-rich-text h3, .payload-admin .payload-rich-text h4, .payload-admin .payload-rich-text h5',
-  author: '.payload-admin .payload-rich-text .author',
-  date: '.payload-admin .payload-rich-text .date',
+  buttonText: '.payload-admin',
+  allPostsLink: '.payload-admin',
+  cardCategory: '.payload-admin',
+  cardText: '.payload-admin',
+  footerMenu: '.payload-admin',
+  footerText: '.payload-admin',
+  headerMenu: '.payload-admin',
 }
-
-const fontStylesFilePath = path.join(process.cwd(), 'public', 'site-fonts.css')
 
 function normalizeFontValue(value: string | null | undefined): string | null {
   if (!value || typeof value !== 'string') return null
@@ -172,7 +190,22 @@ function buildFontStyles(
 
   const cssRules: string[] = []
 
+  // Сначала применяем body как базовый стиль
+  const bodyConfig = fonts.body
+  if (bodyConfig) {
+    const bodySelector = options.selectors.body
+    cssRules.push(
+      ...generateFontCSS(bodySelector, bodyConfig, {
+        fontFamilyMap: options.fontFamilyMap,
+        fallbackMap: options.fallbackMap,
+        useImportant: options.useImportant,
+      }),
+    )
+  }
+
+  // Затем применяем остальные элементы, которые переопределяют базовые значения
   for (const key of fontKeys) {
+    if (key === 'body') continue // body уже обработан
     const fontConfig = fonts[key]
     if (!fontConfig) continue
     const selector = options.selectors[key]
@@ -203,34 +236,4 @@ export function buildAdminFontStyles(fonts: SiteSetting['fonts'] | null | undefi
     fallbackMap: adminFallbackFonts,
     useImportant: false,
   })
-}
-
-export async function writeFrontendFontStylesFile({
-  fonts,
-  updatedAt,
-}: {
-  fonts: SiteSetting['fonts'] | null | undefined
-  updatedAt?: string | null
-}): Promise<void> {
-  const header = `/* This file is auto-generated. Updated at ${updatedAt ?? 'unknown'} */`
-  const styles = buildFrontendFontStyles(fonts)
-  const content = `${header}\n${styles}\n`
-
-  await fs.mkdir(path.dirname(fontStylesFilePath), { recursive: true })
-
-  let existingContent: string | null = null
-  try {
-    existingContent = await fs.readFile(fontStylesFilePath, 'utf8')
-  } catch (error) {
-    const nodeError = error as NodeJS.ErrnoException
-    if (nodeError.code !== 'ENOENT') {
-      throw error
-    }
-  }
-
-  if (existingContent === content) {
-    return
-  }
-
-  await fs.writeFile(fontStylesFilePath, content, 'utf8')
 }

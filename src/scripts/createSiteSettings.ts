@@ -7,13 +7,69 @@ async function createSiteSettings() {
   console.log('Payload initialized')
 
   try {
-    console.log('Creating site-settings global with default values...')
-    
-    // This will create the table if it doesn't exist and create a new record
-    await payload.updateGlobal({
-      slug: 'site-settings',
-      data: {
+    // Check if global already exists
+    let existingGlobal
+    try {
+      existingGlobal = await payload.findGlobal({
+        slug: 'site-settings',
+      })
+      console.log('Found existing site-settings global')
+    } catch (error) {
+      console.log('No existing site-settings global found, will create new one')
+    }
+
+    if (existingGlobal) {
+      console.log('Site-settings already exists. Updating with body font settings...')
+      // Update existing with body if missing
+      const updatedFonts = {
+        ...existingGlobal.fonts,
+        body: existingGlobal.fonts?.body || {
+          fontFamily: 'roboto',
+          mobile: {
+            fontSize: '16px',
+            lineHeight: '1.5',
+            fontWeight: '400',
+            fontStyle: 'normal',
+          },
+          desktop: {
+            fontSize: '16px',
+            lineHeight: '1.5',
+            fontWeight: '400',
+            fontStyle: 'normal',
+          },
+        },
+      }
+
+      await payload.updateGlobal({
+        slug: 'site-settings',
+        data: {
+          fonts: updatedFonts,
+        },
+      })
+      console.log('✓ Successfully updated site-settings with body font!')
+    } else {
+      console.log('Creating site-settings global with default values...')
+      
+      // This will create the table if it doesn't exist and create a new record
+      await payload.updateGlobal({
+        slug: 'site-settings',
+        data: {
         fonts: {
+          body: {
+            fontFamily: 'roboto',
+            mobile: {
+              fontSize: '16px',
+              lineHeight: '1.5',
+              fontWeight: '400',
+              fontStyle: 'normal',
+            },
+            desktop: {
+              fontSize: '16px',
+              lineHeight: '1.5',
+              fontWeight: '400',
+              fontStyle: 'normal',
+            },
+          },
           h1: {
             fontFamily: 'roboto',
             mobile: {
@@ -44,55 +100,10 @@ async function createSiteSettings() {
               fontStyle: 'normal',
             },
           },
-          menu: {
+          buttonText: {
             fontFamily: 'roboto',
             mobile: {
-              fontSize: '14px',
-              lineHeight: '1.5',
-              fontWeight: '500',
-              fontStyle: 'normal',
-            },
-            desktop: {
               fontSize: '16px',
-              lineHeight: '1.5',
-              fontWeight: '500',
-              fontStyle: 'normal',
-            },
-          },
-          caption: {
-            fontFamily: 'roboto',
-            mobile: {
-              fontSize: '12px',
-              lineHeight: '1.4',
-              fontWeight: '400',
-              fontStyle: 'normal',
-            },
-            desktop: {
-              fontSize: '14px',
-              lineHeight: '1.4',
-              fontWeight: '400',
-              fontStyle: 'normal',
-            },
-          },
-          h2h5: {
-            fontFamily: 'roboto',
-            mobile: {
-              fontSize: '20px',
-              lineHeight: '1.3',
-              fontWeight: '600',
-              fontStyle: 'normal',
-            },
-            desktop: {
-              fontSize: '24px',
-              lineHeight: '1.3',
-              fontWeight: '600',
-              fontStyle: 'normal',
-            },
-          },
-          author: {
-            fontFamily: 'roboto',
-            mobile: {
-              fontSize: '14px',
               lineHeight: '1.5',
               fontWeight: '400',
               fontStyle: 'normal',
@@ -104,16 +115,76 @@ async function createSiteSettings() {
               fontStyle: 'normal',
             },
           },
-          date: {
+          allPostsLink: {
             fontFamily: 'roboto',
             mobile: {
-              fontSize: '12px',
+              fontSize: '16px',
               lineHeight: '1.5',
               fontWeight: '400',
               fontStyle: 'normal',
             },
             desktop: {
-              fontSize: '14px',
+              fontSize: '16px',
+              lineHeight: '1.5',
+              fontWeight: '400',
+              fontStyle: 'normal',
+            },
+          },
+          cardCategory: {
+            fontFamily: 'roboto',
+            mobile: {
+              fontSize: '16px',
+              lineHeight: '1.5',
+              fontWeight: '400',
+              fontStyle: 'normal',
+            },
+            desktop: {
+              fontSize: '16px',
+              lineHeight: '1.5',
+              fontWeight: '400',
+              fontStyle: 'normal',
+            },
+          },
+          cardText: {
+            fontFamily: 'roboto',
+            mobile: {
+              fontSize: '16px',
+              lineHeight: '1.5',
+              fontWeight: '400',
+              fontStyle: 'normal',
+            },
+            desktop: {
+              fontSize: '16px',
+              lineHeight: '1.5',
+              fontWeight: '400',
+              fontStyle: 'normal',
+            },
+          },
+          footerMenu: {
+            fontFamily: 'roboto',
+            mobile: {
+              fontSize: '16px',
+              lineHeight: '1.5',
+              fontWeight: '400',
+              fontStyle: 'normal',
+            },
+            desktop: {
+              fontSize: '16px',
+              lineHeight: '1.5',
+              fontWeight: '400',
+              fontStyle: 'normal',
+            },
+          },
+          footerText: {
+            fontFamily: 'roboto',
+            mobile: {
+              fontSize: '16px',
+              lineHeight: '1.5',
+              fontWeight: '400',
+              fontStyle: 'normal',
+            },
+            desktop: {
+              fontSize: '16px',
               lineHeight: '1.5',
               fontWeight: '400',
               fontStyle: 'normal',
@@ -123,8 +194,10 @@ async function createSiteSettings() {
       },
     })
 
-    console.log('✓ Successfully created site-settings global!')
-    console.log('✓ Table created with correct structure')
+      console.log('✓ Successfully created site-settings global!')
+      console.log('✓ Table created with correct structure')
+    }
+    
     console.log('')
     console.log('You can now access /admin/globals/site-settings')
   } catch (error) {

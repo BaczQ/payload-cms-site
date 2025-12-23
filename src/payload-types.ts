@@ -1811,6 +1811,70 @@ export interface Footer {
 export interface SiteSetting {
   id: number;
   fonts?: {
+    /**
+     * Выберите элемент, настройки которого вы хотите изменить. Базовый шрифт применяется ко всем элементам по умолчанию.
+     */
+    selectedElement?:
+      | (
+          | 'body'
+          | 'h1'
+          | 'postText'
+          | 'buttonText'
+          | 'allPostsLink'
+          | 'cardCategory'
+          | 'cardText'
+          | 'footerMenu'
+          | 'footerText'
+          | 'headerMenu'
+        )
+      | null;
+    /**
+     * Базовый шрифт применяется ко всем элементам по умолчанию. Элементы с индивидуальными настройками будут переопределять эти значения.
+     */
+    body?: {
+      /**
+       * Шрифт по умолчанию для всех элементов сайта
+       */
+      fontFamily?:
+        | (
+            | 'roboto'
+            | 'gloock'
+            | 'antonio'
+            | 'manufacturing-consent'
+            | 'noto-sans-display'
+            | 'roboto-flex'
+            | 'roboto-condensed'
+            | 'tinos'
+            | 'lobster'
+            | 'system-ui'
+            | 'sans-serif'
+          )
+        | null;
+      mobile?: {
+        /**
+         * Например: 16px, 1rem, 1.2em
+         */
+        fontSize?: string | null;
+        /**
+         * Например: 1.5, 24px, 1.5em
+         */
+        lineHeight?: string | null;
+        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
+        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
+      };
+      desktop?: {
+        /**
+         * Например: 16px, 1rem, 1.2em
+         */
+        fontSize?: string | null;
+        /**
+         * Например: 1.5, 24px, 1.5em
+         */
+        lineHeight?: string | null;
+        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
+        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
+      };
+    };
     h1?: {
       /**
        * Шрифт для заголовков H1 в редакторе
@@ -1825,6 +1889,7 @@ export interface SiteSetting {
             | 'roboto-flex'
             | 'roboto-condensed'
             | 'tinos'
+            | 'lobster'
             | 'system-ui'
             | 'sans-serif'
           )
@@ -1868,6 +1933,7 @@ export interface SiteSetting {
             | 'roboto-flex'
             | 'roboto-condensed'
             | 'tinos'
+            | 'lobster'
             | 'system-ui'
             | 'sans-serif'
           )
@@ -1897,9 +1963,12 @@ export interface SiteSetting {
         fontStyle?: ('normal' | 'italic' | 'oblique') | null;
       };
     };
-    menu?: {
+    /**
+     * Использует настройки базового шрифта (Body)
+     */
+    buttonText?: {
       /**
-       * Шрифт для навигационного меню
+       * Шрифт для текста кнопок (использует настройки Body)
        */
       fontFamily?:
         | (
@@ -1911,6 +1980,7 @@ export interface SiteSetting {
             | 'roboto-flex'
             | 'roboto-condensed'
             | 'tinos'
+            | 'lobster'
             | 'system-ui'
             | 'sans-serif'
           )
@@ -1940,9 +2010,12 @@ export interface SiteSetting {
         fontStyle?: ('normal' | 'italic' | 'oblique') | null;
       };
     };
-    caption?: {
+    /**
+     * Использует настройки базового шрифта (Body)
+     */
+    allPostsLink?: {
       /**
-       * Шрифт для подписей к изображениям (figcaption)
+       * Шрифт для ссылки "Все новости" (использует настройки Body)
        */
       fontFamily?:
         | (
@@ -1954,6 +2027,7 @@ export interface SiteSetting {
             | 'roboto-flex'
             | 'roboto-condensed'
             | 'tinos'
+            | 'lobster'
             | 'system-ui'
             | 'sans-serif'
           )
@@ -1983,9 +2057,12 @@ export interface SiteSetting {
         fontStyle?: ('normal' | 'italic' | 'oblique') | null;
       };
     };
-    h2h5?: {
+    /**
+     * Использует настройки базового шрифта (Body)
+     */
+    cardCategory?: {
       /**
-       * Шрифт для подзаголовков H2, H3, H4, H5
+       * Шрифт для рубрик в карточках (использует настройки Body)
        */
       fontFamily?:
         | (
@@ -1997,6 +2074,7 @@ export interface SiteSetting {
             | 'roboto-flex'
             | 'roboto-condensed'
             | 'tinos'
+            | 'lobster'
             | 'system-ui'
             | 'sans-serif'
           )
@@ -2026,9 +2104,12 @@ export interface SiteSetting {
         fontStyle?: ('normal' | 'italic' | 'oblique') | null;
       };
     };
-    author?: {
+    /**
+     * Использует настройки базового шрифта (Body)
+     */
+    cardText?: {
       /**
-       * Шрифт для имени автора
+       * Шрифт для текста в карточках (использует настройки Body)
        */
       fontFamily?:
         | (
@@ -2040,6 +2121,7 @@ export interface SiteSetting {
             | 'roboto-flex'
             | 'roboto-condensed'
             | 'tinos'
+            | 'lobster'
             | 'system-ui'
             | 'sans-serif'
           )
@@ -2069,9 +2151,12 @@ export interface SiteSetting {
         fontStyle?: ('normal' | 'italic' | 'oblique') | null;
       };
     };
-    date?: {
+    /**
+     * Использует настройки базового шрифта (Body)
+     */
+    footerMenu?: {
       /**
-       * Шрифт для даты публикации
+       * Шрифт для меню в футере (использует настройки Body)
        */
       fontFamily?:
         | (
@@ -2083,6 +2168,101 @@ export interface SiteSetting {
             | 'roboto-flex'
             | 'roboto-condensed'
             | 'tinos'
+            | 'lobster'
+            | 'system-ui'
+            | 'sans-serif'
+          )
+        | null;
+      mobile?: {
+        /**
+         * Например: 16px, 1rem, 1.2em
+         */
+        fontSize?: string | null;
+        /**
+         * Например: 1.5, 24px, 1.5em
+         */
+        lineHeight?: string | null;
+        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
+        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
+      };
+      desktop?: {
+        /**
+         * Например: 16px, 1rem, 1.2em
+         */
+        fontSize?: string | null;
+        /**
+         * Например: 1.5, 24px, 1.5em
+         */
+        lineHeight?: string | null;
+        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
+        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
+      };
+    };
+    /**
+     * Использует настройки базового шрифта (Body)
+     */
+    footerText?: {
+      /**
+       * Шрифт для текста в футере (использует настройки Body)
+       */
+      fontFamily?:
+        | (
+            | 'roboto'
+            | 'gloock'
+            | 'antonio'
+            | 'manufacturing-consent'
+            | 'noto-sans-display'
+            | 'roboto-flex'
+            | 'roboto-condensed'
+            | 'tinos'
+            | 'lobster'
+            | 'system-ui'
+            | 'sans-serif'
+          )
+        | null;
+      mobile?: {
+        /**
+         * Например: 16px, 1rem, 1.2em
+         */
+        fontSize?: string | null;
+        /**
+         * Например: 1.5, 24px, 1.5em
+         */
+        lineHeight?: string | null;
+        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
+        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
+      };
+      desktop?: {
+        /**
+         * Например: 16px, 1rem, 1.2em
+         */
+        fontSize?: string | null;
+        /**
+         * Например: 1.5, 24px, 1.5em
+         */
+        lineHeight?: string | null;
+        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
+        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
+      };
+    };
+    /**
+     * Применяется к элементам a и button внутри nav_font
+     */
+    headerMenu?: {
+      /**
+       * Шрифт для элементов меню в хедере (a и button внутри nav_font)
+       */
+      fontFamily?:
+        | (
+            | 'roboto'
+            | 'gloock'
+            | 'antonio'
+            | 'manufacturing-consent'
+            | 'noto-sans-display'
+            | 'roboto-flex'
+            | 'roboto-condensed'
+            | 'tinos'
+            | 'lobster'
             | 'system-ui'
             | 'sans-serif'
           )
@@ -2186,6 +2366,28 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   fonts?:
     | T
     | {
+        selectedElement?: T;
+        body?:
+          | T
+          | {
+              fontFamily?: T;
+              mobile?:
+                | T
+                | {
+                    fontSize?: T;
+                    lineHeight?: T;
+                    fontWeight?: T;
+                    fontStyle?: T;
+                  };
+              desktop?:
+                | T
+                | {
+                    fontSize?: T;
+                    lineHeight?: T;
+                    fontWeight?: T;
+                    fontStyle?: T;
+                  };
+            };
         h1?:
           | T
           | {
@@ -2228,7 +2430,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
                     fontStyle?: T;
                   };
             };
-        menu?:
+        buttonText?:
           | T
           | {
               fontFamily?: T;
@@ -2249,7 +2451,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
                     fontStyle?: T;
                   };
             };
-        caption?:
+        allPostsLink?:
           | T
           | {
               fontFamily?: T;
@@ -2270,7 +2472,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
                     fontStyle?: T;
                   };
             };
-        h2h5?:
+        cardCategory?:
           | T
           | {
               fontFamily?: T;
@@ -2291,7 +2493,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
                     fontStyle?: T;
                   };
             };
-        author?:
+        cardText?:
           | T
           | {
               fontFamily?: T;
@@ -2312,7 +2514,49 @@ export interface SiteSettingsSelect<T extends boolean = true> {
                     fontStyle?: T;
                   };
             };
-        date?:
+        footerMenu?:
+          | T
+          | {
+              fontFamily?: T;
+              mobile?:
+                | T
+                | {
+                    fontSize?: T;
+                    lineHeight?: T;
+                    fontWeight?: T;
+                    fontStyle?: T;
+                  };
+              desktop?:
+                | T
+                | {
+                    fontSize?: T;
+                    lineHeight?: T;
+                    fontWeight?: T;
+                    fontStyle?: T;
+                  };
+            };
+        footerText?:
+          | T
+          | {
+              fontFamily?: T;
+              mobile?:
+                | T
+                | {
+                    fontSize?: T;
+                    lineHeight?: T;
+                    fontWeight?: T;
+                    fontStyle?: T;
+                  };
+              desktop?:
+                | T
+                | {
+                    fontSize?: T;
+                    lineHeight?: T;
+                    fontWeight?: T;
+                    fontStyle?: T;
+                  };
+            };
+        headerMenu?:
           | T
           | {
               fontFamily?: T;
