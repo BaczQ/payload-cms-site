@@ -2,8 +2,6 @@ import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
 import { ErrorHandler } from '@/components/ErrorHandler'
-import FontLoaderFrontend from '@/components/FontLoaderFrontend'
-import FontStylesFrontend from '@/components/FontStylesFrontend'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
 import { Providers } from '@/providers'
@@ -13,6 +11,7 @@ import { draftMode } from 'next/headers'
 import { cn } from '@/utilities/ui'
 
 import './globals.css'
+import './fonts.css'
 
 export default async function FrontendLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
@@ -20,8 +19,6 @@ export default async function FrontendLayout({ children }: { children: React.Rea
   return (
     <>
       <InitTheme />
-      <FontLoaderFrontend />
-      <FontStylesFrontend />
       <ErrorHandler />
       <Providers>
         <AdminBar
@@ -29,7 +26,7 @@ export default async function FrontendLayout({ children }: { children: React.Rea
             preview: isEnabled,
           }}
         />
-        <div className={cn('min-h-dvh flex flex-col', fontVariables)}>
+        <div className={cn('min-h-dvh flex flex-col site-fonts', fontVariables)}>
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
