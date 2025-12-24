@@ -418,186 +418,26 @@ export const SiteSettings: GlobalConfig = {
                   label: 'Выберите элемент для настройки',
                   defaultValue: 'body',
                   options: [
-                    { label: 'Базовый шрифт (Body)', value: 'body' },
-                    { label: 'Заголовок поста H1', value: 'h1' },
-                    { label: 'Текст поста', value: 'postText' },
-                    { label: 'Текст кнопок', value: 'buttonText' },
-                    { label: 'Ссылка "Все новости"', value: 'allPostsLink' },
-                    { label: 'Рубрики в карточках', value: 'cardCategory' },
-                    { label: 'Текст карточек', value: 'cardText' },
-                    { label: 'Меню в футере', value: 'footerMenu' },
-                    { label: 'Текст в футере', value: 'footerText' },
-                    { label: 'Header menu', value: 'headerMenu' },
+                    { label: 'HEADER > MENU', value: 'headerMenu' },
+                    { label: 'POST (h1)', value: 'h1' },
+                    { label: 'POST (p, subtitle)', value: 'postText' },
+                    { label: 'HOME ("all news")', value: 'allPostsLink' },
+                    { label: 'HOME > CARD (category)', value: 'cardCategory' },
+                    { label: 'HOME > CARD (subtitle)', value: 'cardText' },
+                    { label: 'FOOTER > MENU', value: 'footerMenu' },
+                    { label: 'FOOTER > TEXT', value: 'footerText' },
+                    { label: 'ALL (buttons)', value: 'buttonText' },
+                    { label: 'ALL (base)', value: 'body' },
                   ],
                   admin: {
                     description: 'Выберите элемент, настройки которого вы хотите изменить. Базовый шрифт применяется ко всем элементам по умолчанию.',
                   },
                 },
-                // Body настройки (базовый шрифт)
-                {
-                  name: 'body',
-                  type: 'group',
-                  label: 'Настройки базового шрифта (Body)',
-                  admin: {
-                    condition: (data, siblingData) => {
-                      const selected = siblingData?.selectedElement || data?.fonts?.selectedElement || 'body'
-                      return selected === 'body'
-                    },
-                    description: 'Базовый шрифт применяется ко всем элементам по умолчанию. Элементы с индивидуальными настройками будут переопределять эти значения.',
-                  },
-                  fields: createFontElementFields(
-                    'body',
-                    'Базовый шрифт',
-                    'Шрифт по умолчанию для всех элементов сайта',
-                  ),
-                },
-                // H1 настройки
-                {
-                  name: 'h1',
-                  type: 'group',
-                  label: 'Настройки заголовка H1',
-                  admin: {
-                    condition: (data, siblingData) => {
-                      const selected = siblingData?.selectedElement || data?.fonts?.selectedElement || 'body'
-                      return selected === 'h1'
-                    },
-                  },
-                  fields: createFontElementFields(
-                    'h1',
-                    'Заголовок поста H1',
-                    'Шрифт для заголовков H1 в редакторе',
-                  ),
-                },
-                // PostText настройки
-                {
-                  name: 'postText',
-                  type: 'group',
-                  label: 'Настройки текста поста',
-                  admin: {
-                    condition: (data, siblingData) => {
-                      const selected = siblingData?.selectedElement || data?.fonts?.selectedElement || 'body'
-                      return selected === 'postText'
-                    },
-                  },
-                  fields: createFontElementFields(
-                    'postText',
-                    'Текст поста',
-                    'Шрифт для текста поста (p, li)',
-                  ),
-                },
-                // ButtonText настройки
-                {
-                  name: 'buttonText',
-                  type: 'group',
-                  label: 'Настройки текста кнопок',
-                  admin: {
-                    condition: (data, siblingData) => {
-                      const selected = siblingData?.selectedElement || data?.fonts?.selectedElement || 'body'
-                      return selected === 'buttonText'
-                    },
-                    description: 'Использует настройки базового шрифта (Body)',
-                  },
-                  fields: createFontElementFields(
-                    'buttonText',
-                    'Текст кнопок',
-                    'Шрифт для текста кнопок (использует настройки Body)',
-                  ),
-                },
-                // AllPostsLink настройки
-                {
-                  name: 'allPostsLink',
-                  type: 'group',
-                  label: 'Настройки ссылки "Все новости"',
-                  admin: {
-                    condition: (data, siblingData) => {
-                      const selected = siblingData?.selectedElement || data?.fonts?.selectedElement || 'body'
-                      return selected === 'allPostsLink'
-                    },
-                    description: 'Использует настройки базового шрифта (Body)',
-                  },
-                  fields: createFontElementFields(
-                    'allPostsLink',
-                    'Ссылка "Все новости"',
-                    'Шрифт для ссылки "Все новости" (использует настройки Body)',
-                  ),
-                },
-                // CardCategory настройки
-                {
-                  name: 'cardCategory',
-                  type: 'group',
-                  label: 'Настройки рубрик в карточках',
-                  admin: {
-                    condition: (data, siblingData) => {
-                      const selected = siblingData?.selectedElement || data?.fonts?.selectedElement || 'body'
-                      return selected === 'cardCategory'
-                    },
-                    description: 'Использует настройки базового шрифта (Body)',
-                  },
-                  fields: createFontElementFields(
-                    'cardCategory',
-                    'Рубрики в карточках',
-                    'Шрифт для рубрик в карточках (использует настройки Body)',
-                  ),
-                },
-                // CardText настройки
-                {
-                  name: 'cardText',
-                  type: 'group',
-                  label: 'Настройки текста карточек',
-                  admin: {
-                    condition: (data, siblingData) => {
-                      const selected = siblingData?.selectedElement || data?.fonts?.selectedElement || 'body'
-                      return selected === 'cardText'
-                    },
-                    description: 'Использует настройки базового шрифта (Body)',
-                  },
-                  fields: createFontElementFields(
-                    'cardText',
-                    'Текст карточек',
-                    'Шрифт для текста в карточках (использует настройки Body)',
-                  ),
-                },
-                // FooterMenu настройки
-                {
-                  name: 'footerMenu',
-                  type: 'group',
-                  label: 'Настройки меню в футере',
-                  admin: {
-                    condition: (data, siblingData) => {
-                      const selected = siblingData?.selectedElement || data?.fonts?.selectedElement || 'body'
-                      return selected === 'footerMenu'
-                    },
-                    description: 'Использует настройки базового шрифта (Body)',
-                  },
-                  fields: createFontElementFields(
-                    'footerMenu',
-                    'Меню в футере',
-                    'Шрифт для меню в футере (использует настройки Body)',
-                  ),
-                },
-                // FooterText настройки
-                {
-                  name: 'footerText',
-                  type: 'group',
-                  label: 'Настройки текста в футере',
-                  admin: {
-                    condition: (data, siblingData) => {
-                      const selected = siblingData?.selectedElement || data?.fonts?.selectedElement || 'body'
-                      return selected === 'footerText'
-                    },
-                    description: 'Использует настройки базового шрифта (Body)',
-                  },
-                  fields: createFontElementFields(
-                    'footerText',
-                    'Текст в футере',
-                    'Шрифт для текста в футере (использует настройки Body)',
-                  ),
-                },
                 // HeaderMenu настройки
                 {
                   name: 'headerMenu',
                   type: 'group',
-                  label: 'Настройки меню в хедере',
+                  label: 'Настройки HEADER > MENU',
                   admin: {
                     condition: (data, siblingData) => {
                       const selected = siblingData?.selectedElement || data?.fonts?.selectedElement || 'body'
@@ -607,8 +447,168 @@ export const SiteSettings: GlobalConfig = {
                   },
                   fields: createFontElementFields(
                     'headerMenu',
-                    'Header menu',
+                    'HEADER > MENU',
                     'Шрифт для элементов меню в хедере (a и button внутри nav_font)',
+                  ),
+                },
+                // H1 настройки
+                {
+                  name: 'h1',
+                  type: 'group',
+                  label: 'Настройки POST (h1)',
+                  admin: {
+                    condition: (data, siblingData) => {
+                      const selected = siblingData?.selectedElement || data?.fonts?.selectedElement || 'body'
+                      return selected === 'h1'
+                    },
+                  },
+                  fields: createFontElementFields(
+                    'h1',
+                    'POST (h1)',
+                    'Шрифт для заголовков H1 в редакторе',
+                  ),
+                },
+                // PostText настройки
+                {
+                  name: 'postText',
+                  type: 'group',
+                  label: 'Настройки POST (p, subtitle)',
+                  admin: {
+                    condition: (data, siblingData) => {
+                      const selected = siblingData?.selectedElement || data?.fonts?.selectedElement || 'body'
+                      return selected === 'postText'
+                    },
+                  },
+                  fields: createFontElementFields(
+                    'postText',
+                    'POST (p, subtitle)',
+                    'Шрифт для текста поста (p, li)',
+                  ),
+                },
+                // AllPostsLink настройки
+                {
+                  name: 'allPostsLink',
+                  type: 'group',
+                  label: 'Настройки HOME ("all news")',
+                  admin: {
+                    condition: (data, siblingData) => {
+                      const selected = siblingData?.selectedElement || data?.fonts?.selectedElement || 'body'
+                      return selected === 'allPostsLink'
+                    },
+                    description: 'Использует настройки базового шрифта (Body)',
+                  },
+                  fields: createFontElementFields(
+                    'allPostsLink',
+                    'HOME ("all news")',
+                    'Шрифт для ссылки "Все новости" (использует настройки Body)',
+                  ),
+                },
+                // CardCategory настройки
+                {
+                  name: 'cardCategory',
+                  type: 'group',
+                  label: 'Настройки HOME > CARD (category)',
+                  admin: {
+                    condition: (data, siblingData) => {
+                      const selected = siblingData?.selectedElement || data?.fonts?.selectedElement || 'body'
+                      return selected === 'cardCategory'
+                    },
+                    description: 'Использует настройки базового шрифта (Body)',
+                  },
+                  fields: createFontElementFields(
+                    'cardCategory',
+                    'HOME > CARD (category)',
+                    'Шрифт для рубрик в карточках (использует настройки Body)',
+                  ),
+                },
+                // CardText настройки
+                {
+                  name: 'cardText',
+                  type: 'group',
+                  label: 'Настройки HOME > CARD (subtitle)',
+                  admin: {
+                    condition: (data, siblingData) => {
+                      const selected = siblingData?.selectedElement || data?.fonts?.selectedElement || 'body'
+                      return selected === 'cardText'
+                    },
+                    description: 'Использует настройки базового шрифта (Body)',
+                  },
+                  fields: createFontElementFields(
+                    'cardText',
+                    'HOME > CARD (subtitle)',
+                    'Шрифт для текста в карточках (использует настройки Body)',
+                  ),
+                },
+                // FooterMenu настройки
+                {
+                  name: 'footerMenu',
+                  type: 'group',
+                  label: 'Настройки FOOTER > MENU',
+                  admin: {
+                    condition: (data, siblingData) => {
+                      const selected = siblingData?.selectedElement || data?.fonts?.selectedElement || 'body'
+                      return selected === 'footerMenu'
+                    },
+                    description: 'Использует настройки базового шрифта (Body)',
+                  },
+                  fields: createFontElementFields(
+                    'footerMenu',
+                    'FOOTER > MENU',
+                    'Шрифт для меню в футере (использует настройки Body)',
+                  ),
+                },
+                // FooterText настройки
+                {
+                  name: 'footerText',
+                  type: 'group',
+                  label: 'Настройки FOOTER > TEXT',
+                  admin: {
+                    condition: (data, siblingData) => {
+                      const selected = siblingData?.selectedElement || data?.fonts?.selectedElement || 'body'
+                      return selected === 'footerText'
+                    },
+                    description: 'Использует настройки базового шрифта (Body)',
+                  },
+                  fields: createFontElementFields(
+                    'footerText',
+                    'FOOTER > TEXT',
+                    'Шрифт для текста в футере (использует настройки Body)',
+                  ),
+                },
+                // ButtonText настройки
+                {
+                  name: 'buttonText',
+                  type: 'group',
+                  label: 'Настройки ALL (buttons)',
+                  admin: {
+                    condition: (data, siblingData) => {
+                      const selected = siblingData?.selectedElement || data?.fonts?.selectedElement || 'body'
+                      return selected === 'buttonText'
+                    },
+                    description: 'Использует настройки базового шрифта (Body)',
+                  },
+                  fields: createFontElementFields(
+                    'buttonText',
+                    'ALL (buttons)',
+                    'Шрифт для текста кнопок (использует настройки Body)',
+                  ),
+                },
+                // Body настройки (базовый шрифт)
+                {
+                  name: 'body',
+                  type: 'group',
+                  label: 'Настройки ALL (base)',
+                  admin: {
+                    condition: (data, siblingData) => {
+                      const selected = siblingData?.selectedElement || data?.fonts?.selectedElement || 'body'
+                      return selected === 'body'
+                    },
+                    description: 'Базовый шрифт применяется ко всем элементам по умолчанию. Элементы с индивидуальными настройками будут переопределять эти значения.',
+                  },
+                  fields: createFontElementFields(
+                    'body',
+                    'ALL (base)',
+                    'Шрифт по умолчанию для всех элементов сайта',
                   ),
                 },
               ],
