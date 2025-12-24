@@ -29,7 +29,7 @@ export const FooterClient: React.FC<FooterClientProps> = ({
   return (
     <footer className="mt-12 border-t bg-black text-gray-300">
       <div className="container max-w-6xl mx-auto px-4 py-8 space-y-6 text-xs">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="flex flex-col sm:flex-row items-center sm:items-center justify-center sm:justify-between gap-4">
           {isHome ? (
             <div className="flex items-center gap-2">
               <Logo className="h-8 w-auto" loading="lazy" priority="low" />
@@ -67,7 +67,7 @@ export const FooterClient: React.FC<FooterClientProps> = ({
           </div>
         </div>
 
-        <div className="border-t border-gray-700 pt-4 text-[11px] text-gray-500 flex flex-col sm:flex-row gap-2 justify-between">
+        <div className="border-t border-gray-700 pt-4 text-[11px] text-gray-500 flex flex-col sm:flex-row gap-2 justify-center sm:justify-between items-center">
           <span>{(copyrightText || '').trim() || defaultCopyrightText}</span>
           <span>{(builtWithText || '').trim() || defaultBuiltWithText}</span>
         </div>

@@ -16,6 +16,7 @@ import { SiteSettings } from './SiteSettings/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
+import { migrations } from './migrations'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -70,6 +71,10 @@ export default buildConfig({
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URI || '',
+      // Optimize connection pool for faster schema checks
+      max: 10,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 5000,
     },
     push: process.env.NODE_ENV !== 'production', // Auto-create/update tables in development
   }),
@@ -94,6 +99,7 @@ export default buildConfig({
   collections: [Pages, Posts, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, SiteSettings],
+  migrations,
   plugins,
   secret: process.env.PAYLOAD_SECRET,
   sharp,

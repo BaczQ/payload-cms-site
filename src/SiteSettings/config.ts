@@ -285,17 +285,16 @@ export const SiteSettings: GlobalConfig = {
       },
     ],
     afterChange: [
-      async ({ doc, req, operation }) => {
+      async ({ doc, req }) => {
         // Используем console.log для гарантированного вывода в PM2 логи
         console.log('=== SiteSettings afterChange HOOK CALLED ===')
-        console.log('Operation:', operation)
         console.log('Doc fonts:', JSON.stringify(doc?.fonts, null, 2))
         console.log('Doc updatedAt:', doc?.updatedAt)
         
         // Также записываем в файл для диагностики
         try {
           const fs = await import('fs/promises')
-          const debugLog = `[${new Date().toISOString()}] afterChange called\nOperation: ${operation}\nFonts: ${JSON.stringify(doc?.fonts, null, 2)}\nUpdatedAt: ${doc?.updatedAt}\n\n`
+          const debugLog = `[${new Date().toISOString()}] afterChange called\nFonts: ${JSON.stringify(doc?.fonts, null, 2)}\nUpdatedAt: ${doc?.updatedAt}\n\n`
           await fs.appendFile('/tmp/bf-news-fonts-debug.log', debugLog).catch(() => {})
         } catch {}
         
