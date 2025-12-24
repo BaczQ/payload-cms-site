@@ -1,1 +1,11 @@
-/* This file is auto-generated. Updated at initial */
+/* This file is auto-generated. Updated at 2025-12-24T11:37:57.872Z */
+.site-fonts { font-family: var(--font-lobster), cursive !important; }
+.site-fonts h1, .site-fonts .payload-richtext h1 { font-family: var(--font-lobster), cursive !important; }
+.site-fonts .payload-richtext, .site-fonts .payload-richtext p, .site-fonts .payload-richtext li { font-family: var(--font-lobster), cursive !important; }
+.site-fonts a.inline-flex.items-center.justify-center, .site-fonts button.inline-flex.items-center.justify-center, .site-fonts a[class*="inline-flex"][class*="items-center"], .site-fonts button[class*="inline-flex"][class*="items-center"] { font-family: var(--font-lobster), cursive !important; }
+.site-fonts a.text-primary.underline[href*="/posts"], .site-fonts a[class*="text-primary"][class*="underline"][href*="/posts"] { font-family: var(--font-roboto), system-ui, sans-serif !important; }
+.site-fonts article[class*="border"] div[class*="uppercase"], .site-fonts article.border div.uppercase { font-family: var(--font-lobster), cursive !important; }
+.site-fonts article[class*="border"] p, .site-fonts article.border p { font-family: var(--font-roboto), system-ui, sans-serif !important; }
+.site-fonts footer div[class*="flex"][class*="flex-col"], .site-fonts footer div.flex.flex-col { font-family: var(--font-lobster), cursive !important; }
+.site-fonts footer div[class*="border-t"][class*="text-gray-500"], .site-fonts footer div.border-t.text-gray-500 { font-family: var(--font-lobster), cursive !important; }
+.site-fonts header nav a, .site-fonts header nav button { font-family: var(--font-lobster), cursive !important; }

@@ -445,6 +445,8 @@ export interface Category {
 export interface User {
   id: number;
   name?: string | null;
+  bioShort?: string | null;
+  bioFull?: string | null;
   /**
    * Аватарка автора. Загружается в полном размере без ресайза.
    */
@@ -1428,6 +1430,8 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  bioShort?: T;
+  bioFull?: T;
   avatar?: T;
   updatedAt?: T;
   createdAt?: T;

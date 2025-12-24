@@ -14,7 +14,22 @@ const fontKeys = [
   'headerMenu',
 ] as const
 type FontKey = (typeof fontKeys)[number]
-type FontConfig = NonNullable<SiteSetting['fonts']>[FontKey]
+// FontConfig это объект с опциональным fontFamily
+type FontConfig = {
+  fontFamily?: 
+    | 'roboto'
+    | 'gloock'
+    | 'antonio'
+    | 'manufacturing-consent'
+    | 'noto-sans-display'
+    | 'roboto-flex'
+    | 'roboto-condensed'
+    | 'tinos'
+    | 'lobster'
+    | 'system-ui'
+    | 'sans-serif'
+    | null
+}
 const defaultFontFamily = 'roboto'
 
 const frontendFontFamilyMap: Record<string, string> = {
@@ -99,18 +114,26 @@ function normalizeFontValue(value: string | null | undefined): string | null {
 function normalizeFonts(fonts: SiteSetting['fonts'] | null | undefined): Record<FontKey, FontConfig> {
   const normalizedFonts: Record<FontKey, FontConfig> = {} as Record<FontKey, FontConfig>
 
+  // Если fonts полностью отсутствует или это пустой объект, используем дефолтные значения для всех ключей
+  const hasAnyFontData = fonts && typeof fonts === 'object' && Object.keys(fonts).length > 0
+
   for (const key of fontKeys) {
     const fontValue = fonts?.[key]
     if (fontValue && typeof fontValue === 'object' && fontValue.fontFamily) {
-      normalizedFonts[key] = {
-        fontFamily: fontValue.fontFamily,
+      const normalizedFamily = normalizeFontValue(fontValue.fontFamily)
+      if (normalizedFamily && frontendFontFamilyMap[normalizedFamily]) {
+        // Приводим к типу FontConfig, так как мы проверили, что значение валидно
+        normalizedFonts[key] = {
+          fontFamily: normalizedFamily as NonNullable<FontConfig['fontFamily']>,
+        } as FontConfig
+        continue
       }
-      continue
     }
 
+    // Используем дефолтный шрифт, если значение отсутствует или некорректно
     normalizedFonts[key] = {
-      fontFamily: defaultFontFamily,
-    }
+      fontFamily: defaultFontFamily as NonNullable<FontConfig['fontFamily']>,
+    } as FontConfig
   }
 
   return normalizedFonts
@@ -145,6 +168,7 @@ function generateFontCSS(
       console.log('[generateFontCSS] fontConfig or fontFamily missing:', {
         fontConfig,
         hasFontFamily: !!fontConfig?.fontFamily,
+        selector,
       })
     }
     return rules
@@ -155,6 +179,19 @@ function generateFontCSS(
     options.fontFamilyMap,
     options.fallbackMap,
   )
+  
+  // Дополнительная проверка - если family пустое, это проблема
+  if (!family) {
+    if (process.env.NODE_ENV === 'development' || process.env.DEBUG_FONTS) {
+      console.warn('[generateFontCSS] resolved family is empty!', {
+        fontConfig,
+        selector,
+        fontFamilyMapKeys: Object.keys(options.fontFamilyMap),
+      })
+    }
+    return rules
+  }
+  
   const importantSuffix = options.useImportant ? ' !important' : ''
   const fontFamilyValue = fallback ? `${family}, ${fallback}` : family
 
@@ -178,7 +215,7 @@ function buildFontStyles(
 
   // Сначала применяем body как базовый стиль
   const bodyConfig = normalizedFonts.body
-  if (bodyConfig) {
+  if (bodyConfig && bodyConfig.fontFamily) {
     const bodySelector = options.selectors.body
     const bodyRules = generateFontCSS(bodySelector, bodyConfig, {
       fontFamilyMap: options.fontFamilyMap,
@@ -191,7 +228,7 @@ function buildFontStyles(
     cssRules.push(...bodyRules)
   } else {
     if (process.env.NODE_ENV === 'development' || process.env.DEBUG_FONTS) {
-      console.log('[buildFontStyles] bodyConfig is missing')
+      console.log('[buildFontStyles] bodyConfig is missing or invalid:', bodyConfig)
     }
   }
 
@@ -199,9 +236,9 @@ function buildFontStyles(
   for (const key of fontKeys) {
     if (key === 'body') continue // body уже обработан
     const fontConfig = normalizedFonts[key]
-    if (!fontConfig) {
+    if (!fontConfig || !fontConfig.fontFamily) {
       if (process.env.NODE_ENV === 'development' || process.env.DEBUG_FONTS) {
-        console.log(`[buildFontStyles] fontConfig for ${key} is missing`)
+        console.log(`[buildFontStyles] fontConfig for ${key} is missing or invalid:`, fontConfig)
       }
       continue
     }

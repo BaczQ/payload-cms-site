@@ -290,6 +290,9 @@ export const SiteSettings: GlobalConfig = {
         console.log('=== SiteSettings afterChange HOOK CALLED ===')
         console.log('Doc fonts:', JSON.stringify(doc?.fonts, null, 2))
         console.log('Doc updatedAt:', doc?.updatedAt)
+        console.log('Doc fonts type:', typeof doc?.fonts)
+        console.log('Doc fonts is null?', doc?.fonts === null)
+        console.log('Doc fonts is undefined?', doc?.fonts === undefined)
         
         // Также записываем в файл для диагностики
         try {
@@ -299,6 +302,8 @@ export const SiteSettings: GlobalConfig = {
         } catch {}
         
         try {
+          // Используем doc напрямую, так как он уже содержит актуальные данные после сохранения
+          // Но также получаем latestSettings для проверки
           const latestSettings = await req.payload.findGlobal({
             slug: 'site-settings',
             depth: 0,
@@ -306,9 +311,22 @@ export const SiteSettings: GlobalConfig = {
             req,
           })
 
+          console.log('Latest settings fonts:', JSON.stringify(latestSettings?.fonts, null, 2))
+          
+          // Используем fonts из doc, так как это самые свежие данные
+          const fontsToUse = doc?.fonts ?? latestSettings?.fonts
+          const updatedAtToUse = doc?.updatedAt ?? latestSettings?.updatedAt
+
+          console.log('Using fonts:', JSON.stringify(fontsToUse, null, 2))
+          console.log('Using updatedAt:', updatedAtToUse)
+
+          if (!fontsToUse || (typeof fontsToUse === 'object' && Object.keys(fontsToUse).length === 0)) {
+            console.warn('⚠️ WARNING: fontsToUse is empty or null! This may cause empty CSS file.')
+          }
+
           await writeFrontendFontStylesFile({
-            fonts: latestSettings?.fonts ?? doc?.fonts,
-            updatedAt: latestSettings?.updatedAt ?? doc?.updatedAt,
+            fonts: fontsToUse,
+            updatedAt: updatedAtToUse,
           })
           console.log('=== File written successfully ===')
         } catch (error) {
@@ -317,18 +335,28 @@ export const SiteSettings: GlobalConfig = {
             console.error('Error message:', error.message)
             console.error('Error stack:', error.stack)
           }
+          // Не пробрасываем ошибку дальше, чтобы не сломать сохранение настроек
         }
         revalidateTag('global_site-settings')
+        return doc
       },
     ],
     beforeValidate: [
       async ({ data, req }) => {
         console.log('=== SiteSettings beforeValidate HOOK CALLED ===')
         console.log('Data fonts:', JSON.stringify(data?.fonts, null, 2))
+        console.log('Data fonts type:', typeof data?.fonts)
+        console.log('Data fonts is null?', data?.fonts === null)
+        console.log('Data fonts is undefined?', data?.fonts === undefined)
         
         // Migrate old font structure (strings) to new structure (objects)
         if (data?.fonts && typeof data.fonts === 'object') {
-          data.fonts = migrateFontData(data.fonts)
+          const migratedFonts = migrateFontData(data.fonts)
+          console.log('Migrated fonts:', JSON.stringify(migratedFonts, null, 2))
+          data.fonts = migratedFonts
+        } else if (data?.fonts === null || data?.fonts === undefined) {
+          console.warn('⚠️ WARNING: data.fonts is null or undefined in beforeValidate!')
+          // Не устанавливаем fonts в null, оставляем как есть - возможно, это частичное обновление
         }
 
         return data

@@ -23,14 +23,22 @@ async function writeIfChanged(filePath: string, content: string) {
       }
     }
 
+    // Всегда записываем файл, даже если контент совпадает (на случай, если файл был повреждён)
+    // Но логируем, если контент не изменился
     if (existingContent === content) {
-      return
+      console.log(`Content unchanged for ${filePath}, but writing anyway to ensure file integrity`)
     }
 
     await fs.writeFile(filePath, content, 'utf8')
+    console.log(`✓ Written ${content.length} bytes to ${filePath}`)
   } catch (error) {
     // Fail silently per-path to avoid breaking the request; log to aid debugging
     console.error(`Failed to write font styles to ${filePath}:`, error)
+    if (error instanceof Error) {
+      console.error(`Error details: ${error.message}`)
+      console.error(`Stack: ${error.stack}`)
+    }
+    throw error
   }
 }
 
@@ -45,25 +53,68 @@ export async function writeFrontendFontStylesFile({
   console.log('=== writeFrontendFontStylesFile CALLED ===')
   console.log('Fonts data:', JSON.stringify(fonts, null, 2))
   console.log('UpdatedAt:', updatedAt)
+  console.log('Fonts type:', typeof fonts)
+  console.log('Fonts is null?', fonts === null)
+  console.log('Fonts is undefined?', fonts === undefined)
+  console.log('Fonts keys:', fonts && typeof fonts === 'object' ? Object.keys(fonts) : 'N/A')
   
-  const header = `/* This file is auto-generated. Updated at ${updatedAt ?? 'unknown'} */`
+  const header = `/* This file is auto-generated. Updated at ${updatedAt ?? new Date().toISOString()} */`
   const styles = buildFrontendFontStyles(fonts)
   const content = `${header}\n${styles}\n`
 
   console.log('Generated styles length:', styles.length)
-  console.log('Generated styles preview:', styles.substring(0, 200) || '(empty)')
+  console.log('Generated styles preview:', styles.substring(0, 500) || '(empty)')
+  console.log('Full generated styles:', styles || '(empty)')
   console.log('Output paths:', outputPaths)
+  console.log('Content to write length:', content.length)
 
-  try {
-    await Promise.all(outputPaths.map((filePath) => writeIfChanged(filePath, content)))
-    console.log('=== Files written successfully ===')
-  } catch (error) {
-    console.error('=== Error writing files ===', error)
-    if (error instanceof Error) {
-      console.error('Error message:', error.message)
-      console.error('Error stack:', error.stack)
+  // Если стили пустые, но fonts не null/undefined, это проблема - логируем предупреждение
+  if (styles.length === 0 && fonts && typeof fonts === 'object') {
+    console.warn('⚠️ WARNING: Generated styles are empty but fonts data exists!')
+    console.warn('This may indicate a problem with font data structure or normalization.')
+  }
+
+  // Записываем файлы по отдельности, чтобы ошибка в одном не блокировала другой
+  const writeResults = await Promise.allSettled(
+    outputPaths.map(async (filePath) => {
+      try {
+        await writeIfChanged(filePath, content)
+        return { filePath, success: true }
+      } catch (error) {
+        console.error(`Failed to write ${filePath}:`, error)
+        return { filePath, success: false, error }
+      }
+    })
+  )
+
+  let successCount = 0
+  let failCount = 0
+  
+  for (const result of writeResults) {
+    if (result.status === 'fulfilled' && result.value.success) {
+      successCount++
+    } else {
+      failCount++
+      const filePath = result.status === 'fulfilled' ? result.value.filePath : 'unknown'
+      console.error(`✗ Failed to write: ${filePath}`)
     }
-    throw error
+  }
+
+  console.log(`=== Files written: ${successCount} success, ${failCount} failed ===`)
+  
+  // Проверяем, что файлы действительно записались
+  for (const filePath of outputPaths) {
+    try {
+      const writtenContent = await fs.readFile(filePath, 'utf8')
+      console.log(`✓ Verified: ${filePath} (${writtenContent.length} bytes)`)
+    } catch (error) {
+      console.error(`✗ Failed to verify: ${filePath}`, error)
+    }
+  }
+
+  // Если хотя бы один файл не записался, это проблема, но не критическая
+  if (failCount > 0) {
+    console.warn(`⚠️ WARNING: ${failCount} file(s) failed to write. Check logs above.`)
   }
 }
 
