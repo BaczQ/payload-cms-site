@@ -106,6 +106,16 @@ export const Users: CollectionConfig = {
       type: 'text',
     },
     {
+      name: 'bioShort',
+      type: 'text',
+      label: 'Информация о себе (коротко)',
+    },
+    {
+      name: 'bioFull',
+      type: 'textarea',
+      label: 'Подробная информация о себе',
+    },
+    {
       name: 'avatar',
       type: 'upload',
       relationTo: 'media',

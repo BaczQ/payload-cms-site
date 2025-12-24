@@ -5,6 +5,7 @@ import * as migration_20251220_071335_add_news_posts_block from './20251220_0713
 import * as migration_20251223_162014_update_font_settings from './20251223_162014_update_font_settings';
 import * as migration_20251223_174007 from './20251223_174007';
 import * as migration_20251224_015519_add_avatar_to_users from './20251224_015519_add_avatar_to_users';
+import * as migration_20251224_070000_add_user_bio_fields from './20251224_070000_add_user_bio_fields';
 
 export const migrations = [
   {
@@ -41,5 +42,10 @@ export const migrations = [
     up: migration_20251224_015519_add_avatar_to_users.up,
     down: migration_20251224_015519_add_avatar_to_users.down,
     name: '20251224_015519_add_avatar_to_users'
+  },
+  {
+    up: migration_20251224_070000_add_user_bio_fields.up,
+    down: migration_20251224_070000_add_user_bio_fields.down,
+    name: '20251224_070000_add_user_bio_fields'
   },
 ];
