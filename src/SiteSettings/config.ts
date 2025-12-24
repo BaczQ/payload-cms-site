@@ -299,9 +299,16 @@ export const SiteSettings: GlobalConfig = {
         } catch {}
         
         try {
+          const latestSettings = await req.payload.findGlobal({
+            slug: 'site-settings',
+            depth: 0,
+            overrideAccess: false,
+            req,
+          })
+
           await writeFrontendFontStylesFile({
-            fonts: doc?.fonts,
-            updatedAt: doc?.updatedAt,
+            fonts: latestSettings?.fonts ?? doc?.fonts,
+            updatedAt: latestSettings?.updatedAt ?? doc?.updatedAt,
           })
           console.log('=== File written successfully ===')
         } catch (error) {
