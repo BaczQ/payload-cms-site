@@ -445,6 +445,10 @@ export interface Category {
 export interface User {
   id: number;
   name?: string | null;
+  /**
+   * Аватарка автора. Загружается в полном размере без ресайза.
+   */
+  avatar?: (number | null) | Media;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -1424,6 +1428,7 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  avatar?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -1812,24 +1817,7 @@ export interface SiteSetting {
   id: number;
   fonts?: {
     /**
-     * Выберите элемент, настройки которого вы хотите изменить. Базовый шрифт применяется ко всем элементам по умолчанию.
-     */
-    selectedElement?:
-      | (
-          | 'body'
-          | 'h1'
-          | 'postText'
-          | 'buttonText'
-          | 'allPostsLink'
-          | 'cardCategory'
-          | 'cardText'
-          | 'footerMenu'
-          | 'footerText'
-          | 'headerMenu'
-        )
-      | null;
-    /**
-     * Базовый шрифт применяется ко всем элементам по умолчанию. Элементы с индивидуальными настройками будут переопределять эти значения.
+     * Базовый шрифт применяется ко всем элементам по умолчанию
      */
     body?: {
       /**
@@ -1850,31 +1838,33 @@ export interface SiteSetting {
             | 'sans-serif'
           )
         | null;
-      mobile?: {
-        /**
-         * Например: 16px, 1rem, 1.2em
-         */
-        fontSize?: string | null;
-        /**
-         * Например: 1.5, 24px, 1.5em
-         */
-        lineHeight?: string | null;
-        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
-        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
-      };
-      desktop?: {
-        /**
-         * Например: 16px, 1rem, 1.2em
-         */
-        fontSize?: string | null;
-        /**
-         * Например: 1.5, 24px, 1.5em
-         */
-        lineHeight?: string | null;
-        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
-        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
-      };
     };
+    /**
+     * Применяется к элементам a и button внутри элемента класса nav_font
+     */
+    headerMenu?: {
+      /**
+       * Шрифт для элементов меню в хедере
+       */
+      fontFamily?:
+        | (
+            | 'roboto'
+            | 'gloock'
+            | 'antonio'
+            | 'manufacturing-consent'
+            | 'noto-sans-display'
+            | 'roboto-flex'
+            | 'roboto-condensed'
+            | 'tinos'
+            | 'lobster'
+            | 'system-ui'
+            | 'sans-serif'
+          )
+        | null;
+    };
+    /**
+     * Шрифт для заголовков H1 в редакторе
+     */
     h1?: {
       /**
        * Шрифт для заголовков H1 в редакторе
@@ -1894,31 +1884,10 @@ export interface SiteSetting {
             | 'sans-serif'
           )
         | null;
-      mobile?: {
-        /**
-         * Например: 16px, 1rem, 1.2em
-         */
-        fontSize?: string | null;
-        /**
-         * Например: 1.5, 24px, 1.5em
-         */
-        lineHeight?: string | null;
-        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
-        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
-      };
-      desktop?: {
-        /**
-         * Например: 16px, 1rem, 1.2em
-         */
-        fontSize?: string | null;
-        /**
-         * Например: 1.5, 24px, 1.5em
-         */
-        lineHeight?: string | null;
-        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
-        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
-      };
     };
+    /**
+     * Шрифт для текста поста (p, li)
+     */
     postText?: {
       /**
        * Шрифт для текста поста (p, li)
@@ -1938,84 +1907,13 @@ export interface SiteSetting {
             | 'sans-serif'
           )
         | null;
-      mobile?: {
-        /**
-         * Например: 16px, 1rem, 1.2em
-         */
-        fontSize?: string | null;
-        /**
-         * Например: 1.5, 24px, 1.5em
-         */
-        lineHeight?: string | null;
-        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
-        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
-      };
-      desktop?: {
-        /**
-         * Например: 16px, 1rem, 1.2em
-         */
-        fontSize?: string | null;
-        /**
-         * Например: 1.5, 24px, 1.5em
-         */
-        lineHeight?: string | null;
-        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
-        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
-      };
     };
     /**
-     * Использует настройки базового шрифта (Body)
-     */
-    buttonText?: {
-      /**
-       * Шрифт для текста кнопок (использует настройки Body)
-       */
-      fontFamily?:
-        | (
-            | 'roboto'
-            | 'gloock'
-            | 'antonio'
-            | 'manufacturing-consent'
-            | 'noto-sans-display'
-            | 'roboto-flex'
-            | 'roboto-condensed'
-            | 'tinos'
-            | 'lobster'
-            | 'system-ui'
-            | 'sans-serif'
-          )
-        | null;
-      mobile?: {
-        /**
-         * Например: 16px, 1rem, 1.2em
-         */
-        fontSize?: string | null;
-        /**
-         * Например: 1.5, 24px, 1.5em
-         */
-        lineHeight?: string | null;
-        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
-        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
-      };
-      desktop?: {
-        /**
-         * Например: 16px, 1rem, 1.2em
-         */
-        fontSize?: string | null;
-        /**
-         * Например: 1.5, 24px, 1.5em
-         */
-        lineHeight?: string | null;
-        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
-        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
-      };
-    };
-    /**
-     * Использует настройки базового шрифта (Body)
+     * Шрифт для ссылки "Все новости"
      */
     allPostsLink?: {
       /**
-       * Шрифт для ссылки "Все новости" (использует настройки Body)
+       * Шрифт для ссылки "Все новости"
        */
       fontFamily?:
         | (
@@ -2032,37 +1930,13 @@ export interface SiteSetting {
             | 'sans-serif'
           )
         | null;
-      mobile?: {
-        /**
-         * Например: 16px, 1rem, 1.2em
-         */
-        fontSize?: string | null;
-        /**
-         * Например: 1.5, 24px, 1.5em
-         */
-        lineHeight?: string | null;
-        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
-        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
-      };
-      desktop?: {
-        /**
-         * Например: 16px, 1rem, 1.2em
-         */
-        fontSize?: string | null;
-        /**
-         * Например: 1.5, 24px, 1.5em
-         */
-        lineHeight?: string | null;
-        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
-        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
-      };
     };
     /**
-     * Использует настройки базового шрифта (Body)
+     * Шрифт для рубрик в карточках
      */
     cardCategory?: {
       /**
-       * Шрифт для рубрик в карточках (использует настройки Body)
+       * Шрифт для рубрик в карточках
        */
       fontFamily?:
         | (
@@ -2079,37 +1953,13 @@ export interface SiteSetting {
             | 'sans-serif'
           )
         | null;
-      mobile?: {
-        /**
-         * Например: 16px, 1rem, 1.2em
-         */
-        fontSize?: string | null;
-        /**
-         * Например: 1.5, 24px, 1.5em
-         */
-        lineHeight?: string | null;
-        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
-        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
-      };
-      desktop?: {
-        /**
-         * Например: 16px, 1rem, 1.2em
-         */
-        fontSize?: string | null;
-        /**
-         * Например: 1.5, 24px, 1.5em
-         */
-        lineHeight?: string | null;
-        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
-        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
-      };
     };
     /**
-     * Использует настройки базового шрифта (Body)
+     * Шрифт для текста в карточках
      */
     cardText?: {
       /**
-       * Шрифт для текста в карточках (использует настройки Body)
+       * Шрифт для текста в карточках
        */
       fontFamily?:
         | (
@@ -2126,37 +1976,13 @@ export interface SiteSetting {
             | 'sans-serif'
           )
         | null;
-      mobile?: {
-        /**
-         * Например: 16px, 1rem, 1.2em
-         */
-        fontSize?: string | null;
-        /**
-         * Например: 1.5, 24px, 1.5em
-         */
-        lineHeight?: string | null;
-        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
-        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
-      };
-      desktop?: {
-        /**
-         * Например: 16px, 1rem, 1.2em
-         */
-        fontSize?: string | null;
-        /**
-         * Например: 1.5, 24px, 1.5em
-         */
-        lineHeight?: string | null;
-        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
-        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
-      };
     };
     /**
-     * Использует настройки базового шрифта (Body)
+     * Шрифт для меню в футере
      */
     footerMenu?: {
       /**
-       * Шрифт для меню в футере (использует настройки Body)
+       * Шрифт для меню в футере
        */
       fontFamily?:
         | (
@@ -2173,37 +1999,13 @@ export interface SiteSetting {
             | 'sans-serif'
           )
         | null;
-      mobile?: {
-        /**
-         * Например: 16px, 1rem, 1.2em
-         */
-        fontSize?: string | null;
-        /**
-         * Например: 1.5, 24px, 1.5em
-         */
-        lineHeight?: string | null;
-        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
-        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
-      };
-      desktop?: {
-        /**
-         * Например: 16px, 1rem, 1.2em
-         */
-        fontSize?: string | null;
-        /**
-         * Например: 1.5, 24px, 1.5em
-         */
-        lineHeight?: string | null;
-        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
-        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
-      };
     };
     /**
-     * Использует настройки базового шрифта (Body)
+     * Шрифт для текста в футере
      */
     footerText?: {
       /**
-       * Шрифт для текста в футере (использует настройки Body)
+       * Шрифт для текста в футере
        */
       fontFamily?:
         | (
@@ -2220,37 +2022,13 @@ export interface SiteSetting {
             | 'sans-serif'
           )
         | null;
-      mobile?: {
-        /**
-         * Например: 16px, 1rem, 1.2em
-         */
-        fontSize?: string | null;
-        /**
-         * Например: 1.5, 24px, 1.5em
-         */
-        lineHeight?: string | null;
-        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
-        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
-      };
-      desktop?: {
-        /**
-         * Например: 16px, 1rem, 1.2em
-         */
-        fontSize?: string | null;
-        /**
-         * Например: 1.5, 24px, 1.5em
-         */
-        lineHeight?: string | null;
-        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
-        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
-      };
     };
     /**
-     * Применяется к элементам a и button внутри элемента класса nav_font
+     * Шрифт для текста кнопок
      */
-    headerMenu?: {
+    buttonText?: {
       /**
-       * Шрифт для элементов меню в хедере (a и button внутри nav_font)
+       * Шрифт для текста кнопок
        */
       fontFamily?:
         | (
@@ -2267,30 +2045,6 @@ export interface SiteSetting {
             | 'sans-serif'
           )
         | null;
-      mobile?: {
-        /**
-         * Например: 16px, 1rem, 1.2em
-         */
-        fontSize?: string | null;
-        /**
-         * Например: 1.5, 24px, 1.5em
-         */
-        lineHeight?: string | null;
-        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
-        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
-      };
-      desktop?: {
-        /**
-         * Например: 16px, 1rem, 1.2em
-         */
-        fontSize?: string | null;
-        /**
-         * Например: 1.5, 24px, 1.5em
-         */
-        lineHeight?: string | null;
-        fontWeight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
-        fontStyle?: ('normal' | 'italic' | 'oblique') | null;
-      };
     };
   };
   updatedAt?: string | null;
@@ -2366,216 +2120,55 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   fonts?:
     | T
     | {
-        selectedElement?: T;
         body?:
           | T
           | {
               fontFamily?: T;
-              mobile?:
-                | T
-                | {
-                    fontSize?: T;
-                    lineHeight?: T;
-                    fontWeight?: T;
-                    fontStyle?: T;
-                  };
-              desktop?:
-                | T
-                | {
-                    fontSize?: T;
-                    lineHeight?: T;
-                    fontWeight?: T;
-                    fontStyle?: T;
-                  };
-            };
-        h1?:
-          | T
-          | {
-              fontFamily?: T;
-              mobile?:
-                | T
-                | {
-                    fontSize?: T;
-                    lineHeight?: T;
-                    fontWeight?: T;
-                    fontStyle?: T;
-                  };
-              desktop?:
-                | T
-                | {
-                    fontSize?: T;
-                    lineHeight?: T;
-                    fontWeight?: T;
-                    fontStyle?: T;
-                  };
-            };
-        postText?:
-          | T
-          | {
-              fontFamily?: T;
-              mobile?:
-                | T
-                | {
-                    fontSize?: T;
-                    lineHeight?: T;
-                    fontWeight?: T;
-                    fontStyle?: T;
-                  };
-              desktop?:
-                | T
-                | {
-                    fontSize?: T;
-                    lineHeight?: T;
-                    fontWeight?: T;
-                    fontStyle?: T;
-                  };
-            };
-        buttonText?:
-          | T
-          | {
-              fontFamily?: T;
-              mobile?:
-                | T
-                | {
-                    fontSize?: T;
-                    lineHeight?: T;
-                    fontWeight?: T;
-                    fontStyle?: T;
-                  };
-              desktop?:
-                | T
-                | {
-                    fontSize?: T;
-                    lineHeight?: T;
-                    fontWeight?: T;
-                    fontStyle?: T;
-                  };
-            };
-        allPostsLink?:
-          | T
-          | {
-              fontFamily?: T;
-              mobile?:
-                | T
-                | {
-                    fontSize?: T;
-                    lineHeight?: T;
-                    fontWeight?: T;
-                    fontStyle?: T;
-                  };
-              desktop?:
-                | T
-                | {
-                    fontSize?: T;
-                    lineHeight?: T;
-                    fontWeight?: T;
-                    fontStyle?: T;
-                  };
-            };
-        cardCategory?:
-          | T
-          | {
-              fontFamily?: T;
-              mobile?:
-                | T
-                | {
-                    fontSize?: T;
-                    lineHeight?: T;
-                    fontWeight?: T;
-                    fontStyle?: T;
-                  };
-              desktop?:
-                | T
-                | {
-                    fontSize?: T;
-                    lineHeight?: T;
-                    fontWeight?: T;
-                    fontStyle?: T;
-                  };
-            };
-        cardText?:
-          | T
-          | {
-              fontFamily?: T;
-              mobile?:
-                | T
-                | {
-                    fontSize?: T;
-                    lineHeight?: T;
-                    fontWeight?: T;
-                    fontStyle?: T;
-                  };
-              desktop?:
-                | T
-                | {
-                    fontSize?: T;
-                    lineHeight?: T;
-                    fontWeight?: T;
-                    fontStyle?: T;
-                  };
-            };
-        footerMenu?:
-          | T
-          | {
-              fontFamily?: T;
-              mobile?:
-                | T
-                | {
-                    fontSize?: T;
-                    lineHeight?: T;
-                    fontWeight?: T;
-                    fontStyle?: T;
-                  };
-              desktop?:
-                | T
-                | {
-                    fontSize?: T;
-                    lineHeight?: T;
-                    fontWeight?: T;
-                    fontStyle?: T;
-                  };
-            };
-        footerText?:
-          | T
-          | {
-              fontFamily?: T;
-              mobile?:
-                | T
-                | {
-                    fontSize?: T;
-                    lineHeight?: T;
-                    fontWeight?: T;
-                    fontStyle?: T;
-                  };
-              desktop?:
-                | T
-                | {
-                    fontSize?: T;
-                    lineHeight?: T;
-                    fontWeight?: T;
-                    fontStyle?: T;
-                  };
             };
         headerMenu?:
           | T
           | {
               fontFamily?: T;
-              mobile?:
-                | T
-                | {
-                    fontSize?: T;
-                    lineHeight?: T;
-                    fontWeight?: T;
-                    fontStyle?: T;
-                  };
-              desktop?:
-                | T
-                | {
-                    fontSize?: T;
-                    lineHeight?: T;
-                    fontWeight?: T;
-                    fontStyle?: T;
-                  };
+            };
+        h1?:
+          | T
+          | {
+              fontFamily?: T;
+            };
+        postText?:
+          | T
+          | {
+              fontFamily?: T;
+            };
+        allPostsLink?:
+          | T
+          | {
+              fontFamily?: T;
+            };
+        cardCategory?:
+          | T
+          | {
+              fontFamily?: T;
+            };
+        cardText?:
+          | T
+          | {
+              fontFamily?: T;
+            };
+        footerMenu?:
+          | T
+          | {
+              fontFamily?: T;
+            };
+        footerText?:
+          | T
+          | {
+              fontFamily?: T;
+            };
+        buttonText?:
+          | T
+          | {
+              fontFamily?: T;
             };
       };
   updatedAt?: T;

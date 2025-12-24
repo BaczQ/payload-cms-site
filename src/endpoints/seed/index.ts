@@ -52,125 +52,35 @@ export const seed = async ({
           slug: global,
           data: {
             fonts: {
+              body: {
+                fontFamily: 'roboto',
+              },
               h1: {
                 fontFamily: 'roboto',
-                mobile: {
-                  fontSize: '24px',
-                  lineHeight: '1.2',
-                  fontWeight: '700',
-                  fontStyle: 'normal',
-                },
-                desktop: {
-                  fontSize: '32px',
-                  lineHeight: '1.2',
-                  fontWeight: '700',
-                  fontStyle: 'normal',
-                },
               },
               postText: {
                 fontFamily: 'roboto',
-                mobile: {
-                  fontSize: '16px',
-                  lineHeight: '1.5',
-                  fontWeight: '400',
-                  fontStyle: 'normal',
-                },
-                desktop: {
-                  fontSize: '18px',
-                  lineHeight: '1.6',
-                  fontWeight: '400',
-                  fontStyle: 'normal',
-                },
               },
               buttonText: {
                 fontFamily: 'roboto',
-                mobile: {
-                  fontSize: '16px',
-                  lineHeight: '1.5',
-                  fontWeight: '400',
-                  fontStyle: 'normal',
-                },
-                desktop: {
-                  fontSize: '16px',
-                  lineHeight: '1.5',
-                  fontWeight: '400',
-                  fontStyle: 'normal',
-                },
               },
               allPostsLink: {
                 fontFamily: 'roboto',
-                mobile: {
-                  fontSize: '16px',
-                  lineHeight: '1.5',
-                  fontWeight: '400',
-                  fontStyle: 'normal',
-                },
-                desktop: {
-                  fontSize: '16px',
-                  lineHeight: '1.5',
-                  fontWeight: '400',
-                  fontStyle: 'normal',
-                },
               },
               cardCategory: {
                 fontFamily: 'roboto',
-                mobile: {
-                  fontSize: '16px',
-                  lineHeight: '1.5',
-                  fontWeight: '400',
-                  fontStyle: 'normal',
-                },
-                desktop: {
-                  fontSize: '16px',
-                  lineHeight: '1.5',
-                  fontWeight: '400',
-                  fontStyle: 'normal',
-                },
               },
               cardText: {
                 fontFamily: 'roboto',
-                mobile: {
-                  fontSize: '16px',
-                  lineHeight: '1.5',
-                  fontWeight: '400',
-                  fontStyle: 'normal',
-                },
-                desktop: {
-                  fontSize: '16px',
-                  lineHeight: '1.5',
-                  fontWeight: '400',
-                  fontStyle: 'normal',
-                },
               },
               footerMenu: {
                 fontFamily: 'roboto',
-                mobile: {
-                  fontSize: '16px',
-                  lineHeight: '1.5',
-                  fontWeight: '400',
-                  fontStyle: 'normal',
-                },
-                desktop: {
-                  fontSize: '16px',
-                  lineHeight: '1.5',
-                  fontWeight: '400',
-                  fontStyle: 'normal',
-                },
               },
               footerText: {
                 fontFamily: 'roboto',
-                mobile: {
-                  fontSize: '16px',
-                  lineHeight: '1.5',
-                  fontWeight: '400',
-                  fontStyle: 'normal',
-                },
-                desktop: {
-                  fontSize: '16px',
-                  lineHeight: '1.5',
-                  fontWeight: '400',
-                  fontStyle: 'normal',
-                },
+              },
+              headerMenu: {
+                fontFamily: 'roboto',
               },
             },
           },

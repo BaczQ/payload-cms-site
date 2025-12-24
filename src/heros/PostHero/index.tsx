@@ -106,7 +106,49 @@ export const PostHero: React.FC<{
             )}
           </div>
         )}
-        {hasAuthors && <p className="text-left author">{formatAuthors(populatedAuthors)}</p>}
+        {hasAuthors && (
+          <div className="text-left author flex items-center gap-3 flex-wrap">
+            {populatedAuthors.map((author, index) => {
+              const authorAvatar =
+                author && typeof author === 'object' && 'avatar' in author && author.avatar
+                  ? typeof author.avatar === 'object' && author.avatar !== null
+                    ? author.avatar
+                    : null
+                  : null
+
+              const avatarUrl =
+                authorAvatar && typeof authorAvatar === 'object' && 'url' in authorAvatar
+                  ? typeof authorAvatar.url === 'string'
+                    ? authorAvatar.url
+                    : 'filename' in authorAvatar && typeof authorAvatar.filename === 'string'
+                      ? `/media/${authorAvatar.filename}`
+                      : null
+                  : null
+
+              return (
+                <React.Fragment key={author?.id || index}>
+                  <div className="flex items-center gap-2">
+                    {avatarUrl && (
+                      <div className="flex-shrink-0">
+                        <img
+                          src={avatarUrl}
+                          alt={author?.name || 'Author avatar'}
+                          className="w-10 h-10 rounded-full object-cover"
+                        />
+                      </div>
+                    )}
+                    <span>{author?.name}</span>
+                  </div>
+                  {index < populatedAuthors.length - 1 && (
+                    <span className="text-black/50 dark:text-white/50">
+                      {index === populatedAuthors.length - 2 ? ' and ' : ', '}
+                    </span>
+                  )}
+                </React.Fragment>
+              )
+            })}
+          </div>
+        )}
       </div>
     </div>
   )

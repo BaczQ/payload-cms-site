@@ -95,7 +95,6 @@ const config = {
       },
       fontFamily: {
         mono: [
-          'var(--font-mono)',
           'ui-monospace',
           'SFMono-Regular',
           'Menlo',

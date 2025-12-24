@@ -41,10 +41,29 @@ export async function writeFrontendFontStylesFile({
   fonts: Parameters<typeof buildFrontendFontStyles>[0]
   updatedAt?: string | null
 }): Promise<void> {
+  // Всегда логируем для диагностики - используем console.log для гарантированного вывода
+  console.log('=== writeFrontendFontStylesFile CALLED ===')
+  console.log('Fonts data:', JSON.stringify(fonts, null, 2))
+  console.log('UpdatedAt:', updatedAt)
+  
   const header = `/* This file is auto-generated. Updated at ${updatedAt ?? 'unknown'} */`
   const styles = buildFrontendFontStyles(fonts)
   const content = `${header}\n${styles}\n`
 
-  await Promise.all(outputPaths.map((filePath) => writeIfChanged(filePath, content)))
+  console.log('Generated styles length:', styles.length)
+  console.log('Generated styles preview:', styles.substring(0, 200) || '(empty)')
+  console.log('Output paths:', outputPaths)
+
+  try {
+    await Promise.all(outputPaths.map((filePath) => writeIfChanged(filePath, content)))
+    console.log('=== Files written successfully ===')
+  } catch (error) {
+    console.error('=== Error writing files ===', error)
+    if (error instanceof Error) {
+      console.error('Error message:', error.message)
+      console.error('Error stack:', error.stack)
+    }
+    throw error
+  }
 }
 

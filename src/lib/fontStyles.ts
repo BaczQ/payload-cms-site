@@ -120,6 +120,9 @@ function generateFontCSS(
   const rules: string[] = []
 
   if (!fontConfig || !fontConfig.fontFamily) {
+    if (process.env.NODE_ENV === 'development' || process.env.DEBUG_FONTS) {
+      console.log('[generateFontCSS] fontConfig or fontFamily missing:', { fontConfig, hasFontFamily: !!fontConfig?.fontFamily })
+    }
     return rules
   }
 
@@ -131,46 +134,7 @@ function generateFontCSS(
   const importantSuffix = options.useImportant ? ' !important' : ''
   const fontFamilyValue = fallback ? `${family}, ${fallback}` : family
 
-  const mobileStyles: string[] = []
-  mobileStyles.push(`font-family: ${fontFamilyValue}${importantSuffix};`)
-
-  if (fontConfig.mobile?.fontSize) {
-    mobileStyles.push(`font-size: ${fontConfig.mobile.fontSize}${importantSuffix};`)
-  }
-  if (fontConfig.mobile?.lineHeight) {
-    mobileStyles.push(`line-height: ${fontConfig.mobile.lineHeight}${importantSuffix};`)
-  }
-  if (fontConfig.mobile?.fontWeight) {
-    mobileStyles.push(`font-weight: ${fontConfig.mobile.fontWeight}${importantSuffix};`)
-  }
-  if (fontConfig.mobile?.fontStyle) {
-    mobileStyles.push(`font-style: ${fontConfig.mobile.fontStyle}${importantSuffix};`)
-  }
-
-  if (mobileStyles.length > 0) {
-    rules.push(`${selector} { ${mobileStyles.join(' ')} }`)
-  }
-
-  if (fontConfig.desktop) {
-    const desktopStyles: string[] = []
-
-    if (fontConfig.desktop.fontSize) {
-      desktopStyles.push(`font-size: ${fontConfig.desktop.fontSize}${importantSuffix};`)
-    }
-    if (fontConfig.desktop.lineHeight) {
-      desktopStyles.push(`line-height: ${fontConfig.desktop.lineHeight}${importantSuffix};`)
-    }
-    if (fontConfig.desktop.fontWeight) {
-      desktopStyles.push(`font-weight: ${fontConfig.desktop.fontWeight}${importantSuffix};`)
-    }
-    if (fontConfig.desktop.fontStyle) {
-      desktopStyles.push(`font-style: ${fontConfig.desktop.fontStyle}${importantSuffix};`)
-    }
-
-    if (desktopStyles.length > 0) {
-      rules.push(`@media (min-width: 768px) { ${selector} { ${desktopStyles.join(' ')} } }`)
-    }
-  }
+  rules.push(`${selector} { font-family: ${fontFamilyValue}${importantSuffix}; }`)
 
   return rules
 }
@@ -185,6 +149,9 @@ function buildFontStyles(
   },
 ): string {
   if (!fonts) {
+    if (process.env.NODE_ENV === 'development' || process.env.DEBUG_FONTS) {
+      console.log('[buildFontStyles] fonts is null or undefined')
+    }
     return ''
   }
 
@@ -194,28 +161,41 @@ function buildFontStyles(
   const bodyConfig = fonts.body
   if (bodyConfig) {
     const bodySelector = options.selectors.body
-    cssRules.push(
-      ...generateFontCSS(bodySelector, bodyConfig, {
-        fontFamilyMap: options.fontFamilyMap,
-        fallbackMap: options.fallbackMap,
-        useImportant: options.useImportant,
-      }),
-    )
+    const bodyRules = generateFontCSS(bodySelector, bodyConfig, {
+      fontFamilyMap: options.fontFamilyMap,
+      fallbackMap: options.fallbackMap,
+      useImportant: options.useImportant,
+    })
+    if (process.env.NODE_ENV === 'development' || process.env.DEBUG_FONTS) {
+      console.log('[buildFontStyles] bodyConfig:', bodyConfig, 'generated rules:', bodyRules.length)
+    }
+    cssRules.push(...bodyRules)
+  } else {
+    if (process.env.NODE_ENV === 'development' || process.env.DEBUG_FONTS) {
+      console.log('[buildFontStyles] bodyConfig is missing')
+    }
   }
 
   // Затем применяем остальные элементы, которые переопределяют базовые значения
   for (const key of fontKeys) {
     if (key === 'body') continue // body уже обработан
     const fontConfig = fonts[key]
-    if (!fontConfig) continue
+    if (!fontConfig) {
+      if (process.env.NODE_ENV === 'development' || process.env.DEBUG_FONTS) {
+        console.log(`[buildFontStyles] fontConfig for ${key} is missing`)
+      }
+      continue
+    }
     const selector = options.selectors[key]
-    cssRules.push(
-      ...generateFontCSS(selector, fontConfig, {
-        fontFamilyMap: options.fontFamilyMap,
-        fallbackMap: options.fallbackMap,
-        useImportant: options.useImportant,
-      }),
-    )
+    const rules = generateFontCSS(selector, fontConfig, {
+      fontFamilyMap: options.fontFamilyMap,
+      fallbackMap: options.fallbackMap,
+      useImportant: options.useImportant,
+    })
+    if (process.env.NODE_ENV === 'development' || process.env.DEBUG_FONTS) {
+      console.log(`[buildFontStyles] ${key}:`, fontConfig, 'generated rules:', rules.length)
+    }
+    cssRules.push(...rules)
   }
 
   return cssRules.join('\n')

@@ -23,126 +23,16 @@ async function migrateFontSettings() {
         slug: 'site-settings',
         data: {
           fonts: {
-            h1: {
-              fontFamily: 'roboto',
-              mobile: {
-                fontSize: '24px',
-                lineHeight: '1.2',
-                fontWeight: '700',
-                fontStyle: 'normal',
-              },
-              desktop: {
-                fontSize: '32px',
-                lineHeight: '1.2',
-                fontWeight: '700',
-                fontStyle: 'normal',
-              },
-            },
-            postText: {
-              fontFamily: 'roboto',
-              mobile: {
-                fontSize: '16px',
-                lineHeight: '1.5',
-                fontWeight: '400',
-                fontStyle: 'normal',
-              },
-              desktop: {
-                fontSize: '18px',
-                lineHeight: '1.6',
-                fontWeight: '400',
-                fontStyle: 'normal',
-              },
-            },
-            buttonText: {
-              fontFamily: 'roboto',
-              mobile: {
-                fontSize: '16px',
-                lineHeight: '1.5',
-                fontWeight: '400',
-                fontStyle: 'normal',
-              },
-              desktop: {
-                fontSize: '16px',
-                lineHeight: '1.5',
-                fontWeight: '400',
-                fontStyle: 'normal',
-              },
-            },
-            allPostsLink: {
-              fontFamily: 'roboto',
-              mobile: {
-                fontSize: '16px',
-                lineHeight: '1.5',
-                fontWeight: '400',
-                fontStyle: 'normal',
-              },
-              desktop: {
-                fontSize: '16px',
-                lineHeight: '1.5',
-                fontWeight: '400',
-                fontStyle: 'normal',
-              },
-            },
-            cardCategory: {
-              fontFamily: 'roboto',
-              mobile: {
-                fontSize: '16px',
-                lineHeight: '1.5',
-                fontWeight: '400',
-                fontStyle: 'normal',
-              },
-              desktop: {
-                fontSize: '16px',
-                lineHeight: '1.5',
-                fontWeight: '400',
-                fontStyle: 'normal',
-              },
-            },
-            cardText: {
-              fontFamily: 'roboto',
-              mobile: {
-                fontSize: '16px',
-                lineHeight: '1.5',
-                fontWeight: '400',
-                fontStyle: 'normal',
-              },
-              desktop: {
-                fontSize: '16px',
-                lineHeight: '1.5',
-                fontWeight: '400',
-                fontStyle: 'normal',
-              },
-            },
-            footerMenu: {
-              fontFamily: 'roboto',
-              mobile: {
-                fontSize: '16px',
-                lineHeight: '1.5',
-                fontWeight: '400',
-                fontStyle: 'normal',
-              },
-              desktop: {
-                fontSize: '16px',
-                lineHeight: '1.5',
-                fontWeight: '400',
-                fontStyle: 'normal',
-              },
-            },
-            footerText: {
-              fontFamily: 'roboto',
-              mobile: {
-                fontSize: '16px',
-                lineHeight: '1.5',
-                fontWeight: '400',
-                fontStyle: 'normal',
-              },
-              desktop: {
-                fontSize: '16px',
-                lineHeight: '1.5',
-                fontWeight: '400',
-                fontStyle: 'normal',
-              },
-            },
+            body: { fontFamily: 'roboto' },
+            h1: { fontFamily: 'roboto' },
+            postText: { fontFamily: 'roboto' },
+            buttonText: { fontFamily: 'roboto' },
+            allPostsLink: { fontFamily: 'roboto' },
+            cardCategory: { fontFamily: 'roboto' },
+            cardText: { fontFamily: 'roboto' },
+            footerMenu: { fontFamily: 'roboto' },
+            footerText: { fontFamily: 'roboto' },
+            headerMenu: { fontFamily: 'roboto' },
           },
         },
       })
@@ -158,54 +48,25 @@ async function migrateFontSettings() {
         slug: 'site-settings',
         data: {
           fonts: {
-            h1: {
-              fontFamily: 'roboto',
-              mobile: { fontSize: '24px', lineHeight: '1.2', fontWeight: '700', fontStyle: 'normal' },
-              desktop: { fontSize: '32px', lineHeight: '1.2', fontWeight: '700', fontStyle: 'normal' },
-            },
-            postText: {
-              fontFamily: 'roboto',
-              mobile: { fontSize: '16px', lineHeight: '1.5', fontWeight: '400', fontStyle: 'normal' },
-              desktop: { fontSize: '18px', lineHeight: '1.6', fontWeight: '400', fontStyle: 'normal' },
-            },
-            buttonText: {
-              fontFamily: 'roboto',
-              mobile: { fontSize: '16px', lineHeight: '1.5', fontWeight: '400', fontStyle: 'normal' },
-              desktop: { fontSize: '16px', lineHeight: '1.5', fontWeight: '400', fontStyle: 'normal' },
-            },
-            allPostsLink: {
-              fontFamily: 'roboto',
-              mobile: { fontSize: '16px', lineHeight: '1.5', fontWeight: '400', fontStyle: 'normal' },
-              desktop: { fontSize: '16px', lineHeight: '1.5', fontWeight: '400', fontStyle: 'normal' },
-            },
-            cardCategory: {
-              fontFamily: 'roboto',
-              mobile: { fontSize: '16px', lineHeight: '1.5', fontWeight: '400', fontStyle: 'normal' },
-              desktop: { fontSize: '16px', lineHeight: '1.5', fontWeight: '400', fontStyle: 'normal' },
-            },
-            cardText: {
-              fontFamily: 'roboto',
-              mobile: { fontSize: '16px', lineHeight: '1.5', fontWeight: '400', fontStyle: 'normal' },
-              desktop: { fontSize: '16px', lineHeight: '1.5', fontWeight: '400', fontStyle: 'normal' },
-            },
-            footerMenu: {
-              fontFamily: 'roboto',
-              mobile: { fontSize: '16px', lineHeight: '1.5', fontWeight: '400', fontStyle: 'normal' },
-              desktop: { fontSize: '16px', lineHeight: '1.5', fontWeight: '400', fontStyle: 'normal' },
-            },
-            footerText: {
-              fontFamily: 'roboto',
-              mobile: { fontSize: '16px', lineHeight: '1.5', fontWeight: '400', fontStyle: 'normal' },
-              desktop: { fontSize: '16px', lineHeight: '1.5', fontWeight: '400', fontStyle: 'normal' },
-            },
+            body: { fontFamily: 'roboto' },
+            h1: { fontFamily: 'roboto' },
+            postText: { fontFamily: 'roboto' },
+            buttonText: { fontFamily: 'roboto' },
+            allPostsLink: { fontFamily: 'roboto' },
+            cardCategory: { fontFamily: 'roboto' },
+            cardText: { fontFamily: 'roboto' },
+            footerMenu: { fontFamily: 'roboto' },
+            footerText: { fontFamily: 'roboto' },
+            headerMenu: { fontFamily: 'roboto' },
           },
         },
       })
       return
     }
 
-    // Migrate old structure to new
+    // Migrate old structure to new (extract only fontFamily)
     const fontKeys = [
+      'body',
       'h1',
       'postText',
       'buttonText',
@@ -214,6 +75,7 @@ async function migrateFontSettings() {
       'cardText',
       'footerMenu',
       'footerText',
+      'headerMenu',
     ] as const
     let needsUpdate = false
     const migratedFonts: any = {}
@@ -226,47 +88,41 @@ async function migrateFontSettings() {
         needsUpdate = true
         migratedFonts[key] = {
           fontFamily: fontValue,
-          mobile: {
-            fontSize: key === 'h1' ? '24px' : key === 'postText' ? '16px' : '14px',
-            lineHeight: '1.5',
-            fontWeight: key === 'h1' ? '700' : '400',
-            fontStyle: 'normal',
-          },
-          desktop: {
-            fontSize: key === 'h1' ? '32px' : key === 'postText' ? '18px' : '16px',
-            lineHeight: '1.5',
-            fontWeight: key === 'h1' ? '700' : '400',
-            fontStyle: 'normal',
-          },
         }
       }
-      // If it's already in new format, keep it
-      else if (fontValue && typeof fontValue === 'object' && fontValue.fontFamily) {
-        migratedFonts[key] = fontValue
+      // If it's an object, extract only fontFamily
+      else if (fontValue && typeof fontValue === 'object') {
+        if (fontValue.fontFamily) {
+          // Check if it has old mobile/desktop fields that need cleanup
+          if (fontValue.mobile || fontValue.desktop) {
+            needsUpdate = true
+            migratedFonts[key] = {
+              fontFamily: fontValue.fontFamily,
+            }
+          } else {
+            migratedFonts[key] = {
+              fontFamily: fontValue.fontFamily,
+            }
+          }
+        } else {
+          // Missing fontFamily, set default
+          needsUpdate = true
+          migratedFonts[key] = {
+            fontFamily: 'roboto',
+          }
+        }
       }
       // If missing, set default
       else {
         needsUpdate = true
         migratedFonts[key] = {
           fontFamily: 'roboto',
-          mobile: {
-            fontSize: key === 'h1' ? '24px' : key === 'postText' ? '16px' : '14px',
-            lineHeight: '1.5',
-            fontWeight: key === 'h1' ? '700' : '400',
-            fontStyle: 'normal',
-          },
-          desktop: {
-            fontSize: key === 'h1' ? '32px' : key === 'postText' ? '18px' : '16px',
-            lineHeight: '1.5',
-            fontWeight: key === 'h1' ? '700' : '400',
-            fontStyle: 'normal',
-          },
         }
       }
     }
 
-    if (needsUpdate || Object.keys(migratedFonts).length > 0) {
-      payload.logger.info('Updating font settings with new structure...')
+    if (needsUpdate) {
+      payload.logger.info('Updating font settings with simplified structure (fontFamily only)...')
       await payload.updateGlobal({
         slug: 'site-settings',
         data: {
