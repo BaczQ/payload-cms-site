@@ -15,6 +15,7 @@ const fontKeys = [
 ] as const
 type FontKey = (typeof fontKeys)[number]
 type FontConfig = NonNullable<SiteSetting['fonts']>[FontKey]
+const defaultFontFamily = 'roboto'
 
 const frontendFontFamilyMap: Record<string, string> = {
   roboto: 'var(--font-roboto), system-ui, sans-serif',
@@ -95,13 +96,33 @@ function normalizeFontValue(value: string | null | undefined): string | null {
   return value.toLowerCase().trim()
 }
 
+function normalizeFonts(fonts: SiteSetting['fonts'] | null | undefined): Record<FontKey, FontConfig> {
+  const normalizedFonts: Record<FontKey, FontConfig> = {} as Record<FontKey, FontConfig>
+
+  for (const key of fontKeys) {
+    const fontValue = fonts?.[key]
+    if (fontValue && typeof fontValue === 'object' && fontValue.fontFamily) {
+      normalizedFonts[key] = {
+        fontFamily: fontValue.fontFamily,
+      }
+      continue
+    }
+
+    normalizedFonts[key] = {
+      fontFamily: defaultFontFamily,
+    }
+  }
+
+  return normalizedFonts
+}
+
 function resolveFontFamily(
   fontValue: string | null | undefined,
   fontFamilyMap: Record<string, string>,
   fallbackMap?: Record<string, string>,
 ) {
   const normalized = normalizeFontValue(fontValue)
-  const key = normalized && fontFamilyMap[normalized] ? normalized : 'roboto'
+  const key = normalized && fontFamilyMap[normalized] ? normalized : defaultFontFamily
   return {
     family: fontFamilyMap[key],
     fallback: fallbackMap?.[key],
@@ -121,7 +142,10 @@ function generateFontCSS(
 
   if (!fontConfig || !fontConfig.fontFamily) {
     if (process.env.NODE_ENV === 'development' || process.env.DEBUG_FONTS) {
-      console.log('[generateFontCSS] fontConfig or fontFamily missing:', { fontConfig, hasFontFamily: !!fontConfig?.fontFamily })
+      console.log('[generateFontCSS] fontConfig or fontFamily missing:', {
+        fontConfig,
+        hasFontFamily: !!fontConfig?.fontFamily,
+      })
     }
     return rules
   }
@@ -148,17 +172,12 @@ function buildFontStyles(
     useImportant: boolean
   },
 ): string {
-  if (!fonts) {
-    if (process.env.NODE_ENV === 'development' || process.env.DEBUG_FONTS) {
-      console.log('[buildFontStyles] fonts is null or undefined')
-    }
-    return ''
-  }
+  const normalizedFonts = normalizeFonts(fonts)
 
   const cssRules: string[] = []
 
   // Сначала применяем body как базовый стиль
-  const bodyConfig = fonts.body
+  const bodyConfig = normalizedFonts.body
   if (bodyConfig) {
     const bodySelector = options.selectors.body
     const bodyRules = generateFontCSS(bodySelector, bodyConfig, {
@@ -179,7 +198,7 @@ function buildFontStyles(
   // Затем применяем остальные элементы, которые переопределяют базовые значения
   for (const key of fontKeys) {
     if (key === 'body') continue // body уже обработан
-    const fontConfig = fonts[key]
+    const fontConfig = normalizedFonts[key]
     if (!fontConfig) {
       if (process.env.NODE_ENV === 'development' || process.env.DEBUG_FONTS) {
         console.log(`[buildFontStyles] fontConfig for ${key} is missing`)
