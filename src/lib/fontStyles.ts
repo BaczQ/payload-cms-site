@@ -258,11 +258,43 @@ function buildFontStyles(
 }
 
 export function buildFrontendFontStyles(fonts: SiteSetting['fonts'] | null | undefined): string {
-  return buildFontStyles(fonts, {
-    selectors: frontendSelectors,
-    fontFamilyMap: frontendFontFamilyMap,
-    useImportant: true,
-  })
+  const normalizedFonts = normalizeFonts(fonts)
+
+  const buildFontFamilyValue = (fontConfig: FontConfig) => {
+    const { family, fallback } = resolveFontFamily(fontConfig.fontFamily, frontendFontFamilyMap)
+    return fallback ? `${family}, ${fallback}` : family
+  }
+
+  const bodyFontFamily = buildFontFamilyValue(normalizedFonts.body)
+  const headingFontFamily = buildFontFamilyValue(normalizedFonts.h1)
+
+  const cssRules: string[] = []
+
+  cssRules.push(
+    `.site-fonts { --font-sans: ${bodyFontFamily}; --font-heading: ${headingFontFamily}; }`,
+  )
+
+  for (const key of fontKeys) {
+    if (key === 'body' || key === 'h1') continue
+    const fontConfig = normalizedFonts[key]
+    if (!fontConfig || !fontConfig.fontFamily) {
+      if (process.env.NODE_ENV === 'development' || process.env.DEBUG_FONTS) {
+        console.log(`[buildFontStyles] fontConfig for ${key} is missing or invalid:`, fontConfig)
+      }
+      continue
+    }
+    const selector = frontendSelectors[key]
+    const rules = generateFontCSS(selector, fontConfig, {
+      fontFamilyMap: frontendFontFamilyMap,
+      useImportant: true,
+    })
+    if (process.env.NODE_ENV === 'development' || process.env.DEBUG_FONTS) {
+      console.log(`[buildFontStyles] ${key}:`, fontConfig, 'generated rules:', rules.length)
+    }
+    cssRules.push(...rules)
+  }
+
+  return cssRules.join('\n')
 }
 
 export function buildAdminFontStyles(fonts: SiteSetting['fonts'] | null | undefined): string {
